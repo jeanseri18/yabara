@@ -379,11 +379,11 @@
                             <label class="form-label">Pôle d'activité</label>
                             <select name="pole_id" class="form-select" id="poleSelect">
                                 <option value="">Sélectionnez un pôle</option>
-                                <!-- Ajout des options dynamiques ici -->
-                                <option value="1" {{ old('pole_id') == '1' ? 'selected' : '' }}>📱 Développement Digital</option>
-                                <option value="2" {{ old('pole_id') == '2' ? 'selected' : '' }}>🏗️ Ingénierie & Industrie</option>
-                                <option value="3" {{ old('pole_id') == '3' ? 'selected' : '' }}>💼 Gestion & Finance</option>
-                                <option value="4" {{ old('pole_id') == '4' ? 'selected' : '' }}>🔬 Recherche & Innovation</option>
+                                @foreach($poles as $pole)
+                                    <option value="{{ $pole->id }}" {{ old('pole_id') == $pole->id ? 'selected' : '' }}>
+                                        {{ $pole->icone }} {{ $pole->nom }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         
@@ -615,42 +615,26 @@
             });
         });
 
-        // Simuler les données de familles de métiers pour la démo
-        const famillesMetiers = {
-            '1': [
-                {id: 1, nom: 'Développement Web'},
-                {id: 2, nom: 'Développement Mobile'},
-                {id: 3, nom: 'UX/UI Design'}
-            ],
-            '2': [
-                {id: 4, nom: 'Génie Civil'},
-                {id: 5, nom: 'Mécanique'},
-                {id: 6, nom: 'Électronique'}
-            ],
-            '3': [
-                {id: 7, nom: 'Comptabilité'},
-                {id: 8, nom: 'Contrôle de Gestion'},
-                {id: 9, nom: 'Finance d\'Entreprise'}
-            ],
-            '4': [
-                {id: 10, nom: 'Biotechnologie'},
-                {id: 11, nom: 'Pharmacie'},
-                {id: 12, nom: 'IA & Data Science'}
-            ]
-        };
-
         // Gestion des familles de métiers
         document.getElementById('poleSelect').addEventListener('change', function() {
             const poleId = this.value;
             const familleSelect = document.getElementById('familleMetierSelect');
             
             if (poleId) {
-                // Dans une démo, utiliser les données simulées
-                const familles = famillesMetiers[poleId] || [];
-                familleSelect.innerHTML = '<option value="">Sélectionnez une famille de métier</option>';
-                familles.forEach(famille => {
-                    familleSelect.innerHTML += `<option value="${famille.id}">${famille.nom}</option>`;
-                });
+                // Appel AJAX pour récupérer les familles de métiers
+                fetch(`/api/familles-metiers/${poleId}`)
+                    .then(response => response.json())
+                    .then(familles => {
+                        familleSelect.innerHTML = '<option value="">Sélectionnez une famille de métier</option>';
+                        familles.forEach(famille => {
+                            const selected = '{{ old("famille_metier_id") }}' == famille.id ? 'selected' : '';
+                            familleSelect.innerHTML += `<option value="${famille.id}" ${selected}>${famille.nom}</option>`;
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors du chargement des familles de métiers:', error);
+                        familleSelect.innerHTML = '<option value="">Erreur de chargement</option>';
+                    });
             } else {
                 familleSelect.innerHTML = '<option value="">Sélectionnez d\'abord un pôle</option>';
             }

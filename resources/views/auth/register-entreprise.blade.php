@@ -331,10 +331,11 @@
                             <label class="form-label">Pôle d'activité</label>
                             <select name="pole_activite_id" class="form-select">
                                 <option value="">Sélectionnez un pôle d'activité</option>
-                                <option value="1">📱 Développement Digital</option>
-                                <option value="2">🏗️ Ingénierie & Industrie</option>
-                                <option value="3">💼 Gestion & Finance</option>
-                                <option value="4">🔬 Recherche & Innovation</option>
+                                @foreach($poles as $pole)
+                                    <option value="{{ $pole->id }}" {{ old('pole_activite_id') == $pole->id ? 'selected' : '' }}>
+                                        {{ $pole->icone }} {{ $pole->nom }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         

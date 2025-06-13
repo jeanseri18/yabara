@@ -167,4 +167,5 @@ class RegistrationController extends Controller
         
         return view('auth.registration-success', compact('user', 'userType'));
     }
+
 }
