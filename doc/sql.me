@@ -1,0 +1,154 @@
+
+10
+📊 YABARA - Analyse des Données SQL
+🗄 STRUCTURE DE BASE DE DONNÉES
+TABLES PRINCIPALES
+1. Table users (Gestion centralisée)
+2. Table talents
+3. Table entreprises
+sql
+users:
+- id (BIGINT, PK, AI)
+- email (VARCHAR(255), UNIQUE, NOT NULL)
+- password_hash (VARCHAR(255), NOT NULL)
+- user_type (ENUM: talent, entreprise, admin)
+- status (ENUM: active, inactive, pending, suspended)
+- email_verified_at (TIMESTAMP)
+- created_at, updated_at (TIMESTAMP)
+sql
+talents:
+- id (BIGINT, PK, AI)
+- user_id (BIGINT, FK -> users.id)
+- first_name, last_name (VARCHAR)
+- phone (VARCHAR(20))
+- pole_id (INT, FK -> poles.id)
+- famille_metier_id (INT, FK -> familles_metiers.id)
+- niveau_etude (ENUM: BAC à BAC+8)
+- cv_reference (VARCHAR(20), UNIQUE) -- CVYB0675BC
+- profile_completion_percentage (DECIMAL(5,2))
+- parrain_cv_reference (VARCHAR(20), FK -> talents.cv_reference)
+- avatar_type (VARCHAR(50))
+- total_applications, total_interviews, total_offers_viewed (INT)
+4. Table admins
+🏭 TABLES DE RÉFÉRENCE
+5. Table poles (5 pôles d'activité)
+sql
+entreprises:
+- id (BIGINT, PK, AI)
+- user_id (BIGINT, FK -> users.id)
+- nom_entreprise (VARCHAR(255))
+- logo_url (VARCHAR(500))
+- pole_activite_id (INT, FK -> poles.id)
+- numero_legal (VARCHAR(100)) -- SIREN/SIRET/RCCM
+- effectif (ENUM: <50, 50-100, 100-500, >500)
+- responsable_rh_nom, responsable_rh_prenom (VARCHAR)
+- is_verified (BOOLEAN)
+- total_offres_publiees, total_candidatures_recues (INT)
+- notif_nouvelle_candidature, notif_deplacement_kanban (BOOLEAN)
+sql
+admins:
+- id (BIGINT, PK, AI)
+- user_id (BIGINT, FK -> users.id)
+- nom, prenom (VARCHAR(100))
+- role (ENUM: super_admin, admin, moderator)
+- permissions (JSON)
+- mode_affichage (ENUM: etendue, condensee)
+- mode_nuit (BOOLEAN)
+sql
+poles:
+- id (INT, PK, AI)
+- nom (VARCHAR(100)) -- TERTIAIRE, SECONDAIRE, etc.
+- icone (VARCHAR(50)) --
+👩🏽‍💻👨🏾‍💻,
+🏗, etc.
+- ordre_affichage (INT)
+Data:
+1. TERTIAIRE (Services & Fonctions support) 👩🏽‍💻👨🏾‍💻
+2. SECONDAIRE (Industrie, Construction & Production) 🏗
+3. NUMÉRIQUE & INNOVATION 💻
+4. COMMERCIAL & RELATION CLIENT 👩🏾‍🚀
+5. MÉTIERS PRATIQUES & ÉCONOMIE INFORMELLE 🔨
+12. Table user_badges
+13. Table parrainages
+🔔 SYSTÈME DE NOTIFICATIONS
+14. Table notifications
+15. Table email_queue
+sql
+user_badges:
+- id (BIGINT, PK, AI)
+- user_id (BIGINT, FK -> users.id)
+- badge_id (INT, FK -> badges.id)
+- date_obtention (TIMESTAMP)
+- progression_actuelle, progression_requise (INT)
+- is_unlocked (BOOLEAN)
+sql
+parrainages:
+- id (BIGINT, PK, AI)
+- parrain_id (BIGINT, FK -> users.id)
+- parrain_type (ENUM: talent, entreprise)
+- filleul_email (VARCHAR(255))
+- filleul_id (BIGINT, FK -> users.id) -- NULL jusqu'à inscription
+- statut (ENUM: invite, inscrit, actif, recrute)
+- code_parrainage (VARCHAR(50), UNIQUE)
+- recompense_parrain_accordee (BOOLEAN)
+sql
+notifications:
+- id (BIGINT, PK, AI)
+- user_id (BIGINT, FK -> users.id)
+- type (VARCHAR(100))
+- titre (VARCHAR(255))
+- message (TEXT)
+- data (JSON) -- Données contextuelles
+- canal_email, canal_push, canal_in_app (BOOLEAN)
+- is_read (BOOLEAN)
+- priorite (ENUM: low, normal, high, urgent)
+⭐ FONCTIONNALITÉS UTILISATEUR
+16. Table favoris
+17. Table recherches_sauvegardees
+📊 ANALYTICS ET STATISTIQUES
+18. Table analytics_events
+sql
+email_queue:
+- id (BIGINT, PK, AI)
+- to_email (VARCHAR(255))
+- sujet (VARCHAR(255))
+- contenu_html (TEXT)
+- template_id (INT)
+- variables (JSON)
+- status (ENUM: pending, processing, sent, failed)
+- priorite (ENUM: low, normal, high, urgent)
+- attempts (INT)
+- send_at (TIMESTAMP)
+sql
+favoris:
+- id (BIGINT, PK, AI)
+- user_id (BIGINT, FK -> users.id)
+- favori_type (ENUM: offre, talent, entreprise)
+- favori_id (BIGINT) -- ID polymorphique
+- note_personnelle (TEXT)
+- tags (JSON)
+sql
+recherches_sauvegardees:
+- id (BIGINT, PK, AI)
+- user_id (BIGINT, FK -> users.id)
+- nom_recherche (VARCHAR(255))
+- type_recherche (ENUM: offres, talents)
+- criteres_recherche (JSON)
+- alerte_nouveaux_resultats (BOOLEAN)
+Cette structure SQL pure supporte tous les workflows YABARA avec une approche relationnelle classique
+optimisée pour les performances et la cohérence des données.
+sql
+-- Relations principales
+users (1) -> (1) talents|entreprises|admins
+poles (1) -> (*) familles_metiers
+poles (1) -> (*) talents (via pole_id)
+familles_metiers (1) -> (*) talents
+familles_metiers (1) -> (*) offres_emploi
+entreprises (1) -> (*) offres_emploi
+talents (*) -> (*) offres_emploi (via candidatures)
+users (1) -> (*) notifications
+users (1) -> (*) user_badges
+talents (1) -> (1) cvs_anonymes
+-- Relations de parrainage
+talents.cv_reference -> talents.parrain_cv_reference (auto-référence)
+users (parrain) (1) -> (*) parrainages
