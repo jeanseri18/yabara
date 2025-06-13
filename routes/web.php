@@ -2,20 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\LoginController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 // Routes d'authentification
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
-
-Route::post('/login', function () {
-    // Logique de connexion à implémenter
-    return redirect()->back()->with('error', 'Fonctionnalité de connexion à implémenter');
-})->name('login.post');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Routes d'inscription
 Route::get('/register', [RegistrationController::class, 'showRegistrationForm'])->name('register');
@@ -34,14 +30,28 @@ Route::get('/api/familles-metiers/{poleId}', [RegistrationController::class, 'ge
 // Route de succès d'inscription
 Route::get('/registration/success', [RegistrationController::class, 'showRegistrationSuccess'])->name('registration.success');
 
-// Routes temporaires pour les dashboards (à implémenter)
-Route::get('/profile/dashboard', function () {
-    return view('profile.dashboard');
-})->name('profile.dashboard');
-
-Route::get('/entreprise/dashboard', function () {
-    return redirect()->route('welcome')->with('info', 'Dashboard entreprise à implémenter');
-})->name('entreprise.dashboard');
+// Dashboard routes
+Route::middleware(['auth'])->group(function () {
+    // Admin dashboard
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+    
+    // Talent dashboard
+    Route::get('/talent/dashboard', function () {
+        return view('talent.dashboard');
+    })->name('talent.dashboard');
+    
+    // Entreprise dashboard
+    Route::get('/entreprise/dashboard', function () {
+        return view('entreprise.dashboard');
+    })->name('entreprise.dashboard');
+    
+    // Legacy route for profile dashboard (redirect to talent)
+    Route::get('/profile/dashboard', function () {
+        return redirect()->route('talent.dashboard');
+    })->name('profile.dashboard');
+});
 
 // Routes temporaires pour les sections de profil (à implémenter)
 Route::get('/profile/experiences', function () {

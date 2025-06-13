@@ -34,36 +34,23 @@ class RegistrationController extends Controller
 
     public function registerTalent(Request $request)
     {
-        // Vérifier si c'est une inscription minimale
-        $isMinimalRegistration = $request->has('minimal_registration');
-        
-        if ($isMinimalRegistration) {
-            // Validation minimale pour inscription rapide
-            $request->validate([
-                'email' => 'required|email|unique:users',
-                'password' => 'required|min:8|confirmed',
-            ]);
-        } else {
-            // Validation complète pour inscription normale
-            $request->validate([
-                'email' => 'required|email|unique:users',
-                'password' => 'required|min:8|confirmed',
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'phone' => 'nullable|string|max:20',
-                'pole_id' => 'nullable|exists:poles,id',
-                'famille_metier_id' => 'nullable|exists:familles_metiers,id',
-                'niveau_etude' => 'nullable|in:BAC,BAC+1,BAC+2,BAC+3,BAC+4,BAC+5,BAC+6,BAC+7,BAC+8',
-                'avatar_type' => 'nullable|string|max:50'
-            ]);
-        }
+        // Validation complète pour inscription
+        $request->validate([
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8|confirmed',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'pole_id' => 'nullable|exists:poles,id',
+            'famille_metier_id' => 'nullable|exists:familles_metiers,id',
+            'niveau_etude' => 'nullable|in:BAC,BAC+1,BAC+2,BAC+3,BAC+4,BAC+5,BAC+6,BAC+7,BAC+8',
+            'avatar_type' => 'nullable|string|max:50'
+        ]);
 
         DB::beginTransaction();
         try {
             // Créer l'utilisateur
-            $name = $isMinimalRegistration ? 
-                explode('@', $request->email)[0] : 
-                trim($request->first_name . ' ' . $request->last_name);
+            $name = trim($request->first_name . ' ' . $request->last_name);
             
             $user = User::create([
                 'name' => $name,
@@ -76,35 +63,19 @@ class RegistrationController extends Controller
             // Générer une référence CV unique
             $cvReference = 'CV' . str_pad($user->id, 6, '0', STR_PAD_LEFT);
 
-            if ($isMinimalRegistration) {
-                // Créer un profil talent minimal
-                Talent::create([
-                    'user_id' => $user->id,
-                    'first_name' => null,
-                    'last_name' => null,
-                    'phone' => null,
-                    'pole_id' => null,
-                    'famille_metier_id' => null,
-                    'niveau_etude' => null,
-                    'cv_reference' => $cvReference,
-                    'avatar_type' => null,
-                    'profile_completion_percentage' => 10.00 // 10% pour avoir créé le compte
-                ]);
-            } else {
-                // Créer le profil talent complet
-                Talent::create([
-                    'user_id' => $user->id,
-                    'first_name' => $request->first_name,
-                    'last_name' => $request->last_name,
-                    'phone' => $request->phone,
-                    'pole_id' => $request->pole_id,
-                    'famille_metier_id' => $request->famille_metier_id,
-                    'niveau_etude' => $request->niveau_etude,
-                    'cv_reference' => $cvReference,
-                    'avatar_type' => $request->avatar_type,
-                    'profile_completion_percentage' => 60.00 // 60% pour les informations de base
-                ]);
-            }
+            // Créer le profil talent complet
+            Talent::create([
+                'user_id' => $user->id,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'phone' => $request->phone,
+                'pole_id' => $request->pole_id,
+                'famille_metier_id' => $request->famille_metier_id,
+                'niveau_etude' => $request->niveau_etude,
+                'cv_reference' => $cvReference,
+                'avatar_type' => $request->avatar_type,
+                'profile_completion_percentage' => 60.00 // 60% pour les informations de base
+            ]);
 
             DB::commit();
             return redirect()->route('registration.success', ['type' => 'talent', 'user' => $user->id]);

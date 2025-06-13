@@ -243,21 +243,7 @@
             gap: 1rem;
         }
         
-        .completion-option input[type="radio"]:checked + div {
-            border-color: #1F335C !important;
-            background: #eff6ff !important;
-        }
-        
-        .completion-option:hover div {
-            border-color: #93c5fd !important;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-        }
-        
-        .completion-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-        }
+
 
         @media (max-width: 768px) {
             .container {
@@ -325,26 +311,7 @@
                             <input type="password" name="password_confirmation" class="form-input" required>
                         </div>
                         
-                        <!-- Option de complétion -->
-                        <div class="completion-choice" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0;">
-                            <h4 style="color: #1f2937; margin-bottom: 1rem; font-size: 1.1rem;">Quand souhaitez-vous compléter votre profil entreprise ?</h4>
-                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                                <label class="completion-option" style="flex: 1; min-width: 200px; cursor: pointer;">
-                                    <input type="radio" name="completion_preference" value="now" checked>
-                                    <div style="background: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 1rem; transition: all 0.3s ease;">
-                                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">🏢 Maintenant</div>
-                                        <div style="font-size: 0.9rem; color: #6b7280;">Complétez toutes vos informations pour commencer à recruter rapidement</div>
-                                    </div>
-                                </label>
-                                <label class="completion-option" style="flex: 1; min-width: 200px; cursor: pointer;">
-                                    <input type="radio" name="completion_preference" value="later">
-                                    <div style="background: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 1rem; transition: all 0.3s ease;">
-                                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">⏰ Plus tard</div>
-                                        <div style="font-size: 0.9rem; color: #6b7280;">Créez votre compte rapidement et complétez votre profil quand vous le souhaitez</div>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
+
                         
                         <div class="btn-group">
                             <button type="button" class="btn btn-primary" id="nextBtn1">Suivant</button>
@@ -513,38 +480,15 @@
             return isValid;
         }
 
-        // Fonction pour soumettre le formulaire minimal (pour l'option "plus tard")
-        function submitMinimalForm() {
-            // Valider les champs de l'étape 1 avant de soumettre
-            if (!validateStep(1)) {
-                return;
-            }
-            
-            // Créer un formulaire minimal avec juste les informations de connexion
-            const form = document.getElementById('entrepriseForm');
-            const formData = new FormData(form);
-            
-            // Ajouter un indicateur que c'est une inscription minimale
-            formData.append('minimal_registration', 'true');
-            
-            // Soumettre le formulaire
-            form.submit();
-        }
+
 
         // Écouteurs d'événements pour les boutons
         document.getElementById('nextBtn1').addEventListener('click', function() {
-            const completionPreference = document.querySelector('input[name="completion_preference"]:checked').value;
-            
-            if (completionPreference === 'later') {
-                // Si l'utilisateur choisit "plus tard", soumettre le formulaire avec les données minimales
-                submitMinimalForm();
-            } else {
-                // Valider l'étape actuelle avant de passer à la suivante
-                if (validateStep(currentStep)) {
-                    // Passer à l'étape suivante
-                    currentStep++;
-                    showStep(currentStep);
-                }
+            // Valider l'étape actuelle avant de passer à la suivante
+            if (validateStep(currentStep)) {
+                // Passer à l'étape suivante
+                currentStep++;
+                showStep(currentStep);
             }
         });
 

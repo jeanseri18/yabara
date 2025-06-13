@@ -299,7 +299,7 @@
         @if($userType === 'talent')
         <div class="next-steps">
             <h4>
-                <span>🎯</span>
+                <i class="bi bi-bullseye text-blue-600"></i>
                 Prochaines étapes pour optimiser votre profil
             </h4>
             <ul>
@@ -313,7 +313,7 @@
         @else
         <div class="next-steps">
             <h4>
-                <span>🚀</span>
+                <i class="bi bi-rocket-takeoff text-green-600"></i>
                 Prochaines étapes pour votre entreprise
             </h4>
             <ul>
@@ -328,12 +328,12 @@
 
         <div class="action-buttons">
             @if($userType === 'talent')
-                <a href="{{ route('profile.dashboard') }}" class="btn btn-primary">
-                    Compléter mon profil
+                <a href="{{ route('talent.dashboard') }}" class="btn btn-primary">
+                    <i class="bi bi-person-gear me-2"></i>Accéder au tableau de bord
                 </a>
             @else
                 <a href="{{ route('entreprise.dashboard') }}" class="btn btn-primary">
-                    Accéder au tableau de bord
+                    <i class="bi bi-speedometer2 me-2"></i>Accéder au tableau de bord
                 </a>
             @endif
             <a href="{{ route('welcome') }}" class="btn btn-secondary">
