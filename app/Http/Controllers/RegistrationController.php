@@ -89,76 +89,47 @@ class RegistrationController extends Controller
 
     public function registerEntreprise(Request $request)
     {
-        // Vérifier si c'est une inscription minimale
-        $isMinimalRegistration = $request->has('minimal_registration');
-        
-        if ($isMinimalRegistration) {
-            // Validation minimale pour inscription rapide
-            $request->validate([
-                'email' => 'required|email|unique:users',
-                'password' => 'required|min:8|confirmed',
-            ]);
-        } else {
-            // Validation complète pour inscription normale
-            $request->validate([
-                'email' => 'required|email|unique:users',
-                'password' => 'required|min:8|confirmed',
-                'nom_entreprise' => 'required|string|max:255',
-                'pole_activite_id' => 'nullable|exists:poles,id',
-                'numero_legal' => 'nullable|string|max:100',
-                'effectif' => 'nullable|in:<50,50-100,100-500,>500',
-                'responsable_rh_nom' => 'nullable|string|max:255',
-                'responsable_rh_prenom' => 'nullable|string|max:255'
-            ]);
-        }
+        // Validation complète pour inscription
+        $request->validate([
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8|confirmed',
+            'nom_entreprise' => 'required|string|max:255',
+            'pole_activite_id' => 'nullable|exists:poles,id',
+            'numero_legal' => 'nullable|string|max:100',
+            'effectif' => 'nullable|in:<50,50-100,100-500,>500',
+            'responsable_rh_nom' => 'nullable|string|max:255',
+            'responsable_rh_prenom' => 'nullable|string|max:255'
+        ]);
 
         DB::beginTransaction();
         try {
             // Créer l'utilisateur
-            $name = $isMinimalRegistration ? 
-                explode('@', $request->email)[0] : 
-                $request->nom_entreprise;
-            
             $user = User::create([
-                'name' => $name,
+                'name' => $request->nom_entreprise,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'user_type' => 'entreprise',
-                'status' => $isMinimalRegistration ? 'active' : 'pending' // Actif si minimal, sinon en attente
+                'status' => 'pending'
             ]);
 
-            if ($isMinimalRegistration) {
-                // Créer un profil entreprise minimal
-                Entreprise::create([
-                    'user_id' => $user->id,
-                    'nom_entreprise' => 'Entreprise ' . substr($request->email, 0, strpos($request->email, '@')), // Nom temporaire basé sur l'email
-                    'pole_activite_id' => null,
-                    'numero_legal' => null,
-                    'effectif' => null,
-                    'responsable_rh_nom' => null,
-                    'responsable_rh_prenom' => null,
-                    'is_verified' => false
-                ]);
-            } else {
-                // Créer le profil entreprise complet
-                Entreprise::create([
-                    'user_id' => $user->id,
-                    'nom_entreprise' => $request->nom_entreprise,
-                    'pole_activite_id' => $request->pole_activite_id,
-                    'numero_legal' => $request->numero_legal,
-                    'effectif' => $request->effectif,
-                    'responsable_rh_nom' => $request->responsable_rh_nom,
-                    'responsable_rh_prenom' => $request->responsable_rh_prenom,
-                    'is_verified' => false
-                ]);
-            }
+            // Créer le profil entreprise complet
+            Entreprise::create([
+                'user_id' => $user->id,
+                'nom_entreprise' => $request->nom_entreprise,
+                'pole_activite_id' => $request->pole_activite_id,
+                'numero_legal' => $request->numero_legal,
+                'effectif' => $request->effectif,
+                'responsable_rh_nom' => $request->responsable_rh_nom,
+                'responsable_rh_prenom' => $request->responsable_rh_prenom,
+                'is_verified' => false
+            ]);
 
             DB::commit();
             return redirect()->route('registration.success', ['type' => 'entreprise', 'user' => $user->id]);
         } catch (\Exception $e) {
             DB::rollback();
             // Log the detailed error message for debugging
-            \Illuminate\Support\Facades\Log::error('Talent Registration Error: ' . $e->getMessage() . '\n' . $e->getTraceAsString());
+            \Illuminate\Support\Facades\Log::error('Entreprise Registration Error: ' . $e->getMessage() . '\n' . $e->getTraceAsString());
             return back()->withErrors(['error' => 'Une erreur est survenue lors de la création du compte: ' . $e->getMessage()])->withInput();
         }
     }
