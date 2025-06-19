@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3a8a 0%, #1F335C 100%);
+            /* background: linear-gradient(135deg, #1e3a8a 0%, #162359 100%); */
             min-height: 100vh;
             display: flex;
         }
@@ -26,7 +26,7 @@
 
         .left-panel {
             flex: 1;
-            background: linear-gradient(135deg, #1e3a8a 0%, #1F335C 100%);
+            background: url('/images/bgleftauth.png') no-repeat center center / cover;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -41,8 +41,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
-            opacity: 0.3;
+            opacity: 1;
         }
 
         .logo {
@@ -71,7 +70,7 @@
         .form-title {
             font-size: 2rem;
             font-weight: bold;
-            color: #1f2937;
+            color: #162359;
             margin-bottom: 0.5rem;
         }
 
@@ -113,7 +112,7 @@
         }
 
         .step.active {
-            background: #1F335C;
+            background: #162359;
             color: white;
         }
 
@@ -133,7 +132,7 @@
         .section-title {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #1f2937;
+            color: #162359;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid #e5e7eb;
@@ -161,7 +160,7 @@
 
         .form-input:focus {
             outline: none;
-            border-color: #1F335C;
+            border-color: #162359;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
@@ -192,12 +191,12 @@
         }
 
         .avatar-option:hover {
-            border-color: #1F335C;
+            border-color: #162359;
             background-color: #f8fafc;
         }
 
         .avatar-option.selected {
-            border-color: #1F335C;
+            border-color: #162359;
             background-color: #eff6ff;
         }
 
@@ -219,12 +218,12 @@
         }
 
         .btn-primary {
-            background: #1F335C;
+            background: #162359;
             color: white;
         }
 
         .btn-primary:hover {
-            background: #2563eb;
+            background: #162359;
         }
 
         .btn-secondary {
@@ -251,7 +250,7 @@
         }
 
         .back-link {
-            color: #1F335C;
+            color: #162359;
             text-decoration: none;
             font-size: 0.9rem;
             margin-bottom: 1rem;
@@ -284,7 +283,7 @@
 <body>
     <div class="container">
         <div class="left-panel">
-            <div class="logo">YABARA</div>
+     
         </div>
         
         <div class="right-panel">

@@ -7,7 +7,7 @@
     <!-- En-tête avec informations entreprise -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card border-0 bg-gradient-primary text-white">
+            <div class="card border-0 bg-gradient-primary text-white" style="background: url('/images/bgleftauth.png') no-repeat center center / cover;">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-md-2 text-center">
@@ -30,6 +30,44 @@
                                     <i class="fas fa-check-circle me-1"></i>Active
                                 </span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm"  style="background-color: #DEEDFC;">
+                <div class="card-header "  style="background-color: #DEEDFC;">
+                    <h6 class="mb-0"><i class="fas fa-bolt text-warning me-2"></i>Actions rapides</h6>
+                </div>
+                <div class="card-body"  style="background-color: #DEEDFC;">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <a href="{{ route('entreprise.offres.create') }}" class="btn bg-white
+                             w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                                <i class="fas fa-plus fa-2x mb-2"></i>
+                                <span>Publier une offre</span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{{ route('entreprise.talent-search') }}" class="btn bg-white  w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                                <i class="fas fa-search fa-2x mb-2"></i>
+                                <span>Rechercher talents</span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{{ route('entreprise.candidatures.kanban') }}" class="btn bg-white  w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                                <i class="fas fa-tasks fa-2x mb-2"></i>
+                                <span>Suivi candidatures</span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{{ route('entreprise.parrainage.index') }}" class="btn bg-white w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                                <i class="fas fa-handshake fa-2x mb-2"></i>
+                                <span>Parrainage</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -249,43 +287,7 @@
     </div>
 
     <!-- Actions rapides -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-light">
-                    <h6 class="mb-0"><i class="fas fa-bolt text-warning me-2"></i>Actions rapides</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <a href="{{ route('entreprise.offres.create') }}" class="btn btn-primary w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
-                                <i class="fas fa-plus fa-2x mb-2"></i>
-                                <span>Publier une offre</span>
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="{{ route('entreprise.talent-search') }}" class="btn btn-success w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
-                                <i class="fas fa-search fa-2x mb-2"></i>
-                                <span>Rechercher talents</span>
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="{{ route('entreprise.candidatures.kanban') }}" class="btn btn-info w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
-                                <i class="fas fa-tasks fa-2x mb-2"></i>
-                                <span>Suivi candidatures</span>
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="{{ route('entreprise.parrainage.index') }}" class="btn btn-warning w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
-                                <i class="fas fa-handshake fa-2x mb-2"></i>
-                                <span>Parrainage</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 </div>
 @endsection
 

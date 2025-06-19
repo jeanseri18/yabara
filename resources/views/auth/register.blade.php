@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+             background:transparent ;
             min-height: 100vh;
             display: flex;
         }
@@ -26,7 +26,7 @@
 
         .left-panel {
             flex: 1;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            background:  url('/images/bgleftauth.png') no-repeat center center / cover;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -41,8 +41,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
-            opacity: 0.3;
+            /* background: linear-gradient(135deg, rgba(30, 58, 138, 0.7) 0%, rgba(31, 51, 92, 0.7) 100%); */
+            opacity: 1;
         }
 
         .logo {
@@ -170,7 +170,6 @@
 <body>
     <div class="container">
         <div class="left-panel">
-            <div class="logo">YABARA</div>
         </div>
         
         <div class="right-panel">

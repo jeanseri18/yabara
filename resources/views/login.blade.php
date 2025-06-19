@@ -11,7 +11,7 @@
     <style>
         /* Couleurs YABARA */
         :root {
-            --yabara-blue: #152747;
+            --yabara-blue: #162359;
             --yabara-gold: #f6cd45;
             --yabara-white: #FFFFFF;
             --yabara-black: #000000;
@@ -47,7 +47,7 @@
         }
         
         .btn-yabara:hover {
-            background-color: #1a2d52;
+            background-color: #162359;
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(21, 39, 71, 0.3);
         }
@@ -82,7 +82,7 @@
         }
         
         .bg-pattern {
-            background: linear-gradient(135deg, var(--yabara-blue) 0%, #1a2d52 100%);
+            background: var(--yabara-blue) url('/images/bgleftauth.png') no-repeat center center / cover;
             position: relative;
             overflow: hidden;
         }
@@ -94,10 +94,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: 
-                radial-gradient(circle at 20% 80%, rgba(246, 205, 69, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(246, 205, 69, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+      
         }
         
         .logo-text {
@@ -113,10 +110,7 @@
     <div class="min-h-screen flex">
         <!-- Partie gauche avec le logo et le design -->
         <div class="hidden lg:flex lg:w-1/2 bg-pattern items-center justify-center relative">
-            <div class="text-center z-10">
-                <h1 class="logo-text mb-4">YABARA</h1>
-                <p class="text-white text-xl font-light opacity-90">Forcément, tu vas trouver</p>
-            </div>
+         
         </div>
         
         <!-- Partie droite avec le formulaire de connexion -->
@@ -138,7 +132,7 @@
                     
                     <!-- Champ email -->
                     <div>
-                        <label for="email" class="block text-sm font-medium" style="color: var(--yabara-dark-gray);">Email</label>
+                        <label for="email" class="block text-sm font-medium" style="color: var(--yabara-dark-gray);">Adresse email</label>
                         <div class="mt-1">
                             <input 
                                 id="email" 
@@ -147,7 +141,11 @@
                                 required 
                                 class="input-yabara" 
                                 placeholder="votre@email.com"
+                                value="{{ old('email') }}"
                             >
+                            @error('email')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                     
@@ -163,6 +161,9 @@
                                 class="input-yabara" 
                                 placeholder="••••••••••"
                             >
+                            @error('password')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                     
