@@ -1,136 +1,121 @@
 @extends('layouts.entreprise')
 
-@section('title', 'Publier une offre - Étape 1/3')
+@section('title', 'Publier une offre - Étape 1')
+@section('page-title', 'Publier une offre d\'emploi')
 
 @section('content')
-<div class="container-fluid px-4">
-    <!-- En-tête avec carte entreprise -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm text-white" style="background-color: #1040BB;">
-                <div class="card-body p-4">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            @if($entreprise->logo_url)
-                                <img src="{{ $entreprise->logo_url }}" alt="Logo" class="rounded-circle" width="80" height="80">
-                            @else
-                                <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                                    <i class="fas fa-building fa-2x"></i>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="col">
-                            <h4 class="mb-1">{{ $entreprise->nom_entreprise }}</h4>
-                            <p class="mb-1"><i class="fas fa-id-card me-2"></i>RCCM: {{ $entreprise->numero_legal }}</p>
-                            <p class="mb-0"><i class="fas fa-users me-2"></i>Effectif: {{ $entreprise->effectif }} employés</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="container-fluid">
+    <!-- Progress Steps -->
+    <div class="progress-steps mb-5">
+        <div class="step active">
+            <div class="step-number">1</div>
+            <div class="step-title">Informations générales</div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-title">Critères & Exigences</div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-title">Validation & Publication</div>
         </div>
     </div>
 
-    <!-- Indicateur de progression -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="progress-steps">
-                <div class="step active">
-                    <div class="step-number">1</div>
-                    <div class="step-title">Informations générales</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-title">Spécificités du poste</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-title">Résumé & Publication</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Formulaire Étape 1 -->
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom">
-                    <h5 class="mb-0"><i class="fas fa-info-circle text-primary me-2"></i>Informations générales</h5>
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-white border-0 py-4">
+                    <h4 class="mb-0 text-center" style="color: #283C5A;">
+                        <i class="bi bi-briefcase me-2"></i>
+                        Étape 1 : Informations générales de l'offre
+                    </h4>
+                    <p class="text-muted text-center mb-0 mt-2">Décrivez votre offre d'emploi et définissez le poste</p>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body p-5">
                     <form id="step1Form">
                         @csrf
                         
                         <!-- Titre du poste -->
                         <div class="mb-4">
-                            <label for="titre" class="form-label fw-bold">Titre du poste <span class="text-danger">*</span></label>
+                            <label for="titre" class="form-label fw-bold">
+                                <i class="bi bi-tag me-2" style="color: #f6cd45;"></i>
+                                Titre du poste *
+                            </label>
                             <input type="text" class="form-control form-control-lg" id="titre" name="titre" 
-                                   placeholder="Ex: Développeur Full Stack Senior" maxlength="255" required>
+                                   placeholder="Ex: Développeur Full Stack, Chef de projet, Commercial..." 
+                                   value="{{ old('titre', $offre->titre ?? '') }}" required>
                             <div class="form-text">Soyez précis et attractif dans le titre</div>
-                            <div class="invalid-feedback"></div>
                         </div>
 
                         <!-- Description du poste -->
                         <div class="mb-4">
-                            <label for="descriptif" class="form-label fw-bold">Description du poste <span class="text-danger">*</span></label>
-                            <textarea class="form-control" id="descriptif" name="descriptif" rows="6" 
-                                      placeholder="Décrivez les missions, responsabilités et environnement de travail..." 
-                                      minlength="150" required></textarea>
-                            <div class="d-flex justify-content-between">
-                                <div class="form-text">Minimum 150 caractères pour une description complète</div>
-                                <small class="text-muted"><span id="char-count">0</span>/150 caractères minimum</small>
+                            <label for="descriptif" class="form-label fw-bold">
+                                <i class="bi bi-file-text me-2" style="color: #f6cd45;"></i>
+                                Description du poste *
+                            </label>
+                            <textarea class="form-control" id="descriptif" name="descriptif" rows="8" 
+                                      placeholder="Décrivez les missions, responsabilités, environnement de travail..." required>{{ old('descriptif', $offre->descriptif ?? '') }}</textarea>
+                            <div class="form-text">
+                                <span id="charCount">0</span>/2000 caractères (minimum 150 caractères)
                             </div>
-                            <div class="invalid-feedback"></div>
                         </div>
 
                         <!-- Type de contrat -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Type de contrat <span class="text-danger">*</span></label>
-                            <div class="row g-3">
+                            <label for="type_contrat_id" class="form-label fw-bold">
+                                <i class="bi bi-file-earmark-text me-2" style="color: #f6cd45;"></i>
+                                Type de contrat *
+                            </label>
+                            <select class="form-select form-select-lg" id="type_contrat_id" name="type_contrat_id" required>
+                                <option value="">Sélectionnez le type de contrat</option>
                                 @foreach($typesContrat as $type)
-                                <div class="col-md-6">
-                                    <div class="card contract-card h-100" data-value="{{ $type->id }}">
-                                        <div class="card-body text-center p-3">
-                                            <i class="fas fa-file-contract fa-2x text-primary mb-2"></i>
-                                            <h6 class="card-title mb-1">{{ $type->nom }}</h6>
-                                            <p class="card-text small text-muted">{{ $type->description }}</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                    <option value="{{ $type->id }}" {{ old('type_contrat_id', $offre->type_contrat_id ?? '') == $type->id ? 'selected' : '' }}>
+                                        {{ $type->nom }}
+                                    </option>
                                 @endforeach
-                            </div>
-                            <input type="hidden" id="type_contrat_id" name="type_contrat_id" required>
-                            <div class="invalid-feedback"></div>
+                            </select>
                         </div>
 
                         <!-- Pôle d'activité -->
                         <div class="mb-4">
-                            <label for="pole_id" class="form-label fw-bold">Pôle d'activité <span class="text-danger">*</span></label>
+                            <label for="pole_id" class="form-label fw-bold">
+                                <i class="bi bi-diagram-3 me-2" style="color: #f6cd45;"></i>
+                                Pôle d'activité *
+                            </label>
                             <select class="form-select form-select-lg" id="pole_id" name="pole_id" required>
-                                <option value="">Sélectionnez un pôle</option>
+                                <option value="">Sélectionnez un pôle d'activité</option>
                                 @foreach($poles as $pole)
-                                    <option value="{{ $pole->id }}">{{ $pole->nom }}</option>
+                                    <option value="{{ $pole->id }}" {{ old('pole_id', $offre->pole_id ?? '') == $pole->id ? 'selected' : '' }}>
+                                        {{ $pole->nom }}
+                                    </option>
                                 @endforeach
                             </select>
-                            <div class="invalid-feedback"></div>
                         </div>
 
                         <!-- Famille de métier -->
                         <div class="mb-4">
-                            <label for="famille_metier_id" class="form-label fw-bold">Famille de métier <span class="text-danger">*</span></label>
-                            <select class="form-select form-select-lg" id="famille_metier_id" name="famille_metier_id" required disabled>
-                                <option value="">Sélectionnez d'abord un pôle</option>
+                            <label for="famille_metier_id" class="form-label fw-bold">
+                                <i class="bi bi-people me-2" style="color: #f6cd45;"></i>
+                                Famille de métier *
+                            </label>
+                            <select class="form-select form-select-lg" id="famille_metier_id" name="famille_metier_id" required {{ !$offre || !$offre->pole_id ? 'disabled' : '' }}>
+                                @if($offre && $offre->familleMetier)
+                                    <option value="{{ $offre->famille_metier_id }}" selected>{{ $offre->familleMetier->nom }}</option>
+                                @else
+                                    <option value="">Sélectionnez d'abord un pôle d'activité</option>
+                                @endif
                             </select>
-                            <div class="invalid-feedback"></div>
                         </div>
 
                         <!-- Boutons d'action -->
-                        <div class="d-flex justify-content-between pt-3">
-                            <a href="{{ route('entreprise.dashboard') }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-arrow-left me-2"></i>Retour au dashboard
+                        <div class="d-flex justify-content-between mt-5">
+                            <a href="{{ route('entreprise.offres.index') }}" class="btn btn-outline-secondary btn-lg px-4">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Retour
                             </a>
-                            <button type="submit" class="btn btn-primary btn-lg" id="nextBtn" disabled>
-                                Étape suivante <i class="fas fa-arrow-right ms-2"></i>
+                            <button type="submit" class="btn btn-lg px-5" style="background-color: #283C5A; color: white;">
+                                Continuer
+                                <i class="bi bi-arrow-right ms-2"></i>
                             </button>
                         </div>
                     </form>
@@ -140,246 +125,152 @@
     </div>
 </div>
 
-<!-- Auto-sauvegarde indicator -->
-<div class="position-fixed bottom-0 end-0 p-3">
-    <div class="toast" id="autoSaveToast" role="alert">
-        <div class="toast-body">
-            <i class="fas fa-save text-success me-2"></i>Sauvegarde automatique effectuée
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-body text-center py-5">
+                <div class="spinner-border" style="color: #283C5A;" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                </div>
+                <p class="mt-3 mb-0">Sauvegarde en cours...</p>
+            </div>
         </div>
     </div>
 </div>
+
 @endsection
 
-@push('styles')
-<style>
-.progress-steps {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-
-.step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    flex: 1;
-    max-width: 200px;
-}
-
-.step:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 20px;
-    left: 60%;
-    width: 100%;
-    height: 2px;
-    background: #dee2e6;
-    z-index: 1;
-}
-
-.step.active:not(:last-child)::after {
-    background: #0d6efd;
-}
-
-.step-number {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #dee2e6;
-    color: #6c757d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    margin-bottom: 8px;
-    position: relative;
-    z-index: 2;
-}
-
-.step.active .step-number {
-    background: #0d6efd;
-    color: white;
-}
-
-.step-title {
-    font-size: 0.875rem;
-    text-align: center;
-    color: #6c757d;
-}
-
-.step.active .step-title {
-    color: #0d6efd;
-    font-weight: 600;
-}
-
-.contract-card {
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid #dee2e6;
-}
-
-.contract-card:hover {
-    border-color: #0d6efd;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
-}
-
-.contract-card.selected {
-    border-color: #0d6efd;
-    background-color: #f8f9ff;
-}
-
-.contract-card.selected .fa-file-contract {
-    color: #0d6efd !important;
-}
-
-.bg-gradient-primary {
-    background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
-}
-
-#char-count {
-    font-weight: 600;
-}
-
-#char-count.valid {
-    color: #198754;
-}
-
-#char-count.invalid {
-    color: #dc3545;
-}
-</style>
-@endpush
-
 @push('scripts')
-<script>
-$(document).ready(function() {
-    let autoSaveTimeout;
-    
-    // Compteur de caractères
-    $('#descriptif').on('input', function() {
-        const count = $(this).val().length;
-        const counter = $('#char-count');
-        counter.text(count);
+<script>$(document).ready(function() {
+    // Initialiser le compteur de caractères
+    function updateCharCount() {
+        const count = $('#descriptif').val().length;
+        $('#charCount').text(count);
         
-        if (count >= 150) {
-            counter.removeClass('invalid').addClass('valid');
+        if (count < 150) {
+            $('#charCount').removeClass('text-success').addClass('text-danger');
         } else {
-            counter.removeClass('valid').addClass('invalid');
+            $('#charCount').removeClass('text-danger').addClass('text-success');
         }
-        
-        validateForm();
-        scheduleAutoSave();
-    });
+    }
     
-    // Sélection du type de contrat
-    $('.contract-card').on('click', function() {
-        $('.contract-card').removeClass('selected');
-        $(this).addClass('selected');
-        $('#type_contrat_id').val($(this).data('value'));
-        validateForm();
-        scheduleAutoSave();
-    });
+    // Compteur de caractères pour la description
+    $('#descriptif').on('input', updateCharCount);
     
-    // Chargement des familles de métiers
-    $('#pole_id').on('change', function() {
+    // Initialiser le compteur au chargement
+    updateCharCount();
+
+    // Chargement des familles de métiers selon le pôle sélectionné
+    $('#pole_id').change(function() {
+        console.log('Pôle changé');
         const poleId = $(this).val();
         const familleSelect = $('#famille_metier_id');
+        
+        console.log('Pôle sélectionné:', poleId); // Debug
         
         if (poleId) {
             familleSelect.prop('disabled', true).html('<option value="">Chargement...</option>');
             
-            $.get(`/api/entreprise/familles-metiers/${poleId}`)
-                .done(function(familles) {
-                    familleSelect.html('<option value="">Sélectionnez une famille de métier</option>');
-                    familles.forEach(function(famille) {
-                        familleSelect.append(`<option value="${famille.id}">${famille.nom}</option>`);
-                    });
-                    familleSelect.prop('disabled', false);
-                })
-                .fail(function() {
-                    familleSelect.html('<option value="">Erreur de chargement</option>');
-                });
-        } else {
-            familleSelect.prop('disabled', true).html('<option value="">Sélectionnez d\'abord un pôle</option>');
-        }
-        
-        validateForm();
-        scheduleAutoSave();
-    });
-    
-    // Validation en temps réel
-    $('#titre, #famille_metier_id').on('change input', function() {
-        validateForm();
-        scheduleAutoSave();
-    });
-    
-    // Validation du formulaire
-    function validateForm() {
-        const titre = $('#titre').val().trim();
-        const descriptif = $('#descriptif').val().trim();
-        const typeContrat = $('#type_contrat_id').val();
-        const pole = $('#pole_id').val();
-        const famille = $('#famille_metier_id').val();
-        
-        const isValid = titre.length > 0 && 
-                       descriptif.length >= 150 && 
-                       typeContrat && 
-                       pole && 
-                       famille;
-        
-        $('#nextBtn').prop('disabled', !isValid);
-    }
-    
-    // Auto-sauvegarde
-    function scheduleAutoSave() {
-        clearTimeout(autoSaveTimeout);
-        autoSaveTimeout = setTimeout(autoSave, 2000);
-    }
-    
-    function autoSave() {
-        const formData = $('#step1Form').serialize();
-        
-        $.post('{{ route("entreprise.offres.save.step1") }}', formData)
-            .done(function(response) {
-                if (response.success) {
-                    showAutoSaveToast();
+            // Ajouter le token CSRF et améliorer la gestion d'erreur
+            $.ajax({
+                url: `/api/entreprise/familles-metiers/${poleId}`,
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                success: function(data) {
+                    console.log('Données reçues:', data); // Debug
+                    
+                    let options = '<option value="">Sélectionnez une famille de métier</option>';
+                    
+                    // Vérifier si data est un tableau
+                    if (Array.isArray(data)) {
+                        data.forEach(function(famille) {
+                            options += `<option value="${famille.id}">${famille.nom}</option>`;
+                        });
+                    } else if (data.familles && Array.isArray(data.familles)) {
+                        // Si les données sont dans une propriété 'familles'
+                        data.familles.forEach(function(famille) {
+                            options += `<option value="${famille.id}">${famille.nom}</option>`;
+                        });
+                    } else {
+                        console.error('Format de données inattendu:', data);
+                        options = '<option value="">Aucune famille disponible</option>';
+                    }
+                    
+                    familleSelect.html(options).prop('disabled', false);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erreur AJAX:', xhr.status, xhr.responseText); // Debug détaillé
+                    
+                    let errorMessage = 'Erreur de chargement';
+                    if (xhr.status === 404) {
+                        errorMessage = 'Endpoint introuvable (404)';
+                    } else if (xhr.status === 500) {
+                        errorMessage = 'Erreur serveur (500)';
+                    } else if (xhr.status === 403) {
+                        errorMessage = 'Accès interdit (403)';
+                    }
+                    
+                    familleSelect.html(`<option value="">${errorMessage}</option>`);
                 }
-            })
-            .fail(function() {
-                console.log('Erreur lors de la sauvegarde automatique');
             });
-    }
-    
-    function showAutoSaveToast() {
-        const toast = new bootstrap.Toast(document.getElementById('autoSaveToast'));
-        toast.show();
-    }
-    
+        } else {
+            familleSelect.prop('disabled', true).html('<option value="">Sélectionnez d\'abord un pôle d\'activité</option>');
+        }
+    });
+
     // Soumission du formulaire
-    $('#step1Form').on('submit', function(e) {
+    $('#step1Form').submit(function(e) {
         e.preventDefault();
         
-        const formData = $(this).serialize();
+        // Validation de la description
+        const descriptif = $('#descriptif').val();
+        if (descriptif.length < 150) {
+            alert('La description doit contenir au minimum 150 caractères.');
+            return;
+        }
         
-        $.post('{{ route("entreprise.offres.save.step1") }}', formData)
-            .done(function(response) {
+        $('#loadingModal').modal('show');
+        
+        $.ajax({
+            url: '{{ route("entreprise.offres.save.step1") }}',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
                 if (response.success) {
                     window.location.href = `/entreprise/offres/publier/etape2/${response.offre_id}`;
                 }
-            })
-            .fail(function(xhr) {
-                const errors = xhr.responseJSON?.errors || {};
+            },
+            error: function(xhr) {
+                $('#loadingModal').modal('hide');
                 
-                // Afficher les erreurs
-                Object.keys(errors).forEach(function(field) {
-                    const input = $(`[name="${field}"]`);
-                    input.addClass('is-invalid');
-                    input.siblings('.invalid-feedback').text(errors[field][0]);
-                });
-            });
+                console.error('Erreur lors de la soumission:', xhr.status, xhr.responseText);
+                
+                if (xhr.status === 422) {
+                    const response = xhr.responseJSON;
+                    let errorMessage = response.message || 'Erreur de validation';
+                    
+                    if (response.errors) {
+                        errorMessage += ':\n';
+                        Object.keys(response.errors).forEach(function(key) {
+                            errorMessage += `- ${response.errors[key][0]}\n`;
+                        });
+                    }
+                    
+                    alert(errorMessage);
+                } else if (xhr.status === 500) {
+                    const response = xhr.responseJSON;
+                    const message = response && response.message ? response.message : 'Erreur serveur. Veuillez réessayer.';
+                    alert(message);
+                } else {
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                }
+            }
+        });
     });
 });
 </script>

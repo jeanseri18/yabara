@@ -24,36 +24,76 @@ class EntrepriseController extends Controller
     }
 
     // WF-E02: Publication Offre d'Emploi
-    public function showPublishJobStep1()
+    public function showPublishJobStep1($offreId = null)
     {
         $entreprise = Auth::user()->entreprise;
         $poles = Pole::all();
         $typesContrat = TypeContrat::all();
         
-        return view('entreprise.publish-job.step1', compact('entreprise', 'poles', 'typesContrat'));
+        $offre = null;
+        if ($offreId) {
+            $offre = OffreEmploi::with(['typeContrat', 'pole', 'familleMetier'])->findOrFail($offreId);
+        }
+        
+        return view('entreprise.publish-job.step1', compact('entreprise', 'poles', 'typesContrat', 'offre'));
     }
 
     public function saveJobStep1(Request $request)
     {
-        $request->validate([
-            'titre' => 'required|string|max:255',
-            'descriptif' => 'required|string|min:150',
-            'type_contrat_id' => 'required|exists:types_contrat,id',
-            'pole_id' => 'required|exists:poles,id',
-            'famille_metier_id' => 'required|exists:familles_metiers,id'
-        ]);
+        try {
+            $request->validate([
+                'titre' => 'required|string|max:255',
+                'descriptif' => 'required|string|min:150',
+                'type_contrat_id' => 'required|exists:types_contrats,id',
+                'pole_id' => 'required|exists:poles,id',
+                'famille_metier_id' => 'required|exists:familles_metiers,id'
+            ]);
 
-        $offre = OffreEmploi::updateOrCreate(
-            ['entreprise_id' => Auth::user()->entreprise->id, 'statut' => 'brouillon'],
-            $request->only(['titre', 'descriptif', 'type_contrat_id', 'pole_id', 'famille_metier_id'])
-        );
+            // Vérifier que l'utilisateur a bien un profil entreprise
+            $user = Auth::user();
+            if (!$user || !$user->entreprise) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Profil entreprise non trouvé. Veuillez compléter votre inscription.'
+                ], 422);
+            }
 
-        return response()->json(['success' => true, 'offre_id' => $offre->id]);
+            $offre = OffreEmploi::updateOrCreate(
+                ['entreprise_id' => $user->entreprise->id, 'statut' => 'brouillon'],
+                $request->only(['titre', 'descriptif', 'type_contrat_id', 'pole_id', 'famille_metier_id'])
+            );
+
+            return response()->json(['success' => true, 'offre_id' => $offre->id]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur de validation',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Erreur lors de la sauvegarde de l\'étape 1: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Une erreur est survenue lors de la sauvegarde. Veuillez réessayer.'
+            ], 500);
+        }
     }
 
-    public function showPublishJobStep2($offreId)
+    public function showPublishJobStep2(Request $request, $offreId = null)
     {
-        $offre = OffreEmploi::findOrFail($offreId);
+        if ($offreId) {
+            // Mode édition
+            $offre = OffreEmploi::findOrFail($offreId);
+            $request->session()->put('offre_id', $offreId);
+        } else {
+            // Mode création
+            $offreId = $request->session()->get('offre_id');
+            if (!$offreId) {
+                return redirect()->route('entreprise.publish-job.step1')->with('error', 'Veuillez d\'abord compléter l\'étape 1.');
+            }
+            $offre = OffreEmploi::findOrFail($offreId);
+        }
+
         $niveauxDiplome = NiveauDiplome::all();
         
         return view('entreprise.publish-job.step2', compact('offre', 'niveauxDiplome'));
@@ -76,9 +116,20 @@ class EntrepriseController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function showPublishJobStep3($offreId)
+    public function showPublishJobStep3(Request $request, $offreId = null)
     {
-        $offre = OffreEmploi::with(['typeContrat', 'pole', 'familleMetier', 'niveauDiplome'])->findOrFail($offreId);
+        if ($offreId) {
+            // Mode édition
+            $offre = OffreEmploi::with(['pole', 'familleMetier', 'typeContrat', 'niveauDiplome'])->findOrFail($offreId);
+            $request->session()->put('offre_id', $offreId);
+        } else {
+            // Mode création
+            $offreId = $request->session()->get('offre_id');
+            if (!$offreId) {
+                return redirect()->route('entreprise.publish-job.step1')->with('error', 'Veuillez d\'abord compléter les étapes précédentes.');
+            }
+            $offre = OffreEmploi::with(['pole', 'familleMetier', 'typeContrat', 'niveauDiplome'])->findOrFail($offreId);
+        }
         
         return view('entreprise.publish-job.step3', compact('offre'));
     }
@@ -210,41 +261,72 @@ class EntrepriseController extends Controller
         return view('entreprise.candidatures-kanban', compact('candidatures', 'stats', 'offres', 'famillesMetiers'));
     }
 
-    public function updateCandidatureStatus(Request $request)
+    public function updateCandidatureStatus(Request $request, $candidatureId = null)
     {
+        // Support pour les deux formats d'appel
+        $candidatureId = $candidatureId ?? $request->candidature_id;
+        $nouveauStatut = $request->statut ?? $request->new_status;
+        
         $request->validate([
-            'candidature_id' => 'required|exists:candidatures,id',
-            'new_status' => 'required|in:candidature_recue,preselctionnee,entretien,retenue'
+            'statut' => 'nullable|in:candidature_recue,preselctionnee,entretien,retenue,refusee',
+            'new_status' => 'nullable|in:candidature_recue,preselctionnee,entretien,retenue,refusee',
+            'candidature_id' => 'nullable|integer|exists:candidatures,id'
         ]);
 
-        $candidature = Candidature::findOrFail($request->candidature_id);
-        $candidature->update(['statut_entreprise' => $request->new_status]);
+        $entreprise = Auth::user()->entreprise;
+        $candidature = $entreprise->candidatures()->findOrFail($candidatureId);
+        
+        $ancienStatut = $candidature->statut_entreprise;
+        $candidature->update(['statut_entreprise' => $nouveauStatut]);
+
+        // Messages de confirmation
+        $messages = [
+            'preselctionnee' => 'Candidature présélectionnée avec succès',
+            'entretien' => 'Entretien programmé avec succès',
+            'retenue' => 'Candidature retenue avec succès',
+            'refusee' => 'Candidature marquée comme refusée'
+        ];
 
         // Logique selon le nouveau statut
-        switch ($request->new_status) {
+        switch ($nouveauStatut) {
             case 'preselctionnee':
-                $candidature->update(['statut_talent' => 'validee_entreprise']);
+                $candidature->update(['statut_talent' => 'en_attente']);
                 // Envoyer notifications
                 break;
             case 'entretien':
-                $candidature->update(['statut_talent' => 'entretien_cours']);
+                $candidature->update(['statut_talent' => 'en_attente']);
                 // Envoyer notifications
                 break;
             case 'retenue':
-                $candidature->update(['statut_talent' => 'retenue']);
+                $candidature->update(['statut_talent' => 'acceptee']);
                 $candidature->offreEmploi->increment('nb_recrutes');
                 Auth::user()->entreprise->increment('total_recrutements_finalises');
                 // Envoyer emails de félicitations
                 break;
+            case 'refusee':
+                $candidature->update(['statut_talent' => 'refusee']);
+                break;
         }
 
-        return response()->json(['success' => true]);
+        // Calculer les statistiques mises à jour
+        $stats = [
+            'candidatures_recues' => $entreprise->candidatures()->where('statut_entreprise', 'candidature_recue')->count(),
+            'preselections' => $entreprise->candidatures()->where('statut_entreprise', 'preselctionnee')->count(),
+            'entretiens' => $entreprise->candidatures()->where('statut_entreprise', 'entretien')->count(),
+            'recrutes' => $entreprise->candidatures()->where('statut_entreprise', 'retenue')->count()
+        ];
+
+        return response()->json([
+            'success' => true,
+            'message' => $messages[$nouveauStatut] ?? 'Statut mis à jour avec succès',
+            'stats' => $stats
+        ]);
     }
 
     // WF-E05: Dashboard & Statistiques
     public function dashboard()
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         $periode = request('periode', 'mois');
         
         // Calculer les KPIs
@@ -268,7 +350,7 @@ class EntrepriseController extends Controller
     
     public function getDashboardData(Request $request)
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         $periode = $request->get('periode', 'mois');
         
         $kpis = $this->calculerKPIs($entreprise, $periode);
@@ -287,7 +369,7 @@ class EntrepriseController extends Controller
     {
         $format = $request->get('format', 'pdf');
         $periode = $request->get('periode', 'mois');
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         
         $data = [
             'entreprise' => $entreprise,
@@ -298,11 +380,79 @@ class EntrepriseController extends Controller
         ];
         
         if ($format === 'pdf') {
-            // TODO: Implémenter l'export PDF
-            return response()->json(['message' => 'Export PDF en cours de développement']);
+            return $this->exportToPDF($data);
         } else {
-            // TODO: Implémenter l'export Excel
-            return response()->json(['message' => 'Export Excel en cours de développement']);
+            return $this->exportToExcel($data);
+        }
+    }
+    
+    private function exportToPDF($data)
+    {
+        try {
+            // Générer le contenu HTML pour le PDF
+            $html = view('entreprise.exports.dashboard-pdf', $data)->render();
+            
+            // Pour l'instant, retourner le HTML directement
+            // TODO: Intégrer une bibliothèque PDF comme dompdf ou wkhtmltopdf
+            return response($html)
+                ->header('Content-Type', 'text/html')
+                ->header('Content-Disposition', 'inline; filename="dashboard_' . $data['periode'] . '_' . date('Y-m-d') . '.html"');
+                
+        } catch (\Exception $e) {
+            \Log::error('Erreur lors de la génération du PDF: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la génération du PDF: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    private function exportToExcel($data)
+    {
+        try {
+            // Préparer les données pour Excel
+            $offres = $data['offres_performance'];
+            $kpis = $data['kpis'];
+            
+            // Créer le contenu CSV
+            $csvContent = "Rapport Dashboard - " . $data['entreprise']->nom_entreprise . "\n";
+            $csvContent .= "Période: " . ucfirst($data['periode']) . "\n";
+            $csvContent .= "Date d'export: " . $data['date_export'] . "\n\n";
+            
+            // KPIs
+            $csvContent .= "=== INDICATEURS CLÉS ===\n";
+            $csvContent .= "Offres publiées," . $kpis['offres_publiees'] . "\n";
+            $csvContent .= "Offres actives," . $kpis['offres_actives'] . "\n";
+            $csvContent .= "Vues totales," . $kpis['vues_offres'] . "\n";
+            $csvContent .= "Candidatures reçues," . $kpis['candidatures_recues'] . "\n";
+            $csvContent .= "Entretiens programmés," . $kpis['entretiens_programmes'] . "\n";
+            $csvContent .= "Recrutements finalisés," . $kpis['recrutements_finalises'] . "\n\n";
+            
+            // Performance par offre
+            $csvContent .= "=== PERFORMANCE PAR OFFRE ===\n";
+            $csvContent .= "Titre,Référence,Date publication,Vues,Candidatures,Entretiens,Recrutés,Taux conversion,Statut\n";
+            
+            foreach ($offres as $offre) {
+                $taux = $offre->nb_candidatures > 0 ? round(($offre->nb_recrutes / $offre->nb_candidatures) * 100, 1) : 0;
+                $csvContent .= '"' . $offre->titre . '","' . $offre->reference_offre . '","' . $offre->date_publication . '",';
+                $csvContent .= $offre->nb_vues . ',' . $offre->nb_candidatures . ',' . $offre->nb_entretiens . ',';
+                $csvContent .= $offre->nb_recrutes . ',' . $taux . '%,"' . ucfirst($offre->statut) . '"\n';
+            }
+            
+            $filename = 'dashboard_' . $data['entreprise']->id . '_' . $data['periode'] . '_' . date('Y-m-d_H-i-s') . '.csv';
+            
+            return response($csvContent)
+                ->header('Content-Type', 'text/csv; charset=UTF-8')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
+                ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                ->header('Pragma', 'no-cache')
+                ->header('Expires', '0');
+                
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la génération du fichier Excel: ' . $e->getMessage()
+            ], 500);
         }
     }
     
@@ -415,7 +565,7 @@ class EntrepriseController extends Controller
                 ->where('statut_entreprise', 'candidature_recue')
                 ->when($dateDebut, fn($q) => $q->where('candidatures.created_at', '>=', $dateDebut))
                 ->count(),
-            'preselctionnees' => $entreprise->candidatures()
+            'preselectionnees' => $entreprise->candidatures()
                 ->where('statut_entreprise', 'preselctionnee')
                 ->when($dateDebut, fn($q) => $q->where('candidatures.updated_at', '>=', $dateDebut))
                 ->count(),
@@ -438,18 +588,11 @@ class EntrepriseController extends Controller
             ->with(['candidatures'])
             ->when($dateDebut, fn($q) => $q->where('date_publication', '>=', $dateDebut))
             ->get()
-            ->map(function ($offre) {
-                return [
-                    'id' => $offre->id,
-                    'titre' => $offre->titre,
-                    'reference_offre' => $offre->reference_offre,
-                    'date_publication' => $offre->date_publication ? $offre->date_publication->format('d/m/Y') : null,
-                    'nb_vues' => $offre->nb_vues ?? 0,
-                    'nb_candidatures' => $offre->candidatures->count(),
-                    'nb_entretiens' => $offre->candidatures->where('statut_entreprise', 'entretien')->count(),
-                    'nb_recrutes' => $offre->candidatures->where('statut_entreprise', 'retenue')->count(),
-                    'statut' => $offre->statut
-                ];
+            ->each(function ($offre) {
+                // Add computed attributes to the model
+                $offre->nb_candidatures = $offre->candidatures->count();
+                $offre->nb_entretiens = $offre->candidatures->where('statut_entreprise', 'entretien')->count();
+                $offre->nb_recrutes = $offre->candidatures->where('statut_entreprise', 'retenue')->count();
             });
     }
     
@@ -494,7 +637,7 @@ class EntrepriseController extends Controller
     
     public function parrainage()
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         
         // Statistiques de parrainage
         $stats = [
@@ -524,7 +667,7 @@ class EntrepriseController extends Controller
             'message_personnel' => 'nullable|string|max:500'
         ]);
         
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         
         // Créer le parrainage
         $parrainage = Parrainage::create([
@@ -563,7 +706,7 @@ class EntrepriseController extends Controller
     // Méthodes pour les candidatures
     public function getCandidaturesData(Request $request)
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         
         $candidatures = $entreprise->candidatures()
             ->with(['talent.user', 'offreEmploi.familleMetier'])
@@ -599,9 +742,9 @@ class EntrepriseController extends Controller
     
     public function getCandidatureDetails($candidatureId)
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         $candidature = $entreprise->candidatures()
-            ->with(['talent.user', 'talent.experiences', 'talent.formations', 'offreEmploi'])
+            ->with(['talent.user', 'talent.experiencesProfessionnelles', 'talent.formations', 'offreEmploi'])
             ->findOrFail($candidatureId);
             
         $html = view('entreprise.partials.candidature-details', compact('candidature'))->render();
@@ -615,7 +758,7 @@ class EntrepriseController extends Controller
     // WF-E06: Badges Entreprise
     public function showBadges()
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         
         // Récupérer les badges de l'entreprise
         $badges = $entreprise->badges()->with('badge')->get();
@@ -672,7 +815,7 @@ class EntrepriseController extends Controller
     
     public function checkNewBadges()
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         
         // Logique pour vérifier les nouveaux badges
         $newBadges = $this->verifierNouveauxBadges($entreprise);
@@ -718,7 +861,7 @@ class EntrepriseController extends Controller
     // WF-E08: Profil Entreprise
     public function showProfile()
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         $poles = \App\Models\Pole::orderBy('nom')->get();
         
         return view('entreprise.profile', compact('entreprise', 'poles'));
@@ -726,7 +869,7 @@ class EntrepriseController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         
         $request->validate([
             'nom_entreprise' => 'required|string|max:255',
@@ -761,7 +904,7 @@ class EntrepriseController extends Controller
 
     public function updateNotifications(Request $request)
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         
         $entreprise->update([
             'notif_nouvelle_candidature' => $request->has('notif_nouvelle_candidature'),
@@ -775,7 +918,7 @@ class EntrepriseController extends Controller
     // WF-E07: Parrainage Entreprise
     public function showReferral()
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         
         // Récupérer les parrainages de l'entreprise
         $parrainages = $entreprise->parrainages()
@@ -809,7 +952,7 @@ class EntrepriseController extends Controller
     
     public function renvoyerInvitation($parrainageId)
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         $parrainage = $entreprise->parrainages()->findOrFail($parrainageId);
         
         if ($parrainage->statut !== 'en_attente') {
@@ -833,7 +976,7 @@ class EntrepriseController extends Controller
     
     public function detailsParrainage($parrainageId)
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         $parrainage = $entreprise->parrainages()
             ->with('entrepriseParrainee')
             ->findOrFail($parrainageId);
@@ -855,7 +998,7 @@ class EntrepriseController extends Controller
             'message_personnel' => 'nullable|string|max:500'
         ]);
         
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         
         // Vérifier si l'email n'est pas déjà invité
         $existingParrainage = Parrainage::where('email_entreprise', $request->email_entreprise)
@@ -893,7 +1036,7 @@ class EntrepriseController extends Controller
     // API pour récupérer les offres de l'entreprise
     public function getMesOffres()
     {
-        $entreprise = auth()->user()->entreprise;
+        $entreprise = Auth::user()->entreprise;
         $offres = $entreprise->offresEmploi()
             ->where('statut', 'publiee')
             ->select('id', 'titre')
@@ -905,7 +1048,241 @@ class EntrepriseController extends Controller
     // API pour récupérer les familles de métiers
     public function getFamillesMetiers($poleId)
     {
-        $familles = FamilleMetier::where('pole_id', $poleId)->get();
-        return response()->json($familles);
+        try {
+            // Vérifier que le pôle existe
+            $pole = Pole::find($poleId);
+            if (!$pole) {
+                return response()->json([
+                    'error' => 'Pôle non trouvé',
+                    'message' => 'Le pôle spécifié n\'existe pas'
+                ], 404);
+            }
+
+            // Récupérer les familles de métiers du pôle
+            $familles = FamilleMetier::where('pole_id', $poleId)
+                                     ->orderBy('nom')
+                                     ->get(['id', 'nom', 'description']);
+
+            // Log pour debug
+            \Log::info('Familles métiers récupérées', [
+                'pole_id' => $poleId,
+                'count' => $familles->count(),
+                'familles' => $familles->toArray()
+            ]);
+
+            return response()->json($familles);
+
+        } catch (\Exception $e) {
+            \Log::error('Erreur lors de la récupération des familles de métiers', [
+                'pole_id' => $poleId,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'error' => 'Erreur serveur',
+                'message' => 'Une erreur est survenue lors de la récupération des familles de métiers'
+            ], 500);
+        }
+    }
+
+    // Méthodes pour les actions des offres d'emploi
+    
+    /**
+     * Afficher les détails d'une offre
+     */
+    public function showOffre($id)
+    {
+        $entreprise = Auth::user()->entreprise;
+        $offre = $entreprise->offresEmploi()
+            ->with(['typeContrat', 'pole', 'familleMetier', 'niveauDiplome', 'candidatures.talent.user'])
+            ->findOrFail($id);
+            
+        return view('entreprise.offres.show', compact('offre'));
+    }
+    
+    public function duplicateOffre($id)
+{
+    try {
+        $entreprise = Auth::user()->entreprise;
+        $offre = $entreprise->offresEmploi()->findOrFail($id);
+        
+        \Log::info('Début duplication offre', [
+            'offre_id' => $id, 
+            'entreprise_id' => $entreprise->id
+        ]);
+        
+        // Utiliser une transaction pour s'assurer de la cohérence
+        DB::beginTransaction();
+        
+        // Créer une copie de l'offre
+        $nouvelleOffre = $offre->replicate();
+        
+        // Modifier les champs spécifiques
+        $nouvelleOffre->titre = $offre->titre . ' (Copie)';
+        $nouvelleOffre->statut = 'brouillon';
+        $nouvelleOffre->date_publication = null;
+        $nouvelleOffre->date_expiration = null;
+        $nouvelleOffre->reference_offre = null; // Sera généré à la publication
+        $nouvelleOffre->nb_recrutes = 0;
+        $nouvelleOffre->nb_vues = 0;
+        
+        // Réinitialiser les timestamps
+        $nouvelleOffre->created_at = now();
+        $nouvelleOffre->updated_at = now();
+        
+        // Sauvegarder la nouvelle offre
+        $nouvelleOffre->save();
+        
+        DB::commit();
+        
+        \Log::info('Duplication réussie', [
+            'nouvelle_offre_id' => $nouvelleOffre->id,
+            'titre' => $nouvelleOffre->titre
+        ]);
+        
+        // Rediriger vers l'édition de la nouvelle offre (étape 1)
+        return redirect()->route('entreprise.publish-job.step1', $nouvelleOffre->id)
+            ->with('success', 'Offre dupliquée avec succès ! Vous pouvez maintenant la modifier.');
+            
+    } catch (\Exception $e) {
+        DB::rollback();
+        
+        \Log::error('Erreur lors de la duplication', [
+            'offre_id' => $id,
+            'error' => $e->getMessage(),
+            'line' => $e->getLine(),
+            'file' => $e->getFile()
+        ]);
+        
+        return redirect()->back()
+            ->with('error', 'Erreur lors de la duplication de l\'offre : ' . $e->getMessage());
+    }
+}
+
+    /**
+     * Changer le statut d'une offre (suspendre/activer)
+     */
+    public function toggleOffreStatus(Request $request, $id)
+    {
+        $entreprise = Auth::user()->entreprise;
+        $offre = $entreprise->offresEmploi()->findOrFail($id);
+        
+        $action = $request->input('action', 'suspend');
+        
+        if ($action === 'suspend') {
+            $offre->update(['statut' => 'suspendue']);
+            $message = 'Offre suspendue avec succès.';
+        } else {
+            $offre->update(['statut' => 'publiee']);
+            $message = 'Offre réactivée avec succès.';
+        }
+        
+        return back()->with('success', $message);
+    }
+    
+    /**
+     * Supprimer une offre
+     */
+    public function deleteOffre($id)
+    {
+        $entreprise = Auth::user()->entreprise;
+        $offre = $entreprise->offresEmploi()->findOrFail($id);
+        
+        // Vérifier s'il y a des candidatures
+        if ($offre->candidatures()->count() > 0) {
+            return back()->with('error', 'Impossible de supprimer une offre qui a reçu des candidatures.');
+        }
+        
+        $offre->delete();
+        
+        return back()->with('success', 'Offre supprimée avec succès.');
+    }
+    
+    /**
+     * Afficher les candidatures d'une offre
+     */
+    public function showOffreCandidatures(Request $request, $id)
+    {
+        $entreprise = Auth::user()->entreprise;
+        $offre = $entreprise->offresEmploi()->findOrFail($id);
+        
+        // Construire la requête des candidatures avec filtres
+        $candidaturesQuery = $offre->candidatures()
+            ->with(['talent.user', 'talent.experiences'])
+            ->orderBy('created_at', 'desc');
+        
+        // Filtrer par statut
+        if ($request->filled('statut')) {
+            $candidaturesQuery->where('statut_entreprise', $request->statut);
+        }
+        
+        // Filtrer par date de début
+        if ($request->filled('date_debut')) {
+            $candidaturesQuery->whereDate('created_at', '>=', $request->date_debut);
+        }
+        
+        // Filtrer par date de fin
+        if ($request->filled('date_fin')) {
+            $candidaturesQuery->whereDate('created_at', '<=', $request->date_fin);
+        }
+        
+        // Filtrer par recherche (nom, prénom, email)
+        if ($request->filled('recherche')) {
+            $recherche = $request->recherche;
+            $candidaturesQuery->whereHas('talent.user', function($query) use ($recherche) {
+                $query->where('nom', 'like', '%' . $recherche . '%')
+                      ->orWhere('prenom', 'like', '%' . $recherche . '%')
+                      ->orWhere('email', 'like', '%' . $recherche . '%');
+            });
+        }
+        
+        // Paginer les résultats
+        $candidatures = $candidaturesQuery->paginate(20)->appends($request->query());
+        
+        // Récupérer toutes les candidatures pour les statistiques (sans filtres)
+        $toutesLesCandidatures = $offre->candidatures;
+        
+        return view('entreprise.offres.candidatures', compact('offre', 'candidatures', 'toutesLesCandidatures'));
+    }
+    
+    /**
+     * Afficher les statistiques détaillées d'une offre
+     */
+    public function showOffreStatistiques($id)
+    {
+        $entreprise = Auth::user()->entreprise;
+        $offre = $entreprise->offresEmploi()
+            ->with(['candidatures'])
+            ->findOrFail($id);
+            
+        // Calculer les statistiques
+        $statistiques = [
+            'vues' => $offre->nb_vues ?? 0,
+            'candidatures_total' => $offre->candidatures->count(),
+            'candidatures_nouvelles' => $offre->candidatures->where('statut_entreprise', 'candidature_recue')->count(),
+            'candidatures_retenues' => $offre->candidatures->where('statut_entreprise', 'retenue')->count(),
+            'taux_conversion' => $offre->candidatures->count() > 0 ? 
+                round(($offre->candidatures->where('statut_entreprise', 'retenue')->count() / $offre->candidatures->count()) * 100, 1) : 0,
+            'par_statut' => [
+                'candidature_recue' => $offre->candidatures->where('statut_entreprise', 'candidature_recue')->count(),
+                'preselctionnee' => $offre->candidatures->where('statut_entreprise', 'preselctionnee')->count(),
+                'entretien' => $offre->candidatures->where('statut_entreprise', 'entretien')->count(),
+                'retenue' => $offre->candidatures->where('statut_entreprise', 'retenue')->count(),
+                'refusee' => $offre->candidatures->where('statut_entreprise', 'refusee')->count()
+            ]
+        ];
+        
+        // Statistiques par période (30 derniers jours)
+        $candidaturesParJour = $offre->candidatures
+            ->where('created_at', '>=', now()->subDays(30))
+            ->groupBy(function($candidature) {
+                return $candidature->created_at->format('Y-m-d');
+            })
+            ->map(function($group) {
+                return $group->count();
+            });
+            
+        return view('entreprise.offres.statistiques', compact('offre', 'statistiques', 'candidaturesParJour'));
     }
 }

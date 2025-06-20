@@ -68,18 +68,12 @@
     <div class="kanban-board">
         <div class="row g-3">
             <!-- Colonne 1: Candidatures reçues -->
-            <div class="col-lg-3">
-                <div class="kanban-column" data-status="candidature_recue">
-                    <div class="kanban-header bg-info text-white">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <i class="fas fa-inbox me-2"></i>
-                                <span class="fw-bold">Candidatures reçues</span>
-                            </div>
-                            <span class="badge bg-white text-info" id="count-candidature_recue">0</span>
-                        </div>
-                    </div>
-                    <div class="kanban-body" id="column-candidature_recue">
+            <div class="col-lg-2">
+                <div class="kanban-column card py-4 px-3" data-status="candidature_recue">
+                <br>
+                        <h5>Candidatures reçues</h5>
+                        <br>
+                    <div class="kanban-body " id="column-candidature_recue">
                         <div class="kanban-loading text-center py-4">
                             <div class="spinner-border spinner-border-sm text-info" role="status"></div>
                             <p class="small text-muted mt-2">Chargement...</p>
@@ -89,18 +83,12 @@
             </div>
 
             <!-- Colonne 2: Présélectionnées -->
-            <div class="col-lg-3">
-                <div class="kanban-column" data-status="preselctionnee">
-                    <div class="kanban-header bg-warning text-white">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <i class="fas fa-star me-2"></i>
-                                <span class="fw-bold">Présélectionnées</span>
-                            </div>
-                            <span class="badge bg-white text-warning" id="count-preselctionnee">0</span>
-                        </div>
-                    </div>
-                    <div class="kanban-body" id="column-preselctionnee">
+            <div class="col-lg-2">
+                <div class="kanban-column card py-4 px-3" data-status="preselctionnee">
+                <br>
+                        <h5>Présélectionnées</h5>
+                        <br>
+                    <div class="kanban-body " id="column-preselctionnee">
                         <div class="kanban-loading text-center py-4">
                             <div class="spinner-border spinner-border-sm text-warning" role="status"></div>
                             <p class="small text-muted mt-2">Chargement...</p>
@@ -110,18 +98,12 @@
             </div>
 
             <!-- Colonne 3: En entretiens -->
-            <div class="col-lg-3">
-                <div class="kanban-column" data-status="entretien">
-                    <div class="kanban-header bg-primary text-white">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <i class="fas fa-comments me-2"></i>
-                                <span class="fw-bold">En entretiens</span>
-                            </div>
-                            <span class="badge bg-white text-primary" id="count-entretien">0</span>
-                        </div>
-                    </div>
-                    <div class="kanban-body" id="column-entretien">
+            <div class="col-lg-2">
+                <div class="kanban-column card py-4 px-3" data-status="entretien">
+                <br>
+                        <h5>En entretiens</h5>
+                        <br>
+                    <div class="kanban-body " id="column-entretien">
                         <div class="kanban-loading text-center py-4">
                             <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
                             <p class="small text-muted mt-2">Chargement...</p>
@@ -132,19 +114,28 @@
 
             <!-- Colonne 4: Recrutés -->
             <div class="col-lg-3">
-                <div class="kanban-column" data-status="retenue">
-                    <div class="kanban-header bg-success text-white">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <i class="fas fa-check-circle me-2"></i>
-                                <span class="fw-bold">Recrutés</span>
-                            </div>
-                            <span class="badge bg-white text-success" id="count-retenue">0</span>
-                        </div>
-                    </div>
-                    <div class="kanban-body" id="column-retenue">
+                <div class="kanban-column card py-4 px-3" data-status="retenue">
+                <br>
+                        <h5>Recrutés</h5>
+                        <br>
+                    <div class="kanban-body " id="column-retenue">
                         <div class="kanban-loading text-center py-4">
                             <div class="spinner-border spinner-border-sm text-success" role="status"></div>
+                            <p class="small text-muted mt-2">Chargement...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colonne 5: Refusées -->
+            <div class="col-lg-3">
+                <div class="kanban-column card py-4 px-3" data-status="refusee">
+                <br>
+                        <h5>Refusées</h5>
+                        <br>
+                    <div class="kanban-body " id="column-refusee">
+                        <div class="kanban-loading text-center py-4">
+                            <div class="spinner-border spinner-border-sm text-danger" role="status"></div>
                             <p class="small text-muted mt-2">Chargement...</p>
                         </div>
                     </div>
@@ -257,13 +248,13 @@
 
 .kanban-card {
     background: white;
-    border-radius: 8px;
+    border-radius: 20px;
     padding: 1rem;
     margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px #606060FF ;
     cursor: move;
     transition: all 0.3s ease;
-    border-left: 4px solid #dee2e6;
+    border-left: 4px solid #dee2e6 ;
 }
 
 .kanban-card:hover {
@@ -281,6 +272,23 @@
     background: #f0f8ff;
 }
 
+/* Styles pour les profils talents dans le kanban */
+.talent-profile-card-kanban {
+    display: flex;
+    align-items: center;
+}
+
+.talent-avatar-kanban img {
+    border: 2px solid #f8f9fa;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.talent-avatar-kanban img:hover {
+    transform: scale(1.05);
+}
+
+/* Ancien style pour compatibilité */
 .candidate-avatar {
     width: 40px;
     height: 40px;
@@ -296,6 +304,14 @@
 .candidate-info h6 {
     margin-bottom: 0.25rem;
     font-weight: 600;
+    color: #283C5A;
+    font-size: 14px;
+}
+
+.candidate-info p {
+    color: #007bff;
+    font-size: 13px;
+    margin-bottom: 2px;
 }
 
 .candidate-meta {
@@ -306,6 +322,23 @@
 .candidate-meta i {
     width: 16px;
     text-align: center;
+}
+
+.candidate-meta .small {
+    font-size: 11px;
+    line-height: 1.3;
+}
+
+/* Amélioration des cartes kanban */
+.kanban-card {
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.kanban-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-left-color: #283C5A;
 }
 
 .status-badge {
@@ -491,31 +524,49 @@ $(document).ready(function() {
     }
     
     function createCandidatureCard(candidature) {
-        const avatarColors = ['#0d6efd', '#198754', '#dc3545', '#ffc107', '#6f42c1', '#20c997'];
-        const avatarColor = avatarColors[candidature.id % avatarColors.length];
-        
         const dateCreation = new Date(candidature.created_at).toLocaleDateString('fr-FR');
+        const firstLetter = candidature.talent.first_name ? candidature.talent.first_name.charAt(0).toUpperCase() : 'T';
+        const initiales = (candidature.talent.first_name.charAt(0) + candidature.talent.first_name.charAt(0)).toUpperCase() || 'TT';
+
+        const experienceTotal = candidature.talent.experiences ? 
+            candidature.talent.experiences.reduce((total, exp) => total + (exp.duree_mois || 0), 0) : 0;
+        const posteActuel = candidature.talent.experiences && candidature.talent.experiences.length > 0 ? 
+            candidature.talent.experiences[0].poste || 'Développeur web et mobile' : 'Développeur web et mobile';
+        
+        // Gestion de l'image ou des initiales
+        const avatarContent = candidature.talent.photo_profil ? 
+            `<img src="${candidature.talent.photo_profil}" 
+                 class="rounded-circle" 
+                 width="50" 
+                 height="50" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">` +
+            `<div class="initiales-avatar" style="display:none; width:50px; height:50px; background:#283C5A; color:white; border-radius:50%; align-items:center; justify-content:center; font-weight:bold; font-size:18px;">${initiales}</div>` :
+            `<div class="initiales-avatar" style="width:50px; height:50px; background:#283C5A; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:18px;">${initiales}</div>`;
         
         return `
-            <div class="kanban-card" data-candidature-id="${candidature.id}" onclick="showCandidatureDetails(${candidature.id})">
+        <br>
+            <div class=" px-4 py-4 kanban-card" data-candidature-id="${candidature.id}" onclick="showCandidatureDetails(${candidature.id})">
                 <div class="d-flex align-items-start">
-                    <div class="candidate-avatar" style="background-color: ${avatarColor}">
-                        <i class="fas fa-user"></i>
+                    <div class="talent-profile-card-kanban me-3">
+                        <div class="talent-avatar-kanban">
+                            ${avatarContent}
+                        </div>
                     </div>
                     <div class="candidate-info flex-grow-1">
-                        <h6>${candidature.talent.cv_reference}</h6>
+                        <h6 class="mb-1 fw-bold text-truncate">${candidature.talent.first_name} ${candidature.talent.last_name}</h6>
+                        <p class="mb-1 text-primary fw-medium small text-truncate">${posteActuel}</p>
                         <div class="candidate-meta">
-                            <div class="mb-1">
-                                <i class="fas fa-briefcase"></i>
+                            <div class="mb-1 small text-muted">
+                           
+                                ${experienceTotal > 0 ? experienceTotal + ' mois d\'expérience' : 'Débutant'}
+                                ${candidature.talent.niveau_etude ? ' • ' + candidature.talent.niveau_etude : ''}
+                            </div>
+                            <div class="mb-1 small text-muted">
+                            
                                 ${candidature.offre_emploi.titre}
                             </div>
-                            <div class="mb-1">
-                                <i class="fas fa-calendar"></i>
+                            <div class="mb-1 small text-muted">
                                 ${dateCreation}
-                            </div>
-                            <div class="mb-1">
-                                <i class="fas fa-graduation-cap"></i>
-                                ${candidature.talent.niveau_etude || 'Non spécifié'}
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mt-2">
@@ -552,9 +603,9 @@ $(document).ready(function() {
         // Animation de chargement
         $(cardElement).addClass('updating');
         
-        $.post('{{ route("entreprise.candidatures.update.status") }}', {
+        $.post('{{ route("entreprise.candidatures.update.status.legacy") }}', {
             candidature_id: candidatureId,
-            status: newStatus,
+            statut: newStatus,
             _token: '{{ csrf_token() }}'
         })
         .done(function(response) {
@@ -566,18 +617,25 @@ $(document).ready(function() {
                 updateColumnCount(newStatus, 1);
                 
                 // Mettre à jour les stats globales
-                updateStats(response.stats);
+                if (response.stats) {
+                    updateStats(response.stats);
+                }
                 
                 // Animation de succès
                 if (newStatus === 'retenue') {
                     showConfetti();
                 }
+            } else {
+                // Erreur côté serveur mais requête réussie
+                $(`#column-${oldStatus}`).append(cardElement);
+                showToast(response.message || 'Erreur lors de la mise à jour', 'error');
             }
         })
-        .fail(function() {
-            // Remettre la carte à sa position d'origine
+        .fail(function(xhr, status, error) {
+            // Erreur de communication
             $(`#column-${oldStatus}`).append(cardElement);
-            showToast('Erreur lors de la mise à jour', 'error');
+            showToast('Erreur de communication avec le serveur', 'error');
+            console.error('Erreur AJAX:', xhr.responseText);
         })
         .always(function() {
             $(cardElement).removeClass('updating');
@@ -602,7 +660,8 @@ $(document).ready(function() {
             'candidature_recue': 'Reçue',
             'preselctionnee': 'Présélectionnée',
             'entretien': 'Entretien',
-            'retenue': 'Retenue'
+            'retenue': 'Retenue',
+            'refusee': 'Refusée'
         };
         return labels[status] || status;
     }

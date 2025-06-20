@@ -25,7 +25,7 @@ Route::post('/register/talent', [RegistrationController::class, 'registerTalent'
 Route::get('/register/entreprise', [RegistrationController::class, 'showEntrepriseForm'])->name('register.entreprise.form');
 Route::post('/register/entreprise', [RegistrationController::class, 'registerEntreprise'])->name('register.entreprise');
 
-// API pour les familles de métiers
+// API pour les familles de métiers (utilisée dans l'inscription)
 Route::get('/api/familles-metiers/{poleId}', [RegistrationController::class, 'getFamillesMetiers']);
 
 // Route de succès d'inscription
@@ -54,12 +54,18 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create', function () {
             return redirect()->route('entreprise.offres.publier.step1');
         })->name('create');
+        Route::get('/{offre}', [EntrepriseController::class, 'showOffre'])->name('show');
         Route::get('/{offre}/edit', [EntrepriseController::class, 'showPublishJobStep1'])->name('edit');
-        Route::get('/publier/etape1', [EntrepriseController::class, 'showPublishJobStep1'])->name('publier.step1');
+        Route::post('/{id}/duplicate', [EntrepriseController::class, 'duplicateOffre'])->name('duplicate');
+        Route::post('/{offre}/toggle-status', [EntrepriseController::class, 'toggleOffreStatus'])->name('toggle-status');
+        Route::delete('/{offre}', [EntrepriseController::class, 'deleteOffre'])->name('destroy');
+        Route::get('/{offre}/candidatures', [EntrepriseController::class, 'showOffreCandidatures'])->name('candidatures');
+        Route::get('/{offre}/statistiques', [EntrepriseController::class, 'showOffreStatistiques'])->name('statistiques');
+        Route::get('/publier/etape1/{offre?}', [EntrepriseController::class, 'showPublishJobStep1'])->name('publier.step1');
         Route::post('/publier/etape1', [EntrepriseController::class, 'saveJobStep1'])->name('save.step1');
-        Route::get('/publier/etape2/{offre}', [EntrepriseController::class, 'showPublishJobStep2'])->name('publier.step2');
+        Route::get('/publier/etape2/{offre?}', [EntrepriseController::class, 'showPublishJobStep2'])->name('publier.step2');
         Route::post('/publier/etape2/{offre}', [EntrepriseController::class, 'saveJobStep2'])->name('save.step2');
-        Route::get('/publier/etape3/{offre}', [EntrepriseController::class, 'showPublishJobStep3'])->name('publier.step3');
+        Route::get('/publier/etape3/{offre?}', [EntrepriseController::class, 'showPublishJobStep3'])->name('publier.step3');
         Route::post('/publier/{offre}', [EntrepriseController::class, 'publishJob'])->name('publish');
     });
     
@@ -77,8 +83,9 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('entreprise/candidatures')->name('entreprise.candidatures.')->group(function () {
         Route::get('/kanban', [EntrepriseController::class, 'showKanban'])->name('kanban');
         Route::get('/data', [EntrepriseController::class, 'getCandidaturesData'])->name('data');
-        Route::get('/details/{id}', [EntrepriseController::class, 'getCandidatureDetails'])->name('details');
-        Route::post('/update-status', [EntrepriseController::class, 'updateCandidatureStatus'])->name('update.status');
+        Route::get('/{id}/details', [EntrepriseController::class, 'getCandidatureDetails'])->name('details');
+        Route::post('/{id}/statut', [EntrepriseController::class, 'updateCandidatureStatus'])->name('update.status');
+        Route::post('/update-status', [EntrepriseController::class, 'updateCandidatureStatus'])->name('update.status.legacy');
     });
     
     // WF-E06: Badges Entreprise
@@ -109,10 +116,8 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/notifications', [EntrepriseController::class, 'updateNotifications'])->name('notifications');
     });
     
-    // API Routes pour entreprise
-    Route::get('/api/entreprise/familles-metiers/{pole}', [EntrepriseController::class, 'getFamillesMetiers']);
-    Route::get('/api/entreprise/mes-offres', [EntrepriseController::class, 'getMesOffres']);
-    
+    // API Routes pour entreprise - CORRECTION ICI
+
     // Legacy route for profile dashboard (redirect to talent)
     Route::get('/profile/dashboard', function () {
         return redirect()->route('talent.dashboard');

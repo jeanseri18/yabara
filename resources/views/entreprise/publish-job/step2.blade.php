@@ -1,190 +1,173 @@
 @extends('layouts.entreprise')
 
-@section('title', 'Publier une offre - Étape 2/3')
+@section('title', 'Publier une offre - Étape 2')
+@section('page-title', 'Publier une offre d\'emploi')
 
 @section('content')
-<div class="container-fluid px-4">
-    <!-- Indicateur de progression -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="progress-steps">
-                <div class="step completed">
-                    <div class="step-number"><i class="fas fa-check"></i></div>
-                    <div class="step-title">Informations générales</div>
-                </div>
-                <div class="step active">
-                    <div class="step-number">2</div>
-                    <div class="step-title">Spécificités du poste</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-title">Résumé & Publication</div>
-                </div>
-            </div>
+<div class="container-fluid">
+    <!-- Progress Steps -->
+    <div class="progress-steps mb-5">
+        <div class="step completed">
+            <div class="step-number"><i class="bi bi-check"></i></div>
+            <div class="step-title">Informations générales</div>
+        </div>
+        <div class="step active">
+            <div class="step-number">2</div>
+            <div class="step-title">Critères & Exigences</div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-title">Validation & Publication</div>
         </div>
     </div>
 
-    <!-- Résumé étape 1 -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm bg-light">
-                <div class="card-body p-3">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h6 class="mb-1"><i class="fas fa-briefcase text-primary me-2"></i>{{ $offre->titre }}</h6>
-                            <small class="text-muted">{{ $offre->typeContrat->nom ?? 'Type de contrat' }} • {{ $offre->familleMetier->nom ?? 'Famille métier' }}</small>
-                        </div>
-                        <div class="col-auto">
-                            <a href="{{ route('entreprise.offres.publier.step1') }}" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-edit me-1"></i>Modifier
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Formulaire Étape 2 -->
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom">
-                    <h5 class="mb-0"><i class="fas fa-cogs text-primary me-2"></i>Spécificités du poste</h5>
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-white border-0 py-4">
+                    <h4 class="mb-0 text-center" style="color: #283C5A;">
+                        <i class="bi bi-list-check me-2"></i>
+                        Étape 2 : Critères et exigences du poste
+                    </h4>
+                    <p class="text-muted text-center mb-0 mt-2">Définissez les critères de sélection et les conditions du poste</p>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body p-5">
+                    <!-- Résumé de l'étape 1 -->
+                    <div class="alert alert-info border-0 mb-4" style="background-color: rgba(40, 60, 90, 0.1);">
+                        <h6 class="fw-bold mb-2" style="color: #283C5A;">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Récapitulatif de votre offre
+                        </h6>
+                        <p class="mb-1"><strong>Poste :</strong> {{ $offre->titre }}</p>
+                        <p class="mb-1"><strong>Type :</strong> {{ $offre->typeContrat->nom ?? 'Non défini' }}</p>
+                        <p class="mb-0"><strong>Secteur :</strong> {{ $offre->pole->nom ?? 'Non défini' }} - {{ $offre->familleMetier->nom ?? 'Non défini' }}</p>
+                    </div>
+
                     <form id="step2Form">
                         @csrf
                         
                         <!-- Niveau de diplôme requis -->
-                        <div class="mb-5">
-                            <label class="form-label fw-bold mb-3">Niveau de diplôme requis <span class="text-danger">*</span></label>
-                            <div class="diploma-slider">
-                                <div class="slider-track">
-                                    @foreach($niveauxDiplome as $index => $niveau)
-                                    <div class="slider-step" data-value="{{ $niveau->id }}" data-level="{{ $niveau->niveau }}">
-                                        <div class="step-dot"></div>
-                                        <div class="step-label">{{ $niveau->nom }}</div>
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                            <input type="hidden" id="niveau_diplome_requis" name="niveau_diplome_requis" required>
-                            <div class="invalid-feedback"></div>
+                        <div class="mb-4">
+                            <label for="niveau_diplome_requis" class="form-label fw-bold">
+                                <i class="bi bi-mortarboard me-2" style="color: #f6cd45;"></i>
+                                Niveau de diplôme requis *
+                            </label>
+                            <select class="form-select form-select-lg" id="niveau_diplome_requis" name="niveau_diplome_requis" required>
+                                <option value="">Sélectionnez le niveau minimum requis</option>
+                                @foreach($niveauxDiplome as $niveau)
+                                    <option value="{{ $niveau->id }}" {{ old('niveau_diplome_requis', $offre->niveau_diplome_requis) == $niveau->id ? 'selected' : '' }}>
+                                        {{ $niveau->nom }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <!-- Expérience minimum -->
-                        <div class="mb-5">
-                            <label class="form-label fw-bold mb-3">Expérience minimum requise <span class="text-danger">*</span></label>
-                            <div class="row g-3">
-                                <div class="col-6 col-md-3">
-                                    <div class="experience-card" data-value="0">
-                                        <div class="card-icon">
-                                            <i class="fas fa-seedling"></i>
-                                        </div>
-                                        <div class="card-title">Débutant</div>
-                                        <div class="card-subtitle">0 an</div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="experience-card" data-value="1">
-                                        <div class="card-icon">
-                                            <i class="fas fa-leaf"></i>
-                                        </div>
-                                        <div class="card-title">Junior</div>
-                                        <div class="card-subtitle">1-2 ans</div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="experience-card" data-value="3">
-                                        <div class="card-icon">
-                                            <i class="fas fa-tree"></i>
-                                        </div>
-                                        <div class="card-title">Confirmé</div>
-                                        <div class="card-subtitle">3-5 ans</div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="experience-card" data-value="6">
-                                        <div class="card-icon">
-                                            <i class="fas fa-crown"></i>
-                                        </div>
-                                        <div class="card-title">Senior</div>
-                                        <div class="card-subtitle">6+ ans</div>
-                                    </div>
+                        <div class="mb-4">
+                            <label for="experience_minimum" class="form-label fw-bold">
+                                <i class="bi bi-clock-history me-2" style="color: #f6cd45;"></i>
+                                Expérience minimum requise *
+                            </label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select class="form-select form-select-lg" id="experience_minimum" name="experience_minimum" required>
+                                        <option value="">Sélectionnez l'expérience</option>
+                                        <option value="0" {{ old('experience_minimum', $offre->experience_minimum) == '0' ? 'selected' : '' }}>Débutant accepté (0 an)</option>
+                                        <option value="1" {{ old('experience_minimum', $offre->experience_minimum) == '1' ? 'selected' : '' }}>1 an minimum</option>
+                                        <option value="2" {{ old('experience_minimum', $offre->experience_minimum) == '2' ? 'selected' : '' }}>2 ans minimum</option>
+                                        <option value="3" {{ old('experience_minimum', $offre->experience_minimum) == '3' ? 'selected' : '' }}>3 ans minimum</option>
+                                        <option value="5" {{ old('experience_minimum', $offre->experience_minimum) == '5' ? 'selected' : '' }}>5 ans minimum</option>
+                                        <option value="10" {{ old('experience_minimum', $offre->experience_minimum) == '10' ? 'selected' : '' }}>10 ans et plus</option>
+                                    </select>
                                 </div>
                             </div>
-                            <input type="hidden" id="experience_minimum" name="experience_minimum" required>
-                            <div class="invalid-feedback"></div>
                         </div>
 
                         <!-- Rémunération -->
                         <div class="mb-4">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <label class="form-label fw-bold mb-0">Rémunération (optionnel)</label>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="showSalary">
-                                    <label class="form-check-label" for="showSalary">Afficher publiquement</label>
+                            <label for="remuneration" class="form-label fw-bold">
+                                <i class="bi bi-currency-euro me-2" style="color: #f6cd45;"></i>
+                                Rémunération (optionnel)
+                            </label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-lg">
+                            <input type="number" class="form-control" id="remuneration" name="remuneration" 
+                                   placeholder="Ex: 35000" min="0" step="1000" value="{{ old('remuneration', $offre->remuneration) }}">
+                            <span class="input-group-text">€ / an</span>
+                        </div>
+                                    <div class="form-text">Salaire brut annuel (optionnel mais recommandé)</div>
                                 </div>
                             </div>
-                            <div class="input-group">
-                                <span class="input-group-text">FCFA</span>
-                                <input type="number" class="form-control" id="remuneration" name="remuneration" 
-                                       placeholder="Ex: 500000" min="0" step="1000">
-                                <span class="input-group-text">/ mois</span>
-                            </div>
-                            <div class="form-text">La rémunération peut être masquée aux candidats si vous le souhaitez</div>
                         </div>
 
-                        <!-- Lieu de poste -->
+                        <!-- Lieu du poste -->
                         <div class="mb-4">
-                            <label for="lieu_poste" class="form-label fw-bold">Lieu du poste <span class="text-danger">*</span></label>
+                            <label for="lieu_poste" class="form-label fw-bold">
+                                <i class="bi bi-geo-alt me-2" style="color: #f6cd45;"></i>
+                                Lieu du poste *
+                            </label>
                             <input type="text" class="form-control form-control-lg" id="lieu_poste" name="lieu_poste" 
-                                   placeholder="Ex: Douala, Cameroun" required>
-                            <div class="invalid-feedback"></div>
+                                   placeholder="Ex: Paris, Lyon, Télétravail, France entière..." 
+                                   value="{{ old('lieu_poste', $offre->lieu_poste) }}" required>
+                            <div class="form-text">Ville, région ou précisez si le poste est en télétravail</div>
                         </div>
 
-                        <!-- Options télétravail et mobilité -->
+                        <!-- Options de travail -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold mb-3">Options de travail</label>
-                            <div class="row g-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-laptop me-2" style="color: #f6cd45;"></i>
+                                Modalités de travail
+                            </label>
+                            <div class="row">
                                 <div class="col-md-6">
-                                    <div class="card h-100 option-card" data-option="teletravail">
-                                        <div class="card-body text-center p-4">
-                                            <i class="fas fa-home fa-2x text-primary mb-3"></i>
-                                            <h6 class="card-title">Télétravail possible</h6>
-                                            <p class="card-text small text-muted">Le poste peut être exercé à distance</p>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="teletravail" name="teletravail" value="1">
-                                                <label class="form-check-label" for="teletravail">Autoriser le télétravail</label>
-                                            </div>
-                                        </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="teletravail" name="teletravail" value="1" 
+                                               {{ old('teletravail', $offre->teletravail) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="teletravail">
+                                            Télétravail possible
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="card h-100 option-card" data-option="mobilite">
-                                        <div class="card-body text-center p-4">
-                                            <i class="fas fa-plane fa-2x text-primary mb-3"></i>
-                                            <h6 class="card-title">Mobilité requise</h6>
-                                            <p class="card-text small text-muted">Le poste nécessite des déplacements</p>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="mobilite_requise" name="mobilite_requise" value="1">
-                                                <label class="form-check-label" for="mobilite_requise">Mobilité nécessaire</label>
-                                            </div>
-                                        </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="mobilite_requise" name="mobilite_requise" value="1" 
+                                               {{ old('mobilite_requise', $offre->mobilite_requise) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="mobilite_requise">
+                                            Mobilité requise
+                                        </label>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Compétences recherchées (optionnel) -->
+                        <div class="mb-4">
+                            <label for="competences_recherchees" class="form-label fw-bold">
+                                <i class="bi bi-star me-2" style="color: #f6cd45;"></i>
+                                Compétences clés recherchées (optionnel)
+                            </label>
+                            <textarea class="form-control" id="competences_recherchees" name="competences_recherchees" rows="4" 
+                                      placeholder="Listez les compétences techniques et soft skills importantes pour ce poste...">{{ old('competences_recherchees', $offre->competences_recherchees) }}</textarea>
+                            <div class="form-text">Ces informations aideront les candidats à mieux comprendre vos attentes</div>
                         </div>
 
                         <!-- Boutons d'action -->
-                        <div class="d-flex justify-content-between pt-3">
-                            <a href="{{ route('entreprise.offres.publier.step1') }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-arrow-left me-2"></i>Étape précédente
+                        <div class="d-flex justify-content-between mt-5">
+                            <a href="{{ route('entreprise.offres.publier.step1', $offre->id ?? null) }}" class="btn btn-outline-secondary btn-lg px-4">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Retour
                             </a>
-                            <button type="submit" class="btn btn-primary btn-lg" id="nextBtn" disabled>
-                                Étape suivante <i class="fas fa-arrow-right ms-2"></i>
-                            </button>
+                            <div>
+                                <button type="button" class="btn btn-outline-primary btn-lg px-4 me-3" id="saveAsDraft">
+                                    <i class="bi bi-save me-2"></i>
+                                    Sauvegarder
+                                </button>
+                                <button type="submit" class="btn btn-lg px-5" style="background-color: #283C5A; color: white;">
+                                    Continuer
+                                    <i class="bi bi-arrow-right ms-2"></i>
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -193,305 +176,97 @@
     </div>
 </div>
 
-<!-- Auto-sauvegarde indicator -->
-<div class="position-fixed bottom-0 end-0 p-3">
-    <div class="toast" id="autoSaveToast" role="alert">
-        <div class="toast-body">
-            <i class="fas fa-save text-success me-2"></i>Sauvegarde automatique effectuée
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-body text-center py-5">
+                <div class="spinner-border" style="color: #283C5A;" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                </div>
+                <p class="mt-3 mb-0">Sauvegarde en cours...</p>
+            </div>
         </div>
     </div>
 </div>
+
 @endsection
-
-@push('styles')
-<style>
-.progress-steps {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-
-.step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    flex: 1;
-    max-width: 200px;
-}
-
-.step:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 20px;
-    left: 60%;
-    width: 100%;
-    height: 2px;
-    background: #dee2e6;
-    z-index: 1;
-}
-
-.step.active:not(:last-child)::after,
-.step.completed:not(:last-child)::after {
-    background: #0d6efd;
-}
-
-.step-number {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #dee2e6;
-    color: #6c757d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    margin-bottom: 8px;
-    position: relative;
-    z-index: 2;
-}
-
-.step.active .step-number {
-    background: #0d6efd;
-    color: white;
-}
-
-.step.completed .step-number {
-    background: #198754;
-    color: white;
-}
-
-.step-title {
-    font-size: 0.875rem;
-    text-align: center;
-    color: #6c757d;
-}
-
-.step.active .step-title,
-.step.completed .step-title {
-    color: #0d6efd;
-    font-weight: 600;
-}
-
-.diploma-slider {
-    position: relative;
-    padding: 20px 0;
-}
-
-.slider-track {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-}
-
-.slider-track::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: #dee2e6;
-    transform: translateY(-50%);
-    z-index: 1;
-}
-
-.slider-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-    z-index: 2;
-}
-
-.step-dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #fff;
-    border: 3px solid #dee2e6;
-    transition: all 0.3s ease;
-    margin-bottom: 8px;
-}
-
-.slider-step:hover .step-dot,
-.slider-step.active .step-dot {
-    border-color: #0d6efd;
-    background: #0d6efd;
-}
-
-.step-label {
-    font-size: 0.75rem;
-    text-align: center;
-    color: #6c757d;
-    max-width: 80px;
-}
-
-.slider-step.active .step-label {
-    color: #0d6efd;
-    font-weight: 600;
-}
-
-.experience-card {
-    border: 2px solid #dee2e6;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: white;
-}
-
-.experience-card:hover {
-    border-color: #0d6efd;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
-}
-
-.experience-card.selected {
-    border-color: #0d6efd;
-    background-color: #f8f9ff;
-}
-
-.card-icon {
-    font-size: 2rem;
-    color: #6c757d;
-    margin-bottom: 12px;
-}
-
-.experience-card.selected .card-icon {
-    color: #0d6efd;
-}
-
-.card-title {
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: #212529;
-}
-
-.card-subtitle {
-    font-size: 0.875rem;
-    color: #6c757d;
-}
-
-.option-card {
-    transition: all 0.3s ease;
-    border: 1px solid #dee2e6;
-}
-
-.option-card:hover {
-    border-color: #0d6efd;
-    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.1);
-}
-
-.option-card.checked {
-    border-color: #0d6efd;
-    background-color: #f8f9ff;
-}
-</style>
-@endpush
 
 @push('scripts')
 <script>
 $(document).ready(function() {
-    let autoSaveTimeout;
-    
-    // Sélection du niveau de diplôme
-    $('.slider-step').on('click', function() {
-        $('.slider-step').removeClass('active');
-        $(this).addClass('active');
-        $('#niveau_diplome_requis').val($(this).data('value'));
-        validateForm();
-        scheduleAutoSave();
-    });
-    
-    // Sélection de l'expérience
-    $('.experience-card').on('click', function() {
-        $('.experience-card').removeClass('selected');
-        $(this).addClass('selected');
-        $('#experience_minimum').val($(this).data('value'));
-        validateForm();
-        scheduleAutoSave();
-    });
-    
-    // Gestion des options de travail
-    $('input[type="checkbox"]').on('change', function() {
-        const card = $(this).closest('.option-card');
-        if ($(this).is(':checked')) {
-            card.addClass('checked');
-        } else {
-            card.removeClass('checked');
-        }
-        scheduleAutoSave();
-    });
-    
-    // Validation en temps réel
-    $('#lieu_poste, #remuneration').on('input', function() {
-        validateForm();
-        scheduleAutoSave();
-    });
-    
-    // Validation du formulaire
-    function validateForm() {
-        const niveauDiplome = $('#niveau_diplome_requis').val();
-        const experience = $('#experience_minimum').val();
-        const lieu = $('#lieu_poste').val().trim();
-        
-        const isValid = niveauDiplome && experience !== '' && lieu.length > 0;
-        
-        $('#nextBtn').prop('disabled', !isValid);
-    }
-    
-    // Auto-sauvegarde
-    function scheduleAutoSave() {
-        clearTimeout(autoSaveTimeout);
-        autoSaveTimeout = setTimeout(autoSave, 2000);
-    }
-    
-    function autoSave() {
-        const formData = $('#step2Form').serialize();
-        
-        $.post('{{ route("entreprise.offres.save.step2", $offre->id) }}', formData)
-            .done(function(response) {
-                if (response.success) {
-                    showAutoSaveToast();
-                }
-            })
-            .fail(function() {
-                console.log('Erreur lors de la sauvegarde automatique');
-            });
-    }
-    
-    function showAutoSaveToast() {
-        const toast = new bootstrap.Toast(document.getElementById('autoSaveToast'));
-        toast.show();
-    }
-    
     // Soumission du formulaire
-    $('#step2Form').on('submit', function(e) {
+    $('#step2Form').submit(function(e) {
         e.preventDefault();
         
-        const formData = $(this).serialize();
+        $('#loadingModal').modal('show');
         
-        $.post('{{ route("entreprise.offres.save.step2", $offre->id) }}', formData)
-            .done(function(response) {
+        $.ajax({
+            url: '{{ route("entreprise.offres.save.step2", $offre->id) }}',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
                 if (response.success) {
-                    window.location.href = '{{ route("entreprise.offres.publier.step3", $offre->id) }}';
+                    window.location.href = `/entreprise/offres/publier/etape3/{{ $offre->id }}`;
                 }
-            })
-            .fail(function(xhr) {
-                const errors = xhr.responseJSON?.errors || {};
+            },
+            error: function(xhr) {
+                $('#loadingModal').modal('hide');
                 
-                // Afficher les erreurs
-                Object.keys(errors).forEach(function(field) {
-                    const input = $(`[name="${field}"]`);
-                    input.addClass('is-invalid');
-                    input.siblings('.invalid-feedback').text(errors[field][0]);
-                });
-            });
+                if (xhr.status === 422) {
+                    const errors = xhr.responseJSON.errors;
+                    let errorMessage = 'Veuillez corriger les erreurs suivantes :\n';
+                    
+                    Object.keys(errors).forEach(function(key) {
+                        errorMessage += `- ${errors[key][0]}\n`;
+                    });
+                    
+                    alert(errorMessage);
+                } else {
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                }
+            }
+        });
+    });
+
+    // Sauvegarde en brouillon
+    $('#saveAsDraft').click(function() {
+        $('#loadingModal').modal('show');
+        
+        $.ajax({
+            url: '{{ route("entreprise.offres.save.step2", $offre->id) }}',
+            method: 'POST',
+            data: $('#step2Form').serialize(),
+            success: function(response) {
+                $('#loadingModal').modal('hide');
+                
+                // Afficher un message de succès
+                const alert = $(`
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Votre offre a été sauvegardée en brouillon.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `);
+                
+                $('.card-body').prepend(alert);
+                
+                // Faire défiler vers le haut
+                $('html, body').animate({ scrollTop: 0 }, 500);
+            },
+            error: function(xhr) {
+                $('#loadingModal').modal('hide');
+                alert('Erreur lors de la sauvegarde. Veuillez réessayer.');
+            }
+        });
+    });
+
+    // Validation en temps réel
+    $('#remuneration').on('input', function() {
+        const value = parseInt($(this).val());
+        if (value && value < 0) {
+            $(this).val('');
+        }
     });
 });
 </script>
