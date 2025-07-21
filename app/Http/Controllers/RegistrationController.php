@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Talent;
 use App\Models\Entreprise;
@@ -91,6 +92,16 @@ class RegistrationController extends Controller
 
     public function registerEntreprise(Request $request)
     {
+        // Debug: Afficher les informations du fichier logo
+        if ($request->hasFile('logo_url')) {
+            \Log::info('Logo file info:', [
+                'original_name' => $request->file('logo_url')->getClientOriginalName(),
+                'mime_type' => $request->file('logo_url')->getMimeType(),
+                'size' => $request->file('logo_url')->getSize(),
+                'extension' => $request->file('logo_url')->getClientOriginalExtension()
+            ]);
+        }
+        
         // Validation complète pour inscription
         $request->validate([
             'email' => 'required|email|unique:users',
@@ -102,7 +113,12 @@ class RegistrationController extends Controller
             'responsable_rh_nom' => 'nullable|string|max:255',
             'responsable_rh_prenom' => 'nullable|string|max:255',
             'responsable_rh_email' => 'nullable|email|max:255',
-            'responsable_rh_telephone' => 'nullable|string|max:20'
+            'responsable_rh_telephone' => 'nullable|string|max:20',
+            'logo_url' => 'nullable|max:2048'
+        ], [
+            'logo_url.image' => 'Le fichier doit être une image.',
+            'logo_url.mimes' => 'Le logo doit être un fichier de type : jpeg, png, jpg, svg.',
+            'logo_url.max' => 'Le logo ne doit pas dépasser 2MB.'
         ]);
 
         DB::beginTransaction();
@@ -116,6 +132,13 @@ class RegistrationController extends Controller
                 'status' => 'pending'
             ]);
 
+            // Gestion du logo
+            $logoUrl = null;
+            if ($request->hasFile('logo_url')) {
+                $logoPath = $request->file('logo_url')->store('logos', 'public');
+                $logoUrl = '/storage/' . $logoPath;
+            }
+
             // Créer le profil entreprise complet
             Entreprise::create([
                 'user_id' => $user->id,
@@ -127,6 +150,7 @@ class RegistrationController extends Controller
                 'responsable_rh_prenom' => $request->responsable_rh_prenom,
                 'responsable_rh_email' => $request->responsable_rh_email,
                 'responsable_rh_telephone' => $request->responsable_rh_telephone,
+                'logo_url' => $logoUrl,
                 'is_verified' => false
             ]);
 

@@ -80,45 +80,28 @@
             font-size: 0.95rem;
         }
 
-        .step-indicator {
-            display: flex;
-            justify-content: space-between;
+        .progress-container {
+            position: relative;
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 5px;
             margin-bottom: 2rem;
-            position: relative;
         }
 
-        .step-line {
-            position: absolute;
-            top: 50%;
-            left: 30px;
-            right: 30px;
-            height: 2px;
-            background: #e5e7eb;
-            z-index: 1;
-        }
-
-        .step {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #e5e7eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #6b7280;
-            position: relative;
-            z-index: 2;
-        }
-
-        .step.active {
+        .progress-bar {
+            height: 100%;
             background: #162359;
-            color: white;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+            width: 0%;
         }
 
-        .step.completed {
-            background: #10b981;
-            color: white;
+        .progress-label {
+            position: absolute;
+            bottom: -20px;
+            right: 0;
+            font-size: 0.875rem;
+            color: #162359;
         }
 
         .form-step {
@@ -172,6 +155,55 @@
             font-size: 1rem;
             background: white;
             cursor: pointer;
+        }
+
+        .selection-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .selection-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .selection-card:hover {
+            border-color: #162359;
+            background-color: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .selection-card.selected {
+            border-color: #162359;
+            background-color: #eff6ff;
+            box-shadow: 0 4px 12px rgba(22, 35, 89, 0.2);
+        }
+
+        .selection-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .selection-card .title {
+            font-weight: 600;
+            color: #162359;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .selection-card .description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
 
         .avatar-grid {
@@ -293,12 +325,9 @@
                 <h1 class="form-title">Inscription Talent</h1>
                 <p class="form-subtitle">Créez votre profil talent en quelques étapes</p>
                 
-                <div class="step-indicator">
-                    <div class="step-line"></div>
-                    <div class="step active" data-step="1">1</div>
-                    <div class="step" data-step="2">2</div>
-                    <div class="step" data-step="3">3</div>
-                    <div class="step" data-step="4">4</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                    <div class="progress-label" id="progressLabel">0%</div>
                 </div>
 
                 @if ($errors->any())
@@ -370,40 +399,20 @@
                         </div>
                     </div>
                     
-                    <!-- Étape 3: Informations professionnelles -->
+                    <!-- Étape 3: Pôle d'activité -->
                     <div class="form-step" data-step="3">
-                        <div class="section-title">Informations professionnelles</div>
+                        <div class="section-title">Choisissez votre pôle d'activité</div>
                         
-                        <div class="form-group">
-                            <label class="form-label">Pôle d'activité</label>
-                            <select name="pole_id" class="form-select" id="poleSelect">
-                                <option value="">Sélectionnez un pôle</option>
-                                @foreach($poles as $pole)
-                                    <option value="{{ $pole->id }}" {{ old('pole_id') == $pole->id ? 'selected' : '' }}>
-                                        {{ $pole->icone }} {{ $pole->nom }}
-                                    </option>
-                                @endforeach
-                            </select>
+                        <div class="selection-grid" id="poleGrid">
+                            @foreach($poles as $pole)
+                                <div class="selection-card" data-pole-id="{{ $pole->id }}">
+                                    <span class="icon">{{ $pole->icone }}</span>
+                                    <div class="title">{{ $pole->nom }}</div>
+                                </div>
+                            @endforeach
                         </div>
                         
-                        <div class="form-group">
-                            <label class="form-label">Famille de métier</label>
-                            <select name="famille_metier_id" class="form-select" id="familleMetierSelect">
-                                <option value="">Sélectionnez d'abord un pôle</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Niveau d'étude</label>
-                            <select name="niveau_diplome_id" class="form-select">
-                                <option value="">Sélectionnez votre niveau</option>
-                                @foreach($niveauxDiplome as $niveau)
-                                    <option value="{{ $niveau->id }}" {{ old('niveau_diplome_id') == $niveau->id ? 'selected' : '' }}>
-                                        {{ $niveau->nom }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <input type="hidden" name="pole_id" id="poleId" value="{{ old('pole_id') }}">
                         
                         <div class="btn-group">
                             <button type="button" class="btn btn-secondary" id="prevBtn3">Précédent</button>
@@ -411,8 +420,48 @@
                         </div>
                     </div>
                     
-                    <!-- Étape 4: Choix de l'avatar -->
+                    <!-- Étape 4: Famille de métier -->
                     <div class="form-step" data-step="4">
+                        <div class="section-title">Choisissez votre famille de métier</div>
+                        
+                        <div class="selection-grid" id="familleGrid">
+                            <!-- Les familles de métiers seront chargées dynamiquement -->
+                        </div>
+                        
+                        <input type="hidden" name="famille_metier_id" id="familleMetierId" value="{{ old('famille_metier_id') }}">
+                        
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary" id="prevBtn4">Précédent</button>
+                            <button type="button" class="btn btn-primary" id="nextBtn4">Suivant</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Étape 5: Niveau de diplôme -->
+                    <div class="form-step" data-step="5">
+                        <div class="section-title">Choisissez votre niveau d'étude</div>
+                        
+                        <div class="selection-grid" id="diplomeGrid">
+                            @foreach($niveauxDiplome as $niveau)
+                                <div class="selection-card" data-diplome-id="{{ $niveau->id }}">
+                                    <span class="icon">🎓</span>
+                                    <div class="title">{{ $niveau->nom }}</div>
+                                    @if($niveau->description)
+                                        <div class="description">{{ $niveau->description }}</div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                        
+                        <input type="hidden" name="niveau_diplome_id" id="niveauDiplomeId" value="{{ old('niveau_diplome_id') }}">
+                        
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary" id="prevBtn5">Précédent</button>
+                            <button type="button" class="btn btn-primary" id="nextBtn5">Suivant</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Étape 6: Choix de l'avatar -->
+                    <div class="form-step" data-step="6">
                         <div class="section-title">Choisissez votre avatar</div>
                         
                         <div class="avatar-grid">
@@ -445,7 +494,7 @@
                         <input type="hidden" name="avatar_type" id="avatarType" value="">
                         
                         <div class="btn-group">
-                            <button type="button" class="btn btn-secondary" id="prevBtn4">Précédent</button>
+                            <button type="button" class="btn btn-secondary" id="prevBtn6">Précédent</button>
                             <button type="submit" class="btn btn-primary">Créer mon compte</button>
                         </div>
                     </div>
@@ -457,7 +506,7 @@
     <script>
         // Déclaration des variables globales
         let currentStep = 1;
-        const totalSteps = 4;
+        const totalSteps = 6;
 
         // Fonction pour afficher une étape spécifique
         function showStep(step) {
@@ -469,15 +518,10 @@
             // Afficher l'étape courante
             document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
             
-            // Mettre à jour les indicateurs
-            document.querySelectorAll('.step').forEach((el, index) => {
-                el.classList.remove('active', 'completed');
-                if (index + 1 < step) {
-                    el.classList.add('completed');
-                } else if (index + 1 === step) {
-                    el.classList.add('active');
-                }
-            });
+            // Mettre à jour la barre de progression
+            const progress = ((step - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressLabel').textContent = `${Math.round(progress)}%`;
         }
 
         // Fonction pour valider les champs d'une étape
@@ -529,10 +573,31 @@
                     isValid = false;
                 }
             } else if (step === 3) {
-                // Validation de l'étape 3 (Informations professionnelles)
-                // Ces champs sont optionnels, mais on peut ajouter des validations spécifiques si nécessaire
+                // Validation de l'étape 3 (Pôle d'activité)
+                const poleId = document.getElementById('poleId').value;
+                
+                if (!poleId) {
+                    errorList.innerHTML += '<li>Veuillez sélectionner un pôle d\'activité</li>';
+                    isValid = false;
+                }
             } else if (step === 4) {
-                // Validation de l'étape 4 (Choix de l'avatar)
+                // Validation de l'étape 4 (Famille de métier)
+                const familleMetierId = document.getElementById('familleMetierId').value;
+                
+                if (!familleMetierId) {
+                    errorList.innerHTML += '<li>Veuillez sélectionner une famille de métier</li>';
+                    isValid = false;
+                }
+            } else if (step === 5) {
+                // Validation de l'étape 5 (Niveau de diplôme)
+                const niveauDiplomeId = document.getElementById('niveauDiplomeId').value;
+                
+                if (!niveauDiplomeId) {
+                    errorList.innerHTML += '<li>Veuillez sélectionner un niveau d\'étude</li>';
+                    isValid = false;
+                }
+            } else if (step === 6) {
+                // Validation de l'étape 6 (Choix de l'avatar)
                 const avatarType = document.getElementById('avatarType').value;
                 
                 if (!avatarType) {
@@ -591,6 +656,32 @@
             showStep(currentStep);
         });
 
+        document.getElementById('nextBtn4').addEventListener('click', function() {
+            // Valider l'étape actuelle avant de passer à la suivante
+            if (validateStep(currentStep)) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        document.getElementById('prevBtn5').addEventListener('click', function() {
+            currentStep--;
+            showStep(currentStep);
+        });
+
+        document.getElementById('nextBtn5').addEventListener('click', function() {
+            // Valider l'étape actuelle avant de passer à la suivante
+            if (validateStep(currentStep)) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        document.getElementById('prevBtn6').addEventListener('click', function() {
+            currentStep--;
+            showStep(currentStep);
+        });
+
         // Validation du formulaire avant soumission finale
         document.getElementById('talentForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -610,28 +701,125 @@
             });
         });
 
-        // Gestion des familles de métiers
-        document.getElementById('poleSelect').addEventListener('change', function() {
-            const poleId = this.value;
-            const familleSelect = document.getElementById('familleMetierSelect');
+        // Gestion des cartes de sélection de pôles
+        document.querySelectorAll('#poleGrid .selection-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Désélectionner toutes les autres cartes
+                document.querySelectorAll('#poleGrid .selection-card').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                
+                // Sélectionner la carte cliquée
+                this.classList.add('selected');
+                
+                // Mettre à jour le champ caché
+                const poleId = this.dataset.poleId;
+                document.getElementById('poleId').value = poleId;
+                
+                // Charger les familles de métiers pour ce pôle
+                loadFamillesMetiers(poleId);
+            });
+        });
+
+        // Gestion des cartes de sélection de familles de métiers
+        function setupFamilleCards() {
+            document.querySelectorAll('#familleGrid .selection-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    // Désélectionner toutes les autres cartes
+                    document.querySelectorAll('#familleGrid .selection-card').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    
+                    // Sélectionner la carte cliquée
+                    this.classList.add('selected');
+                    
+                    // Mettre à jour le champ caché
+                    document.getElementById('familleMetierId').value = this.dataset.familleId;
+                });
+            });
+        }
+
+        // Gestion des cartes de sélection de diplômes
+        document.querySelectorAll('#diplomeGrid .selection-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Désélectionner toutes les autres cartes
+                document.querySelectorAll('#diplomeGrid .selection-card').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                
+                // Sélectionner la carte cliquée
+                this.classList.add('selected');
+                
+                // Mettre à jour le champ caché
+                document.getElementById('niveauDiplomeId').value = this.dataset.diplomeId;
+            });
+        });
+
+        // Fonction pour charger les familles de métiers
+        function loadFamillesMetiers(poleId) {
+            const familleGrid = document.getElementById('familleGrid');
             
             if (poleId) {
                 // Appel AJAX pour récupérer les familles de métiers
                 fetch(`/api/familles-metiers/${poleId}`)
                     .then(response => response.json())
                     .then(familles => {
-                        familleSelect.innerHTML = '<option value="">Sélectionnez une famille de métier</option>';
+                        familleGrid.innerHTML = '';
                         familles.forEach(famille => {
-                            const selected = '{{ old("famille_metier_id") }}' == famille.id ? 'selected' : '';
-                            familleSelect.innerHTML += `<option value="${famille.id}" ${selected}>${famille.nom}</option>`;
+                            const card = document.createElement('div');
+                            card.className = 'selection-card';
+                            card.dataset.familleId = famille.id;
+                            card.innerHTML = `
+                                <span class="icon">💼</span>
+                                <div class="title">${famille.nom}</div>
+                                ${famille.description ? `<div class="description">${famille.description}</div>` : ''}
+                            `;
+                            familleGrid.appendChild(card);
                         });
+                        
+                        // Réinitialiser les écouteurs d'événements
+                        setupFamilleCards();
+                        
+                        // Présélectionner si une valeur existe
+                        const oldFamilleId = '{{ old("famille_metier_id") }}';
+                        if (oldFamilleId) {
+                            const selectedCard = document.querySelector(`#familleGrid .selection-card[data-famille-id="${oldFamilleId}"]`);
+                            if (selectedCard) {
+                                selectedCard.classList.add('selected');
+                                document.getElementById('familleMetierId').value = oldFamilleId;
+                            }
+                        }
                     })
                     .catch(error => {
                         console.error('Erreur lors du chargement des familles de métiers:', error);
-                        familleSelect.innerHTML = '<option value="">Erreur de chargement</option>';
+                        familleGrid.innerHTML = '<div style="text-align: center; color: #dc2626; padding: 2rem;">Erreur de chargement des familles de métiers</div>';
                     });
             } else {
-                familleSelect.innerHTML = '<option value="">Sélectionnez d\'abord un pôle</option>';
+                familleGrid.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 2rem;">Sélectionnez d\'abord un pôle d\'activité</div>';
+            }
+        }
+
+        // Initialisation des sélections existantes
+        document.addEventListener('DOMContentLoaded', function() {
+            // Présélectionner le pôle si une valeur existe
+            const oldPoleId = '{{ old("pole_id") }}';
+            if (oldPoleId) {
+                const selectedPoleCard = document.querySelector(`#poleGrid .selection-card[data-pole-id="${oldPoleId}"]`);
+                if (selectedPoleCard) {
+                    selectedPoleCard.classList.add('selected');
+                    document.getElementById('poleId').value = oldPoleId;
+                    loadFamillesMetiers(oldPoleId);
+                }
+            }
+            
+            // Présélectionner le diplôme si une valeur existe
+            const oldDiplomeId = '{{ old("niveau_diplome_id") }}';
+            if (oldDiplomeId) {
+                const selectedDiplomeCard = document.querySelector(`#diplomeGrid .selection-card[data-diplome-id="${oldDiplomeId}"]`);
+                if (selectedDiplomeCard) {
+                    selectedDiplomeCard.classList.add('selected');
+                    document.getElementById('niveauDiplomeId').value = oldDiplomeId;
+                }
             }
         });
     </script>

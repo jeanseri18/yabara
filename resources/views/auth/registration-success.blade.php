@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #132B98FF 0%, #0f1a3d 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -265,12 +265,72 @@
             </svg>
         </div>
 
-        <h1 class="success-title">Félicitations !</h1>
-        
-        <p class="success-message">
-            Votre compte a été créé avec succès sur YABARA.
-        </p>
-
+        @if($userType === 'entreprise')
+            @php
+                $messages = [
+                    [
+                        'title' => '🎉 Bienvenue chez YABARA, ' . ($user->entreprise->nom_entreprise ?? 'votre entreprise') . ' !',
+                        'content' => 'Vous venez d\'ouvrir la porte à une nouvelle façon de recruter : plus simple, plus rapide, plus humaine.<br>👉 Publiez votre première offre maintenant et découvrez les talents qui n\'attendent que vous'
+                    ],
+                    [
+                        'title' => '👏 Bravo ' . ($user->entreprise->nom_entreprise ?? 'votre entreprise') . ', votre espace est prêt !',
+                        'content' => 'Chez YABARA, nous croyons qu\'il existe un talent parfait pour chaque poste.<br>Faites le premier pas : rédigez votre première annonce et laissez la magie opérer.'
+                    ],
+                    [
+                        'title' => '🚀 C\'est parti, ' . ($user->entreprise->nom_entreprise ?? 'votre entreprise') . ' !',
+                        'content' => 'Votre aventure sur YABARA commence ici. Plus qu\'un outil, une expérience.<br>✨ Publiez votre première offre d\'emploi et entrez en contact avec les meilleurs talents du pays'
+                    ],
+                    [
+                        'title' => '🤝 Merci de faire confiance à YABARA, ' . ($user->entreprise->nom_entreprise ?? 'votre entreprise') . ' !',
+                        'content' => 'Vous venez de rejoindre une communauté engagée qui transforme le recrutement en opportunité.<br>🎯 N\'attendez plus : partagez votre première offre et démarrez votre parcours avec nous.'
+                    ],
+                    [
+                        'title' => '🌟 Bienvenue dans la famille YABARA, ' . ($user->entreprise->nom_entreprise ?? 'votre entreprise') . ' !',
+                        'content' => 'Ici, chaque entreprise a sa place, chaque talent a son potentiel.<br>📣 Commencez fort : postez votre première annonce et créez des connexions qui comptent.'
+                    ]
+                ];
+                $randomMessage = $messages[array_rand($messages)];
+            @endphp
+            
+            <h1 class="success-title">{!! $randomMessage['title'] !!}</h1>
+            
+            <p class="success-message">
+                {!! $randomMessage['content'] !!}
+            </p>
+        @else
+            @php
+                $talentMessages = [
+                    [
+                        'title' => '🎉 Bienvenue sur YABARA, ' . ($user->talent->first_name ?? 'cher talent') . ' !',
+                        'content' => 'Vous venez de franchir la première étape vers de nouvelles opportunités professionnelles.<br>👉 Complétez votre profil maintenant et laissez les entreprises vous découvrir'
+                    ],
+                    [
+                        'title' => '👏 Bravo ' . ($user->talent->first_name ?? 'cher talent') . ', votre aventure commence !',
+                        'content' => 'Chez YABARA, nous croyons que chaque talent mérite sa chance.<br>✨ Enrichissez votre profil et explorez les opportunités qui vous attendent.'
+                    ],
+                    [
+                        'title' => '🚀 C\'est parti, ' . ($user->talent->first_name ?? 'cher talent') . ' !',
+                        'content' => 'Votre parcours professionnel prend une nouvelle dimension sur YABARA.<br>🎯 Complétez votre CV et connectez-vous avec les meilleures entreprises du pays'
+                    ],
+                    [
+                        'title' => '🤝 Merci de rejoindre YABARA, ' . ($user->talent->first_name ?? 'cher talent') . ' !',
+                        'content' => 'Vous faites maintenant partie d\'une communauté qui valorise les talents authentiques.<br>📈 Construisez votre profil et ouvrez-vous de nouveaux horizons professionnels.'
+                    ],
+                    [
+                        'title' => '🌟 Bienvenue dans la communauté YABARA, ' . ($user->talent->first_name ?? 'cher talent') . ' !',
+                        'content' => 'Ici, votre potentiel trouve sa place, vos compétences trouvent leur valeur.<br>💼 Finalisez votre profil et découvrez les opportunités qui vous correspondent.'
+                    ]
+                ];
+                $randomTalentMessage = $talentMessages[array_rand($talentMessages)];
+            @endphp
+            
+            <h1 class="success-title">{!! $randomTalentMessage['title'] !!}</h1>
+            
+            <p class="success-message">
+                {!! $randomTalentMessage['content'] !!}
+            </p>
+        @endif
+<!-- 
         <div class="user-info">
             <h3>Informations du compte</h3>
             <p><strong>Type :</strong> {{ ucfirst($userType) }}</p>
@@ -294,8 +354,8 @@
                      <p><strong>Secteur :</strong> {{ $user->entreprise->pole->nom }}</p>
                  @endif
             @endif
-        </div>
-
+        </div> -->
+<!-- 
         @if($userType === 'talent')
         <div class="next-steps">
             <h4>
@@ -325,7 +385,7 @@
             </ul>
         </div>
         @endif
-
+ -->
         <div class="action-buttons">
             @if($userType === 'talent')
                 <a href="{{ route('talent.dashboard') }}" class="btn btn-primary">

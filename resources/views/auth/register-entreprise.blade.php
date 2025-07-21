@@ -80,45 +80,28 @@
             font-size: 0.95rem;
         }
 
-        .step-indicator {
-            display: flex;
-            justify-content: space-between;
+        .progress-container {
+            position: relative;
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 5px;
             margin-bottom: 2rem;
-            position: relative;
         }
 
-        .step {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #e5e7eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #6b7280;
-            position: relative;
-            z-index: 2;
-        }
-
-        .step.active {
+        .progress-bar {
+            height: 100%;
             background: #162359;
-            color: white;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+            width: 0%;
         }
 
-        .step.completed {
-            background: #10b981;
-            color: white;
-        }
-
-        .step-line {
+        .progress-label {
             position: absolute;
-            top: 50%;
-            left: 30px;
-            right: 30px;
-            height: 2px;
-            background: #e5e7eb;
-            z-index: 1;
+            bottom: -20px;
+            right: 0;
+            font-size: 0.875rem;
+            color: #162359;
         }
 
         .form-step {
@@ -242,7 +225,53 @@
             gap: 1rem;
         }
         
+        .selection-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
 
+        .selection-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            position: relative;
+        }
+
+        .selection-card:hover {
+            border-color: #162359;
+            box-shadow: 0 4px 12px rgba(22, 35, 89, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .selection-card.selected {
+            border-color: #162359;
+            background: #f8fafc;
+            box-shadow: 0 4px 12px rgba(22, 35, 89, 0.15);
+        }
+
+        .selection-card .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .selection-card .title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .selection-card .description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
 
         @media (max-width: 768px) {
             .container {
@@ -275,19 +304,28 @@
                 <h1 class="form-title">Inscription Entreprise</h1>
                 <p class="form-subtitle">Créez votre compte entreprise pour recruter des talents</p>
                 
-                <div class="step-indicator">
-                    <div class="step-line"></div>
-                    <div class="step active" data-step="1">1</div>
-                    <div class="step" data-step="2">2</div>
-                    <div class="step" data-step="3">3</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                    <div class="progress-label" id="progressLabel">0%</div>
                 </div>
+
+                <!-- Affichage des erreurs Laravel -->
+                @if ($errors->any())
+                    <div style="background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <ul style="list-style: none; margin: 0; padding: 0;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
                 <div id="error-container" style="display: none; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
                     <ul id="error-list" style="list-style: none;">
                     </ul>
                 </div>
 
-                <form method="POST" action="{{ route('register.entreprise') }}" id="entrepriseForm">
+                <form method="POST" action="{{ route('register.entreprise') }}" id="entrepriseForm" enctype="multipart/form-data">
                     @csrf
                     
                     <!-- Étape 1: Informations de connexion -->
@@ -316,25 +354,36 @@
                         </div>
                     </div>
                     
-                    <!-- Étape 2: Informations entreprise -->
+                    <!-- Étape 2: Sélection du pôle d'activité -->
                     <div class="form-step" data-step="2">
+                        <div class="section-title">Pôle d'activité</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Sélectionnez votre pôle d'activité</label>
+                            <input type="hidden" name="pole_activite_id" id="pole_activite_id">
+                            <div class="selection-grid" id="poles-grid">
+                                @foreach($poles as $pole)
+                                    <div class="selection-card" data-value="{{ $pole->id }}">
+                                        <span class="icon">{{ $pole->icone }}</span>
+                                        <div class="title">{{ $pole->nom }}</div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary" id="prevBtn2">Précédent</button>
+                            <button type="button" class="btn btn-primary" id="nextBtn2">Suivant</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Étape 3: Informations entreprise -->
+                    <div class="form-step" data-step="3">
                         <div class="section-title">Informations entreprise</div>
                         
                         <div class="form-group">
                             <label class="form-label">Nom de l'entreprise</label>
                             <input type="text" name="nom_entreprise" class="form-input" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Pôle d'activité</label>
-                            <select name="pole_activite_id" class="form-select">
-                                <option value="">Sélectionnez un pôle d'activité</option>
-                                @foreach($poles as $pole)
-                                    <option value="{{ $pole->id }}" {{ old('pole_activite_id') == $pole->id ? 'selected' : '' }}>
-                                        {{ $pole->icone }} {{ $pole->nom }}
-                                    </option>
-                                @endforeach
-                            </select>
                         </div>
                         
                         <div class="form-group">
@@ -354,13 +403,13 @@
                         </div>
                         
                         <div class="btn-group">
-                            <button type="button" class="btn btn-secondary" id="prevBtn2">Précédent</button>
-                            <button type="button" class="btn btn-primary" id="nextBtn2">Suivant</button>
+                            <button type="button" class="btn btn-secondary" id="prevBtn3">Précédent</button>
+                            <button type="button" class="btn btn-primary" id="nextBtn3">Suivant</button>
                         </div>
                     </div>
                     
-                    <!-- Étape 3: Responsable RH -->
-                    <div class="form-step" data-step="3">
+                    <!-- Étape 4: Responsable RH -->
+                    <div class="form-step" data-step="4">
                         <div class="section-title">Responsable RH</div>
                         
                         <div class="info-box">
@@ -391,12 +440,38 @@
                             </div>
                         </div>
                         
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary" id="prevBtn4">Précédent</button>
+                            <button type="button" class="btn btn-primary" id="nextBtn4">Suivant</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Étape 5: Logo de l'entreprise -->
+                    <div class="form-step" data-step="5">
+                        <div class="section-title">Logo de l'entreprise</div>
+                        
+                        <div class="info-box">
+                            🎨 Ajoutez le logo de votre entreprise pour personnaliser votre profil (optionnel).
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Logo de l'entreprise</label>
+                            <input type="file" name="logo_url" class="form-input" accept="image/*" style="padding: 0.5rem;">
+                            <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
+                                Formats acceptés : JPG, PNG, SVG. Taille maximale : 2MB.
+                            </small>
+                        </div>
+                        
+                        <div id="logo-preview" style="margin-top: 1rem; text-align: center; display: none;">
+                            <img id="preview-image" src="" alt="Aperçu du logo" style="max-width: 200px; max-height: 200px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px;">
+                        </div>
+                        
                         <div class="info-box">
                             📋 Votre compte sera vérifié par notre équipe avant activation. Vous recevrez un email de confirmation une fois la vérification terminée.
                         </div>
                         
                         <div class="btn-group">
-                            <button type="button" class="btn btn-secondary" id="prevBtn3">Précédent</button>
+                            <button type="button" class="btn btn-secondary" id="prevBtn5">Précédent</button>
                             <button type="submit" class="btn btn-primary">Créer mon compte entreprise</button>
                         </div>
                     </div>
@@ -408,7 +483,7 @@
     <script>
         // Déclaration des variables globales
         let currentStep = 1;
-        const totalSteps = 3;
+        const totalSteps = 5;
 
         // Fonction pour afficher une étape spécifique
         function showStep(step) {
@@ -420,15 +495,10 @@
             // Afficher l'étape courante
             document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
             
-            // Mettre à jour les indicateurs
-            document.querySelectorAll('.step').forEach((el, index) => {
-                el.classList.remove('active', 'completed');
-                if (index + 1 < step) {
-                    el.classList.add('completed');
-                } else if (index + 1 === step) {
-                    el.classList.add('active');
-                }
-            });
+            // Mettre à jour la barre de progression
+            const progress = ((step - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressLabel').textContent = `${Math.round(progress)}%`;
         }
 
         // Fonction pour valider les champs d'une étape
@@ -466,22 +536,27 @@
                     isValid = false;
                 }
             } else if (step === 2) {
-                // Validation de l'étape 2 (Informations entreprise)
+                // Validation de l'étape 2 (Sélection du pôle d'activité)
+                const poleActivite = document.querySelector('input[name="pole_activite_id"]').value;
+                
+                if (!poleActivite) {
+                    errorList.innerHTML += '<li>Veuillez sélectionner un pôle d\'activité</li>';
+                    isValid = false;
+                }
+            } else if (step === 3) {
+                // Validation de l'étape 3 (Informations entreprise)
                 const nomEntreprise = document.querySelector('input[name="nom_entreprise"]').value;
-                const poleActivite = document.querySelector('select[name="pole_activite_id"]').value;
                 
                 if (!nomEntreprise) {
                     errorList.innerHTML += '<li>Le nom de l\'entreprise est obligatoire</li>';
                     isValid = false;
                 }
-                
-                if (!poleActivite) {
-                    errorList.innerHTML += '<li>Le pôle d\'activité est obligatoire</li>';
-                    isValid = false;
-                }
-            } else if (step === 3) {
-                // Validation de l'étape 3 (Responsable RH)
+            } else if (step === 4) {
+                // Validation de l'étape 4 (Responsable RH)
                 // Ces champs sont optionnels, mais on peut ajouter des validations spécifiques si nécessaire
+            } else if (step === 5) {
+                // Validation de l'étape 5 (Logo de l'entreprise)
+                // Le logo est optionnel, pas de validation nécessaire
             }
             
             if (!isValid) {
@@ -492,6 +567,24 @@
         }
 
 
+
+        // Gestion des cartes sélectionnables
+        document.querySelectorAll('.selection-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Retirer la sélection de toutes les cartes du même groupe
+                const grid = this.closest('.selection-grid');
+                grid.querySelectorAll('.selection-card').forEach(c => c.classList.remove('selected'));
+                
+                // Ajouter la sélection à la carte cliquée
+                this.classList.add('selected');
+                
+                // Mettre à jour le champ caché correspondant
+                const value = this.getAttribute('data-value');
+                if (grid.id === 'poles-grid') {
+                    document.getElementById('pole_activite_id').value = value;
+                }
+            });
+        });
 
         // Écouteurs d'événements pour les boutons
         document.getElementById('nextBtn1').addEventListener('click', function() {
@@ -520,12 +613,85 @@
             currentStep--;
             showStep(currentStep);
         });
+
+        document.getElementById('nextBtn3').addEventListener('click', function() {
+            // Valider l'étape actuelle avant de passer à la suivante
+            if (validateStep(currentStep)) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        document.getElementById('prevBtn4').addEventListener('click', function() {
+            currentStep--;
+            showStep(currentStep);
+        });
+
+        document.getElementById('nextBtn4').addEventListener('click', function() {
+            // Valider l'étape actuelle avant de passer à la suivante
+            if (validateStep(currentStep)) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        document.getElementById('prevBtn5').addEventListener('click', function() {
+            currentStep--;
+            showStep(currentStep);
+        });
+        
+        // Gestion de l'aperçu du logo
+        document.querySelector('input[name="logo_url"]').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('logo-preview');
+            const previewImage = document.getElementById('preview-image');
+            
+            if (file) {
+                // Vérifier la taille du fichier (2MB max)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('Le fichier est trop volumineux. Taille maximale : 2MB.');
+                    e.target.value = '';
+                    preview.style.display = 'none';
+                    return;
+                }
+                
+                // Vérifier le type de fichier
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Type de fichier non autorisé. Formats acceptés : JPEG, JPG, PNG, SVG.');
+                    e.target.value = '';
+                    preview.style.display = 'none';
+                    return;
+                }
+                
+                // Afficher l'aperçu
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        });
         
         // Validation du formulaire avant soumission finale
         document.getElementById('entrepriseForm').addEventListener('submit', function(e) {
             e.preventDefault();
             if (validateStep(currentStep)) {
                 this.submit();
+            }
+        });
+
+        // Restaurer les sélections en cas d'erreur de validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const poleValue = document.getElementById('pole_activite_id').value;
+            if (poleValue) {
+                const selectedCard = document.querySelector(`[data-value="${poleValue}"]`);
+                if (selectedCard) {
+                    selectedCard.classList.add('selected');
+                }
             }
         });
     </script>

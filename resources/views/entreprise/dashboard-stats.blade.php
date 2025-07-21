@@ -11,18 +11,34 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-md-2 text-center">
-                            @if($entreprise->logo)
-                                <img src="{{ $entreprise->logo }}" alt="Logo" class="img-fluid rounded-circle" style="max-height: 80px;">
+                            @if($entreprise->logo_url)
+                                <img src="{{ $entreprise->logo_url }}" alt="Logo {{ $entreprise->nom_entreprise }}" class="img-fluid rounded-circle" style="max-height: 80px; width: 80px; height: 80px; object-fit: cover; border: 4px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                             @else
-                                <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 80px; height: 80px;">
-                                    <i class="fas fa-building fa-2x"></i>
+                                @php
+                                    $initials = '';
+                                    $words = explode(' ', $entreprise->nom_entreprise);
+                                    foreach($words as $word) {
+                                        if(strlen(trim($word)) > 0) {
+                                            $initials .= strtoupper(substr(trim($word), 0, 1));
+                                        }
+                                        if(strlen($initials) >= 2) break;
+                                    }
+                                    if(strlen($initials) < 2 && strlen($entreprise->nom_entreprise) > 0) {
+                                        $initials = strtoupper(substr($entreprise->nom_entreprise, 0, 2));
+                                    }
+                                @endphp
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 80px; height: 80px; font-size: 24px; font-weight: bold; border: 4px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                    {{ $initials }}
                                 </div>
                             @endif
                         </div>
                         <div class="col-md-8">
-                            <h3 class="mb-1">{{ $entreprise->nom_entreprise }}</h3>
-                            <p class="mb-1"><i class="fas fa-id-card me-2"></i>RCCM: {{ $entreprise->rccm }}</p>
-                            <p class="mb-0"><i class="fas fa-users me-2"></i>Effectif: {{ $entreprise->effectif }} employés</p>
+                            <h3 class="mb-2">{{ $entreprise->nom_entreprise }}</h3>
+                            <div class="welcome-message  text-white" style="font-style: italic; line-height: 1.4;color:white">
+                                <span style="color: #fbbf24;">✨</span> Bonjour {{ $entreprise->nom_entreprise }},<br>
+                                Prêt à repérer les talents qui feront briller votre équipe ?<br>
+                                Votre expérience de recrutement commence ici — fluide, intuitive, 100% YABARA.
+                            </div>
                         </div>
                         <div class="col-md-2 text-center">
                             <div class="company-status">
