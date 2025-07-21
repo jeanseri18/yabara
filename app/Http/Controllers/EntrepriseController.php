@@ -828,62 +828,59 @@ class EntrepriseController extends Controller
         ]);
     }
     
-    // WF-E06: Badges Entreprise
+    // WF-E06: Badges Entreprise - Salle de Trophées
     public function showBadges()
     {
         $entreprise = Auth::user()->entreprise;
         
-        // Récupérer les badges de l'entreprise
-        $badges = $entreprise->badges()->with('badge')->get();
+        // Messages aléatoires pour la salle de trophées
+        $messagesAleatoires = [
+            "Débloquez votre potentiel RH 💼",
+            "Plus vous recrutez, plus vous progressez 🚀",
+            "Une salle des trophées à votre image 🏆",
+            "Célébrez chaque victoire dans votre aventure RH 🎉",
+            "Les meilleurs recruteurs ne passent pas inaperçus 👀"
+        ];
+        $messageAleatoire = $messagesAleatoires[array_rand($messagesAleatoires)];
         
-        // Calculer les statistiques pour les badges
-        $totalBadgesDisponibles = \App\Models\Badge::count();
-        $pourcentageCompletion = $totalBadgesDisponibles > 0 ? ($badges->count() / $totalBadgesDisponibles) * 100 : 0;
+        // Définir tous les badges disponibles avec leurs critères
+        $allBadges = $this->getAllBadgesDefinitions();
+        
+        // Calculer le statut de chaque badge
+        $badges = [];
+        foreach ($allBadges as $badgeData) {
+            $badge = $badgeData;
+            $badge['obtained'] = $this->checkBadgeCondition($entreprise, $badge['id']);
+            $badge['progression'] = $this->calculateBadgeProgression($entreprise, $badge['id']);
+            $badge['date_obtention'] = $badge['obtained'] ? now() : null;
+            $badges[] = $badge;
+        }
+        
+        $badgesObtenus = collect($badges)->where('obtained', true);
+        $totalBadgesDisponibles = count($allBadges);
+        $pourcentageCompletion = $totalBadgesDisponibles > 0 ? ($badgesObtenus->count() / $totalBadgesDisponibles) * 100 : 0;
         
         $stats = [
-            'total_badges' => $badges->count(),
-            'badges_obtenus' => $badges->count(),
-            'badges_recents' => $badges->where('created_at', '>=', now()->subDays(30))->count(),
-            'points_total' => $badges->sum('points_gagnes'),
+            'total_badges' => $totalBadgesDisponibles,
+            'badges_obtenus' => $badgesObtenus->count(),
+            'badges_recents' => $badgesObtenus->where('date_obtention', '>=', now()->subDays(30))->count(),
+            'points_total' => $badgesObtenus->sum('points'),
             'niveau_actuel' => $this->calculerNiveauEntreprise($entreprise),
             'niveau_entreprise' => $this->calculerNiveauEntreprise($entreprise),
             'pourcentage_completion' => $pourcentageCompletion,
-            'credits_disponibles' => $badges->sum('points_gagnes'), // Credits based on total points earned
-            'reduction_max' => min(50, floor($badges->sum('points_gagnes') / 100) * 5) // Max 50% reduction based on points
+            'credits_disponibles' => $badgesObtenus->sum('points'),
+            'reduction_max' => min(50, floor($badgesObtenus->sum('points') / 100) * 5)
         ];
         
-        // Badges disponibles à débloquer
-        $badgesDisponibles = \App\Models\Badge::whereNotIn('id', $badges->pluck('badge_id'))->get();
+        // Prochains objectifs (badges non obtenus avec progression > 0)
+        $prochains_objectifs = collect($badges)
+            ->where('obtained', false)
+            ->where('progression', '>', 0)
+            ->take(6)
+            ->values()
+            ->toArray();
         
-        // Prochains objectifs à atteindre
-        $prochains_objectifs = [
-            [
-                'nom' => 'Première offre publiée',
-                'icon' => 'fas fa-briefcase',
-                'color' => 'primary',
-                'valeur_actuelle' => $entreprise->total_offres_publiees ?? 0,
-                'valeur_requise' => 1,
-                'progression' => min(100, (($entreprise->total_offres_publiees ?? 0) / 1) * 100)
-            ],
-            [
-                'nom' => '5 candidatures reçues',
-                'icon' => 'fas fa-users',
-                'color' => 'success',
-                'valeur_actuelle' => $entreprise->candidatures()->count(),
-                'valeur_requise' => 5,
-                'progression' => min(100, ($entreprise->candidatures()->count() / 5) * 100)
-            ],
-            [
-                'nom' => 'Premier recrutement',
-                'icon' => 'fas fa-handshake',
-                'color' => 'warning',
-                'valeur_actuelle' => $entreprise->total_recrutements_finalises ?? 0,
-                'valeur_requise' => 1,
-                'progression' => min(100, (($entreprise->total_recrutements_finalises ?? 0) / 1) * 100)
-            ]
-        ];
-        
-        return view('entreprise.badges', compact('badges', 'stats', 'badgesDisponibles', 'prochains_objectifs'));
+        return view('entreprise.badges', compact('badges', 'stats', 'prochains_objectifs', 'messageAleatoire'));
     }
     
     public function checkNewBadges()
@@ -899,10 +896,410 @@ class EntrepriseController extends Controller
         ]);
     }
     
+    private function getAllBadgesDefinitions()
+    {
+        return [
+            // Badges de Recrutement
+            [
+                'id' => 'recruteur_express',
+                'nom' => 'Recruteur Express 🚀',
+                'description' => '1 recrutement en moins de 14 jours',
+                'message_marketing' => 'Rapide et efficace, vous inspirez confiance !',
+                'recompense' => 'Boost gratuit d\'annonce',
+                'icon' => 'fas fa-rocket',
+                'color' => 'primary',
+                'category' => 'recrutement',
+                'points' => 100,
+                'criteres' => 'Finaliser un recrutement dans les 14 jours suivant la publication de l\'offre',
+                'valeur_requise' => 1
+            ],
+            [
+                'id' => 'chasseur_talents',
+                'nom' => 'Chasseur de Talents 🧠',
+                'description' => '5 talents présélectionnés',
+                'message_marketing' => 'Un œil de lynx RH ! Vous détectez les pépites.',
+                'recompense' => 'Affichage prioritaire',
+                'icon' => 'fas fa-search',
+                'color' => 'success',
+                'category' => 'recrutement',
+                'points' => 150,
+                'criteres' => 'Présélectionner 5 talents pour vos offres',
+                'valeur_requise' => 5
+            ],
+            [
+                'id' => 'maitre_matching',
+                'nom' => 'Maître du Matching 💡',
+                'description' => '10 talents ont postulé à vos offres',
+                'message_marketing' => 'Vous visez juste à chaque fois.',
+                'recompense' => 'Accès à des suggestions IA premium',
+                'icon' => 'fas fa-lightbulb',
+                'color' => 'warning',
+                'category' => 'recrutement',
+                'points' => 200,
+                'criteres' => 'Recevoir 10 candidatures sur vos offres',
+                'valeur_requise' => 10
+            ],
+            [
+                'id' => 'architecte_equipe',
+                'nom' => 'Architecte d\'Équipe 🏗️',
+                'description' => '5 recrutements réussis',
+                'message_marketing' => 'Vous construisez les fondations de demain.',
+                'recompense' => 'Badge + remerciement officiel',
+                'icon' => 'fas fa-building',
+                'color' => 'info',
+                'category' => 'recrutement',
+                'points' => 500,
+                'criteres' => 'Finaliser 5 recrutements avec succès',
+                'valeur_requise' => 5
+            ],
+            [
+                'id' => 'recruteur_eclair',
+                'nom' => 'Recruteur Éclair 🌩️',
+                'description' => '1 recrutement effectué dans la semaine suivant la publication',
+                'message_marketing' => 'Rapidité + efficacité = talent sécurisé !',
+                'recompense' => 'Boost prioritaire automatique',
+                'icon' => 'fas fa-bolt',
+                'color' => 'warning',
+                'category' => 'recrutement',
+                'points' => 150,
+                'criteres' => 'Recruter dans les 7 jours suivant la publication',
+                'valeur_requise' => 1
+            ],
+            
+            // Badges d'Activité
+            [
+                'id' => 'star_mois',
+                'nom' => 'Star du Mois 🌟',
+                'description' => 'Top 3 entreprises les + actives du mois',
+                'message_marketing' => 'Vous brillez sur la plateforme.',
+                'recompense' => 'Mise en avant dans newsletter',
+                'icon' => 'fas fa-star',
+                'color' => 'warning',
+                'category' => 'activite',
+                'points' => 300,
+                'criteres' => 'Être dans le top 3 des entreprises les plus actives',
+                'valeur_requise' => 1
+            ],
+            [
+                'id' => 'marathon_rh',
+                'nom' => 'Marathon RH 🏃‍♂️',
+                'description' => 'Connexion 7 jours de suite',
+                'message_marketing' => 'La régularité paie toujours.',
+                'recompense' => 'XP bonus ou badge visuel',
+                'icon' => 'fas fa-running',
+                'color' => 'success',
+                'category' => 'activite',
+                'points' => 100,
+                'criteres' => 'Se connecter 7 jours consécutifs',
+                'valeur_requise' => 7
+            ],
+            [
+                'id' => 'serial_publisher',
+                'nom' => 'Serial Publisher 📣',
+                'description' => '10 offres d\'emploi publiées',
+                'message_marketing' => 'Vous avez toujours un poste à pourvoir… et un talent à découvrir !',
+                'recompense' => '1 publication gratuite',
+                'icon' => 'fas fa-bullhorn',
+                'color' => 'primary',
+                'category' => 'activite',
+                'points' => 250,
+                'criteres' => 'Publier 10 offres d\'emploi',
+                'valeur_requise' => 10
+            ],
+            [
+                'id' => 'recruteur_nocturne',
+                'nom' => 'Recruteur Nocturne 🌙',
+                'description' => 'Connexion entre 21h et 6h, au moins 2 fois sur une semaine',
+                'message_marketing' => 'Même la nuit, vous construisez votre équipe !',
+                'recompense' => 'Badge spécial nocturne',
+                'icon' => 'fas fa-moon',
+                'color' => 'dark',
+                'category' => 'activite',
+                'points' => 75,
+                'criteres' => 'Se connecter la nuit (21h-6h) au moins 2 fois par semaine',
+                'valeur_requise' => 2
+            ],
+            [
+                'id' => 'explorateur_yabara',
+                'nom' => 'Explorateur YABARA 🧭',
+                'description' => 'A exploré toutes les sections (Kanban, stats, badges, etc.)',
+                'message_marketing' => 'Vous connaissez YABARA comme votre poche.',
+                'recompense' => 'Badge explorateur + 1 mois premium',
+                'icon' => 'fas fa-compass',
+                'color' => 'info',
+                'category' => 'activite',
+                'points' => 200,
+                'criteres' => 'Visiter toutes les sections de la plateforme',
+                'valeur_requise' => 5
+            ],
+            
+            // Badges de Performance
+            [
+                'id' => 'full_pack',
+                'nom' => 'Full Pack 💼',
+                'description' => 'Toutes fonctionnalités ont été utilisées',
+                'message_marketing' => 'Vous exploitez 100% du potentiel de YABARA.',
+                'recompense' => 'Badge or + mini-coaching RH',
+                'icon' => 'fas fa-briefcase',
+                'color' => 'warning',
+                'category' => 'performance',
+                'points' => 400,
+                'criteres' => 'Utiliser toutes les fonctionnalités disponibles',
+                'valeur_requise' => 10
+            ],
+            [
+                'id' => 'boite_talents',
+                'nom' => 'Boîte à Talents 💼',
+                'description' => '20 talents liés à des offres',
+                'message_marketing' => 'Votre vivier de candidats est en pleine croissance !',
+                'recompense' => 'Boost visibilité + badge argent',
+                'icon' => 'fas fa-users',
+                'color' => 'primary',
+                'category' => 'performance',
+                'points' => 300,
+                'criteres' => 'Avoir 20 talents qui ont postulé à vos offres',
+                'valeur_requise' => 20
+            ],
+            [
+                'id' => 'analyste_rh',
+                'nom' => 'Analyste RH 📊',
+                'description' => '3 rapports statistiques consultés',
+                'message_marketing' => 'Des décisions guidées par les données, bravo👏 !',
+                'recompense' => 'Accès à un rapport premium',
+                'icon' => 'fas fa-chart-bar',
+                'color' => 'info',
+                'category' => 'performance',
+                'points' => 150,
+                'criteres' => 'Consulter 3 rapports statistiques',
+                'valeur_requise' => 3
+            ],
+            [
+                'id' => 'reactif_pro',
+                'nom' => 'Réactif Pro ⚡',
+                'description' => '90% des candidatures traitées en moins de 72h',
+                'message_marketing' => 'Votre réactivité attire les meilleurs profils.',
+                'recompense' => 'Affichage prioritaire 7 jours',
+                'icon' => 'fas fa-tachometer-alt',
+                'color' => 'success',
+                'category' => 'performance',
+                'points' => 250,
+                'criteres' => 'Traiter 90% des candidatures en moins de 72h',
+                'valeur_requise' => 90
+            ],
+            [
+                'id' => 'offre_parfaite',
+                'nom' => 'Offre Parfaite ✅',
+                'description' => 'Offre avec 100% des champs remplis',
+                'message_marketing' => 'Une annonce claire attire les meilleurs talents.',
+                'recompense' => 'Coaching annonce ou visibilité',
+                'icon' => 'fas fa-check-circle',
+                'color' => 'success',
+                'category' => 'performance',
+                'points' => 100,
+                'criteres' => 'Publier une offre avec tous les champs remplis',
+                'valeur_requise' => 1
+            ],
+            [
+                'id' => 'maestro_filtrage',
+                'nom' => 'Maestro du Filtrage 🔍',
+                'description' => '15 recherches de talents avec filtres avancés',
+                'message_marketing' => 'Vous maîtrisez la recherche comme personne.',
+                'recompense' => 'Crédit de 5 talents à contacter',
+                'icon' => 'fas fa-filter',
+                'color' => 'primary',
+                'category' => 'performance',
+                'points' => 200,
+                'criteres' => 'Effectuer 15 recherches avec filtres avancés',
+                'valeur_requise' => 15
+            ],
+            [
+                'id' => 'offre_etoile',
+                'nom' => 'Offre Étoile 🌟',
+                'description' => 'Une offre avec plus de 4 candidats en entretien',
+                'message_marketing' => 'Votre offre attire les talents de demain !',
+                'recompense' => 'Mise en avant "Top offre de la semaine"',
+                'icon' => 'fas fa-star',
+                'color' => 'warning',
+                'category' => 'performance',
+                'points' => 200,
+                'criteres' => 'Avoir plus de 4 candidats en entretien pour une offre',
+                'valeur_requise' => 4
+            ],
+            [
+                'id' => 'equipe_complete',
+                'nom' => 'Équipe Complète 🧑‍🤝‍🧑',
+                'description' => '5 talents recrutés pour 5 offres différentes',
+                'message_marketing' => 'Bravo, votre équipe prend vie.',
+                'recompense' => 'Trophée digital + place dans le Hall of Fame',
+                'icon' => 'fas fa-users',
+                'color' => 'success',
+                'category' => 'performance',
+                'points' => 600,
+                'criteres' => 'Recruter 5 talents pour 5 offres différentes',
+                'valeur_requise' => 5
+            ],
+            
+            // Badges Spéciaux
+            [
+                'id' => 'ambassadeur_yabara',
+                'nom' => 'Ambassadeur YABARA 📣',
+                'description' => '3 entreprises invitées inscrites',
+                'message_marketing' => 'Vous contribuez à la croissance du réseau.',
+                'recompense' => 'Abonnement offert ou remise facture',
+                'icon' => 'fas fa-bullhorn',
+                'color' => 'primary',
+                'category' => 'special',
+                'points' => 500,
+                'criteres' => 'Inviter 3 entreprises qui s\'inscrivent',
+                'valeur_requise' => 3
+            ],
+            [
+                'id' => 'challenge_accepted',
+                'nom' => 'Challenge Accepted 🧨',
+                'description' => 'Participation à un défi YABARA',
+                'message_marketing' => 'Vous relevez tous les défis RH !',
+                'recompense' => 'Réduction abonnement 10%',
+                'icon' => 'fas fa-fire',
+                'color' => 'danger',
+                'category' => 'special',
+                'points' => 200,
+                'criteres' => 'Participer à un défi YABARA',
+                'valeur_requise' => 1
+            ],
+            [
+                'id' => 'zero_candidature_oubliee',
+                'nom' => '0 Candidature Oubliée 💌',
+                'description' => 'Toutes les candidatures ouvertes traitées dans le mois',
+                'message_marketing' => 'Rien ne vous échappe, bravo pour votre rigueur !',
+                'recompense' => 'Statut "Premium Pro" temporaire',
+                'icon' => 'fas fa-envelope-open',
+                'color' => 'success',
+                'category' => 'special',
+                'points' => 300,
+                'criteres' => 'Traiter toutes les candidatures du mois',
+                'valeur_requise' => 100
+            ],
+            [
+                'id' => 'feedbacker',
+                'nom' => 'Feedbacker ⭐',
+                'description' => 'Donne une note à 10 profils ou laisse un avis',
+                'message_marketing' => 'Merci de contribuer à améliorer YABARA !',
+                'recompense' => 'Points XP + badge collaboratif',
+                'icon' => 'fas fa-star',
+                'color' => 'warning',
+                'category' => 'special',
+                'points' => 150,
+                'criteres' => 'Donner 10 notes ou avis',
+                'valeur_requise' => 10
+            ],
+            [
+                'id' => 'trophee_or',
+                'nom' => 'Trophée d\'Or 🥇',
+                'description' => '10 badges obtenus',
+                'message_marketing' => 'Vous êtes un modèle de recrutement !',
+                'recompense' => 'Visibilité maximale sur la plateforme',
+                'icon' => 'fas fa-trophy',
+                'color' => 'warning',
+                'category' => 'special',
+                'points' => 1000,
+                'criteres' => 'Obtenir 10 badges',
+                'valeur_requise' => 10
+            ],
+            [
+                'id' => 'legend_rh',
+                'nom' => 'Legend RH 👑',
+                'description' => '15 badges obtenus',
+                'message_marketing' => 'Votre légende s\'écrit ici. Recruteur modèle !',
+                'recompense' => 'Statut élite + trophée animé dans le dashboard',
+                'icon' => 'fas fa-crown',
+                'color' => 'warning',
+                'category' => 'special',
+                'points' => 2000,
+                'criteres' => 'Obtenir 15 badges',
+                'valeur_requise' => 15
+            ]
+        ];
+    }
+    
+    private function checkBadgeCondition($entreprise, $badgeId)
+    {
+        // Simuler les conditions pour la démonstration
+        // Dans un vrai système, ces conditions seraient basées sur les vraies données
+        $conditions = [
+            'recruteur_express' => ($entreprise->total_recrutements_finalises ?? 0) >= 1,
+            'chasseur_talents' => ($entreprise->candidatures()->count()) >= 5,
+            'maitre_matching' => ($entreprise->candidatures()->count()) >= 10,
+            'architecte_equipe' => ($entreprise->total_recrutements_finalises ?? 0) >= 5,
+            'recruteur_eclair' => ($entreprise->total_recrutements_finalises ?? 0) >= 1,
+            'star_mois' => false, // Nécessite une logique de classement
+            'marathon_rh' => false, // Nécessite un suivi des connexions
+            'serial_publisher' => ($entreprise->total_offres_publiees ?? 0) >= 10,
+            'recruteur_nocturne' => false, // Nécessite un suivi des heures de connexion
+            'explorateur_yabara' => false, // Nécessite un suivi des pages visitées
+            'full_pack' => false, // Nécessite un suivi des fonctionnalités utilisées
+            'boite_talents' => ($entreprise->candidatures()->count()) >= 20,
+            'analyste_rh' => false, // Nécessite un suivi des consultations de rapports
+            'reactif_pro' => false, // Nécessite un calcul de temps de réponse
+            'offre_parfaite' => ($entreprise->total_offres_publiees ?? 0) >= 1,
+            'maestro_filtrage' => false, // Nécessite un suivi des recherches
+            'offre_etoile' => false, // Nécessite un suivi des entretiens
+            'equipe_complete' => ($entreprise->total_recrutements_finalises ?? 0) >= 5,
+            'ambassadeur_yabara' => false, // Nécessite un système de parrainage
+            'challenge_accepted' => false, // Nécessite un système de défis
+            'zero_candidature_oubliee' => false, // Nécessite un suivi des traitements
+            'feedbacker' => false, // Nécessite un système de notation
+            'trophee_or' => false, // Sera calculé dynamiquement
+            'legend_rh' => false // Sera calculé dynamiquement
+        ];
+        
+        return $conditions[$badgeId] ?? false;
+    }
+    
+    private function calculateBadgeProgression($entreprise, $badgeId)
+    {
+        $progressions = [
+            'recruteur_express' => min(100, (($entreprise->total_recrutements_finalises ?? 0) / 1) * 100),
+            'chasseur_talents' => min(100, ($entreprise->candidatures()->count() / 5) * 100),
+            'maitre_matching' => min(100, ($entreprise->candidatures()->count() / 10) * 100),
+            'architecte_equipe' => min(100, (($entreprise->total_recrutements_finalises ?? 0) / 5) * 100),
+            'recruteur_eclair' => min(100, (($entreprise->total_recrutements_finalises ?? 0) / 1) * 100),
+            'star_mois' => 0,
+            'marathon_rh' => 0,
+            'serial_publisher' => min(100, (($entreprise->total_offres_publiees ?? 0) / 10) * 100),
+            'recruteur_nocturne' => 0,
+            'explorateur_yabara' => 0,
+            'full_pack' => 0,
+            'boite_talents' => min(100, ($entreprise->candidatures()->count() / 20) * 100),
+            'analyste_rh' => 0,
+            'reactif_pro' => 0,
+            'offre_parfaite' => min(100, (($entreprise->total_offres_publiees ?? 0) / 1) * 100),
+            'maestro_filtrage' => 0,
+            'offre_etoile' => 0,
+            'equipe_complete' => min(100, (($entreprise->total_recrutements_finalises ?? 0) / 5) * 100),
+            'ambassadeur_yabara' => 0,
+            'challenge_accepted' => 0,
+            'zero_candidature_oubliee' => 0,
+            'feedbacker' => 0,
+            'trophee_or' => 0,
+            'legend_rh' => 0
+        ];
+        
+        return $progressions[$badgeId] ?? 0;
+    }
+    
     private function calculerNiveauEntreprise($entreprise)
     {
-        $points = $entreprise->badges()->sum('points_gagnes');
+        // Calculer les points basés sur les badges obtenus
+        $allBadges = $this->getAllBadgesDefinitions();
+        $points = 0;
         
+        foreach ($allBadges as $badge) {
+            if ($this->checkBadgeCondition($entreprise, $badge['id'])) {
+                $points += $badge['points'];
+            }
+        }
+        
+        if ($points >= 2000) return 'Légende';
         if ($points >= 1000) return 'Expert';
         if ($points >= 500) return 'Avancé';
         if ($points >= 200) return 'Intermédiaire';
@@ -912,20 +1309,12 @@ class EntrepriseController extends Controller
     private function verifierNouveauxBadges($entreprise)
     {
         $newBadges = [];
+        $allBadges = $this->getAllBadgesDefinitions();
         
-        // Vérifier badge "Première offre publiée"
-        if ($entreprise->total_offres_publiees >= 1 && !$entreprise->badges()->where('badge_id', 1)->exists()) {
-            $newBadges[] = ['id' => 1, 'nom' => 'Première offre', 'description' => 'Votre première offre publiée'];
-        }
-        
-        // Vérifier badge "Recruteur actif" (5 offres)
-        if ($entreprise->total_offres_publiees >= 5 && !$entreprise->badges()->where('badge_id', 2)->exists()) {
-            $newBadges[] = ['id' => 2, 'nom' => 'Recruteur actif', 'description' => '5 offres publiées'];
-        }
-        
-        // Vérifier badge "Premier recrutement"
-        if ($entreprise->total_recrutements_finalises >= 1 && !$entreprise->badges()->where('badge_id', 3)->exists()) {
-            $newBadges[] = ['id' => 3, 'nom' => 'Premier recrutement', 'description' => 'Votre premier recrutement finalisé'];
+        foreach ($allBadges as $badge) {
+            if ($this->checkBadgeCondition($entreprise, $badge['id'])) {
+                $newBadges[] = $badge;
+            }
         }
         
         return $newBadges;
