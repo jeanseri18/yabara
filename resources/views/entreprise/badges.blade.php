@@ -24,7 +24,7 @@
     <!-- Statistiques de progression -->
     <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card border-0 text-white" style="background-color: #1040BB;">
+            <div class="card border-0 text-white" style="background-color: #14224F;">
                 <div class="card-body text-center">
                     <i class="fas fa-medal fa-2x mb-2"></i>
                     <h3 class="mb-0">{{ $stats['badges_obtenus'] }}</h3>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0 text-white" style="background-color: #071D55;">
+            <div class="card border-0 text-white" style="background-color: #14224F;">
                 <div class="card-body text-center">
                     <i class="fas fa-percentage fa-2x mb-2"></i>
                     <h3 class="mb-0">{{ number_format($stats['pourcentage_completion'], 1) }}%</h3>
@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0" style="background-color: #f6cd45; color: #071D55;">
+            <div class="card border-0" style="background-color: #f6cd45; color: #14224F;">
                 <div class="card-body text-center">
                     <i class="fas fa-star fa-2x mb-2"></i>
                     <h3 class="mb-0">{{ $stats['points_total'] }}</h3>
@@ -177,7 +177,7 @@
     <div class="row mt-5">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
-                <div class="card-header bg-gradient-primary text-white">
+                <div class="card-header bg-primary text-white">
                     <h5 class="mb-0"><i class="fas fa-gift me-2"></i>Mes Récompenses</h5>
                 </div>
                 <div class="card-body">
@@ -411,7 +411,7 @@
 }
 
 .objective-card:hover {
-    border-color: #0d6efd;
+    border-color:  #14224F;;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
@@ -437,7 +437,7 @@
 }
 
 .bg-gradient-primary {
-    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    background: linear-gradient(135deg, #0d6efd,  #14224F);
 }
 
 .bg-gradient-success {
@@ -445,7 +445,7 @@
 }
 
 .bg-gradient-info {
-    background: linear-gradient(135deg, #17a2b8, #6f42c1);
+    background: linear-gradient(135deg, #17a2b8,  #14224F);
 }
 
 .bg-gradient-warning {

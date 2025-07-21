@@ -31,7 +31,7 @@
 
 .step.active:not(:last-child)::after,
 .step.completed:not(:last-child)::after {
-    background: #283C5A;
+    background: #14224F;
 }
 
 .step-number {
@@ -53,7 +53,7 @@
 }
 
 .step.active .step-number {
-    background: #283C5A;
+    background: #14224F;
     color: white;
     transform: scale(1.1);
     box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
@@ -74,7 +74,7 @@
 }
 
 .step.active .step-title {
-    color: #283C5A;
+    color: #14224F;
     font-weight: 600;
 }
 
@@ -113,5 +113,5 @@
 
 /* Styles communs pour les pages de publication */
 .bg-gradient-primary {
-    background: linear-gradient(135deg, #283C5A 0%, #6610f2 100%);
+    background: linear-gradient(135deg, #14224F 0%, #6610f2 100%);
 }

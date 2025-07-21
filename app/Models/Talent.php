@@ -18,7 +18,7 @@ class Talent extends Model
         'phone',
         'pole_id',
         'famille_metier_id',
-        'niveau_etude',
+        'niveau_diplome_id',
         'cv_reference',
         'profile_completion_percentage',
         'parrain_cv_reference',
@@ -50,6 +50,11 @@ class Talent extends Model
         return $this->belongsTo(FamilleMetier::class);
     }
 
+    public function niveauDiplome()
+    {
+        return $this->belongsTo(NiveauDiplome::class);
+    }
+
     public function parrain()
     {
         return $this->belongsTo(Talent::class, 'parrain_cv_reference', 'cv_reference');
@@ -78,6 +83,11 @@ class Talent extends Model
     public function langues()
     {
         return $this->hasMany(Langue::class);
+    }
+
+    public function candidatures()
+    {
+        return $this->hasMany(Candidature::class);
     }
 
     public function getFullNameAttribute()

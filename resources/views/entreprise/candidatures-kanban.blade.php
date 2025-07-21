@@ -9,14 +9,24 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h2 class="mb-1"><i class="fas fa-tasks me-2" style="color: #1040BB;"></i>Suivi des Candidatures</h2>
-                    <p class="text-muted mb-0">Gérez vos candidatures avec le tableau Kanban</p>
+                    <h2 class="mb-1"><i class="fas fa-tasks me-2" style="color: #14224F;"></i>Suivi des Candidatures</h2>
+                    @if($offreSelectionnee)
+                        <p class="text-muted mb-0">{{ $offreSelectionnee->titre }} - {{ $offreSelectionnee->reference_offre }}</p>
+                    @else
+                        <p class="text-muted mb-0">Gérez vos candidatures avec le tableau Kanban</p>
+                    @endif
                 </div>
                 <div>
-                    <a href="{{ route('entreprise.dashboard') }}" class="btn btn-outline-secondary me-2">
-                        <i class="fas fa-arrow-left me-2"></i>Retour au dashboard
-                    </a>
-                    <button class="btn text-white" style="background-color: #1040BB;" data-bs-toggle="modal" data-bs-target="#filtersModal">
+                    @if($offreSelectionnee)
+                        <a href="{{ route('entreprise.offres.selection') }}" class="btn btn-outline-secondary me-2">
+                            <i class="fas fa-arrow-left me-2"></i>Retour aux offres
+                        </a>
+                    @else
+                        <a href="{{ route('entreprise.dashboard') }}" class="btn btn-outline-secondary me-2">
+                            <i class="fas fa-arrow-left me-2"></i>Retour au dashboard
+                        </a>
+                    @endif
+                    <button class="btn text-white" style="background-color: #14224F;" data-bs-toggle="modal" data-bs-target="#filtersModal">
                         <i class="fas fa-filter me-2"></i>Filtres
                     </button>
                 </div>
@@ -25,9 +35,9 @@
     </div>
 
     <!-- Statistiques rapides -->
-    <div class="row mb-4">
+    <!-- <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card border-0 text-white" style="background-color: #1040BB;">
+            <div class="card border-0 text-white" style="background-color: #14224F;">
                 <div class="card-body text-center">
                     <i class="fas fa-inbox fa-2x mb-2"></i>
                     <h4 class="mb-0" id="stat-recues">{{ $stats['candidatures_recues'] ?? 0 }}</h4>
@@ -36,7 +46,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0" style="background-color: #f6cd45; color: #071D55;">
+            <div class="card border-0" style="background-color: #f6cd45; color: #14224F;">
                 <div class="card-body text-center">
                     <i class="fas fa-star fa-2x mb-2"></i>
                     <h4 class="mb-0" id="stat-preselections">{{ $stats['preselections'] ?? 0 }}</h4>
@@ -45,7 +55,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0 text-white" style="background-color: #071D55;">
+            <div class="card border-0 text-white" style="background-color: #14224F;">
                 <div class="card-body text-center">
                     <i class="fas fa-comments fa-2x mb-2"></i>
                     <h4 class="mb-0" id="stat-entretiens">{{ $stats['entretiens'] ?? 0 }}</h4>
@@ -62,16 +72,16 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Tableau Kanban -->
     <div class="kanban-board">
         <div class="row g-3">
             <!-- Colonne 1: Candidatures reçues -->
-            <div class="col-lg-2">
+            <div class="col">
                 <div class="kanban-column card py-4 px-3" data-status="candidature_recue">
                 <br>
-                        <h5>Candidatures reçues</h5>
+                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #14224F;">Candidatures reçues (<span id="count-candidature_recue">0</span>)</h5>
                         <br>
                     <div class="kanban-body " id="column-candidature_recue">
                         <div class="kanban-loading text-center py-4">
@@ -83,10 +93,10 @@
             </div>
 
             <!-- Colonne 2: Présélectionnées -->
-            <div class="col-lg-2">
+            <div class="col">
                 <div class="kanban-column card py-4 px-3" data-status="preselctionnee">
                 <br>
-                        <h5>Présélectionnées</h5>
+                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #14224F;">Présélectionnées (<span id="count-preselctionnee">0</span>)</h5>
                         <br>
                     <div class="kanban-body " id="column-preselctionnee">
                         <div class="kanban-loading text-center py-4">
@@ -98,10 +108,10 @@
             </div>
 
             <!-- Colonne 3: En entretiens -->
-            <div class="col-lg-2">
+            <div class="col">
                 <div class="kanban-column card py-4 px-3" data-status="entretien">
                 <br>
-                        <h5>En entretiens</h5>
+                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #14224F;">En entretiens (<span id="count-entretien">0</span>)</h5>
                         <br>
                     <div class="kanban-body " id="column-entretien">
                         <div class="kanban-loading text-center py-4">
@@ -113,10 +123,10 @@
             </div>
 
             <!-- Colonne 4: Recrutés -->
-            <div class="col-lg-3">
+            <div class="col">
                 <div class="kanban-column card py-4 px-3" data-status="retenue">
                 <br>
-                        <h5>Recrutés</h5>
+                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #14224F;">Recrutés (<span id="count-retenue">0</span>)</h5>
                         <br>
                     <div class="kanban-body " id="column-retenue">
                         <div class="kanban-loading text-center py-4">
@@ -128,10 +138,10 @@
             </div>
 
             <!-- Colonne 5: Refusées -->
-            <div class="col-lg-3">
+            <div class="col">
                 <div class="kanban-column card py-4 px-3" data-status="refusee">
                 <br>
-                        <h5>Refusées</h5>
+                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #14224F;">Refusées (<span id="count-refusee">0</span>)</h5>
                         <br>
                     <div class="kanban-body " id="column-refusee">
                         <div class="kanban-loading text-center py-4">
@@ -247,19 +257,13 @@
 }
 
 .kanban-card {
-    background: white;
-    border-radius: 20px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px #606060FF ;
     cursor: move;
     transition: all 0.3s ease;
-    border-left: 4px solid #dee2e6 ;
 }
 
 .kanban-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2) !important;
 }
 
 .kanban-card.dragging {
@@ -304,7 +308,7 @@
 .candidate-info h6 {
     margin-bottom: 0.25rem;
     font-weight: 600;
-    color: #283C5A;
+    color: #14224F;
     font-size: 14px;
 }
 
@@ -338,7 +342,7 @@
 .kanban-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    border-left-color: #283C5A;
+    border-left-color: #14224F;
 }
 
 .status-badge {
@@ -448,6 +452,15 @@
 $(document).ready(function() {
     let currentFilters = {};
     
+    // Récupérer le paramètre offre de l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const offreId = urlParams.get('offre');
+    if (offreId) {
+        currentFilters.offre_id = offreId;
+        // Pré-sélectionner l'offre dans le filtre
+        $('#filter_offre').val(offreId);
+    }
+    
     // Initialisation du Kanban
     initializeKanban();
     loadCandidatures();
@@ -525,59 +538,60 @@ $(document).ready(function() {
     
     function createCandidatureCard(candidature) {
         const dateCreation = new Date(candidature.created_at).toLocaleDateString('fr-FR');
-        const firstLetter = candidature.talent.first_name ? candidature.talent.first_name.charAt(0).toUpperCase() : 'T';
-        const initiales = (candidature.talent.first_name.charAt(0) + candidature.talent.first_name.charAt(0)).toUpperCase() || 'TT';
-
+        
+        // Calcul de l'expérience en années
         const experienceTotal = candidature.talent.experiences ? 
             candidature.talent.experiences.reduce((total, exp) => total + (exp.duree_mois || 0), 0) : 0;
-        const posteActuel = candidature.talent.experiences && candidature.talent.experiences.length > 0 ? 
-            candidature.talent.experiences[0].poste || 'Développeur web et mobile' : 'Développeur web et mobile';
+        const experienceAnnees = Math.floor(experienceTotal / 12);
+        const experienceText = experienceAnnees > 0 ? `${experienceAnnees} ans` : 'Débutant';
         
-        // Gestion de l'image ou des initiales
-        const avatarContent = candidature.talent.photo_profil ? 
-            `<img src="${candidature.talent.photo_profil}" 
-                 class="rounded-circle" 
-                 width="50" 
-                 height="50" 
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">` +
-            `<div class="initiales-avatar" style="display:none; width:50px; height:50px; background:#283C5A; color:white; border-radius:50%; align-items:center; justify-content:center; font-weight:bold; font-size:18px;">${initiales}</div>` :
-            `<div class="initiales-avatar" style="width:50px; height:50px; background:#283C5A; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:18px;">${initiales}</div>`;
+        // Niveau d'études
+        const niveauEtude = candidature.talent.niveau_diplome?.nom || 'BAC+5';
+        
+        // Domaine/Famille de métier
+        const domaine = candidature.talent.famille_metier ? candidature.talent.famille_metier.nom : 'Ressources Humaines';
         
         return `
-        <br>
-            <div class=" px-4 py-4 kanban-card" data-candidature-id="${candidature.id}" onclick="showCandidatureDetails(${candidature.id})">
-                <div class="d-flex align-items-start">
-                    <div class="talent-profile-card-kanban me-3">
-                        <div class="talent-avatar-kanban">
-                            ${avatarContent}
-                        </div>
+            <div class="kanban-card mb-3" data-candidature-id="${candidature.id}" onclick="showCandidatureDetails(${candidature.id})" style="background:#14224F;  color: white; border-radius: 15px; padding: 20px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                <!-- Titre du poste -->
+                <h5 class="fw-bold mb-2" style="font-size: 16px; line-height: 1.3;">${candidature.offre_emploi.titre}</h5>
+                
+                <!-- Badge CDI -->
+                <div class="mb-3">
+                    <span class="badge" style="background-color: #f59e0b; color: #1f2937; font-weight: 600; padding: 6px 12px; border-radius: 20px; font-size: 12px;">CDI</span>
+                </div>
+                
+                <!-- Nom du candidat -->
+                <div class="d-flex align-items-center mb-3">
+                    <div class="me-2" style="width: 40px; height: 40px; background-color: #f97316; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-user" style="color: white; font-size: 18px;"></i>
                     </div>
-                    <div class="candidate-info flex-grow-1">
-                        <h6 class="mb-1 fw-bold text-truncate">${candidature.talent.first_name} ${candidature.talent.last_name}</h6>
-                        <p class="mb-1 text-primary fw-medium small text-truncate">${posteActuel}</p>
-                        <div class="candidate-meta">
-                            <div class="mb-1 small text-muted">
-                           
-                                ${experienceTotal > 0 ? experienceTotal + ' mois d\'expérience' : 'Débutant'}
-                                ${candidature.talent.niveau_etude ? ' • ' + candidature.talent.niveau_etude : ''}
-                            </div>
-                            <div class="mb-1 small text-muted">
-                            
-                                ${candidature.offre_emploi.titre}
-                            </div>
-                            <div class="mb-1 small text-muted">
-                                ${dateCreation}
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mt-2">
-                            <span class="status-badge status-${candidature.statut_entreprise}">
-                                ${getStatusLabel(candidature.statut_entreprise)}
-                            </span>
-                            <small class="text-muted">
-                                ${candidature.offre_emploi.reference_offre}
-                            </small>
-                        </div>
+                    <div>
+                        <div class="fw-semibold" style="font-size: 14px;">${candidature.talent.first_name} ${candidature.talent.last_name}</div>
+                        <div style="font-size: 12px; opacity: 0.8;">${candidature.talent.ville || 'Abidjan'}</div>
                     </div>
+                </div>
+                
+                <!-- Informations détaillées -->
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-graduation-cap me-2" style="width: 16px; color: #fbbf24;"></i>
+                    <span style="font-size: 13px;">${niveauEtude}</span>
+                </div>
+                
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-clock me-2" style="width: 16px; color: #fbbf24;"></i>
+                    <span style="font-size: 13px;">${experienceText}</span>
+                </div>
+                
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-briefcase me-2" style="width: 16px; color: #fbbf24;"></i>
+                    <span style="font-size: 13px;">${domaine}</span>
+                </div>
+                
+                <!-- Référence -->
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-file-alt me-2" style="color: #fbbf24;"></i>
+                    <span style="font-size: 12px; opacity: 0.9;">Référence ${candidature.offre_emploi.reference_offre}</span>
                 </div>
             </div>
         `;

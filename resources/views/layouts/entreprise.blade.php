@@ -11,14 +11,76 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/publish-job-steps.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
     <!-- Custom Styles -->
     <style>
         :root {
-            --primary-color: #283C5A;
+            --primary-color: #14224F;
             --secondary-color: #f6cd45;
         }
+
+        .bg-primary{
+            background-color: #14224F!important;
+        }
         
+/* Styles DataTables personnalisés */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    margin-bottom: 1rem;
+}
+
+/* Styles pour tous les boutons de pagination */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border-radius: 0.375rem !important;
+    background: #14224F !important;
+    border: 1px solid #14224F !important;
+    color: white !important;
+    /* padding: 0.375rem 0.75rem !important; */
+    /* margin: 0 0.125rem !important; */
+}
+
+/* État normal des boutons */
+.dataTables_wrapper .dataTables_paginate .paginate_button a {
+    background: #14224F !important;
+    border-color: #14224F !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+/* Bouton actuel/sélectionné */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current a {
+    background: #0f1a3d !important;
+    border-color: #0f1a3d !important;
+    color: white !important;
+}
+
+/* État hover */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover a {
+    background: #0f1a3d !important;
+    border-color: #0f1a3d !important;
+    color: white !important;
+}
+
+/* Boutons désactivés */
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled a {
+    background: #6c757d !important;
+    border-color: #6c757d !important;
+    color: white !important;
+    opacity: 0.6 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover a {
+    background: #6c757d !important;
+    border-color: #6c757d !important;
+    color: white !important;
+}
         /* Navbar Styles */
         .navbar {
             background: #ffffff !important;
@@ -29,7 +91,7 @@
         }
         
         .navbar-brand {
-            color: #283C5A !important;
+            color: #14224F !important;
             font-weight: 700;
             font-size: 1.5rem;
         }
@@ -50,13 +112,13 @@
         
         .nav-link:hover {
             background: rgba(40, 60, 90, 0.1) !important;
-            color: #283C5A !important;
+            color: #14224F !important;
             transform: translateY(-1px);
             text-decoration: none;
         }
         
         .nav-link.active {
-            background: #283C5A !important;
+            background: #14224F !important;
             color: #ffffff !important;
             font-weight: 600;
         }
@@ -83,6 +145,22 @@
             padding: 8px 0;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             animation: fadeInDown 0.3s ease;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+        }
+        
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .nav-item.dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
         
         .dropdown-item {
@@ -95,7 +173,7 @@
         
         .dropdown-item:hover {
             background: rgba(40, 60, 90, 0.1);
-            color: #283C5A;
+            color: #14224F;
         }
         
         .dropdown-item i {
@@ -129,6 +207,60 @@
             border-radius: 12px;
         }
         
+/* Redéfinition des styles btn-primary avec la nouvelle couleur */
+.btn-primary {
+    background-color: #14224F !important;
+    border-color: #14224F !important;
+    color: white !important;
+}
+
+.btn-primary:hover {
+    background-color: #0f1a3d !important;
+    border-color: #0f1a3d !important;
+    color: white !important;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+    background-color: #0f1a3d !important;
+    border-color: #0f1a3d !important;
+    box-shadow: 0 0 0 0.2rem rgba(20, 34, 79, 0.5) !important;
+}
+
+.btn-primary:active,
+.btn-primary.active {
+    background-color: #0d1533 !important;
+    border-color: #0d1533 !important;
+}
+
+/* Styles pour btn-outline-primary avec la couleur #14224F */
+.btn-outline-primary {
+    color: #14224F !important;
+    border-color: #14224F !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-primary:hover {
+    color: white !important;
+    background-color: #14224F !important;
+    border-color: #14224F !important;
+}
+
+.btn-outline-primary:focus,
+.btn-outline-primary.focus {
+    color: white !important;
+    background-color: #14224F !important;
+    border-color: #14224F !important;
+    box-shadow: 0 0 0 0.2rem rgba(20, 34, 79, 0.5) !important;
+}
+
+.btn-outline-primary:active,
+.btn-outline-primary.active {
+    color: white !important;
+    background-color: #0d1533 !important;
+    border-color: #0d1533 !important;
+}
+
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -150,7 +282,7 @@
         .company-logo {
             width: 32px;
             height: 32px;
-            background: #283C5A;
+            background: #14224F;
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -167,7 +299,7 @@
         .user-avatar {
             width: 32px;
             height: 32px;
-            background: #283C5A;
+            background: #14224F;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -237,7 +369,7 @@
         
         .btn-action:hover {
             background: rgba(40, 60, 90, 0.1);
-            color: #283C5A;
+            color: #14224F;
         }
         
         .btn-logout {
@@ -295,8 +427,8 @@
                     
                     <!-- Candidatures -->
                     <li class="nav-item">
-                        <a class="nav-link position-relative {{ request()->routeIs('entreprise.candidatures.*') ? 'active' : '' }}" href="{{ route('entreprise.candidatures.kanban') }}">
-                            Candidatures
+                        <a class="nav-link position-relative {{ request()->routeIs('entreprise.candidatures.*') || request()->routeIs('entreprise.offres.selection') ? 'active' : '' }}" href="{{ route('entreprise.offres.selection') }}">
+                           Suivi candidatures
                             @if(isset($nouvelles_candidatures_count) && $nouvelles_candidatures_count > 0)
                                 <span class="notification-badge">{{ $nouvelles_candidatures_count }}</span>
                             @endif
@@ -306,14 +438,14 @@
                     <!-- Talents -->
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('entreprise.talent-search') ? 'active' : '' }}" href="{{ route('entreprise.talent-search') }}">
-                            Rechercher talents
+                            Recherche talents
                         </a>
                     </li>
                     
                     <!-- Récompenses -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs('entreprise.badges.*') || request()->routeIs('entreprise.parrainage.*') ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Récompenses
+                      Badges & Parrainage
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('entreprise.badges.index') }}">
@@ -436,6 +568,28 @@
         // Update on load and resize
         window.addEventListener('load', updateNavigation);
         window.addEventListener('resize', updateNavigation);
+        
+        // Dropdown hover functionality
+        const dropdowns = document.querySelectorAll('.nav-item.dropdown');
+        
+        dropdowns.forEach(dropdown => {
+            const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+            const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+            
+            // Show dropdown on hover
+            dropdown.addEventListener('mouseenter', function() {
+                dropdownToggle.classList.add('show');
+                dropdownToggle.setAttribute('aria-expanded', 'true');
+                dropdownMenu.classList.add('show');
+            });
+            
+            // Hide dropdown when mouse leaves
+            dropdown.addEventListener('mouseleave', function() {
+                dropdownToggle.classList.remove('show');
+                dropdownToggle.setAttribute('aria-expanded', 'false');
+                dropdownMenu.classList.remove('show');
+            });
+        });
     </script>
     
     @stack('scripts')

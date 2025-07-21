@@ -21,7 +21,7 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-4"><strong>Niveau d'étude :</strong></div>
-                        <div class="col-sm-8">{{ $candidature->talent->niveau_etude ?? 'Non renseigné' }}</div>
+                        <div class="col-sm-8">{{ $candidature->talent->niveauDiplome->nom ?? 'Non renseigné' }}</div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-4"><strong>Date de candidature :</strong></div>

@@ -59,7 +59,7 @@
                             </a>
                         </div>
                         <div class="col-md-3 mb-3">
-                            <a href="{{ route('entreprise.candidatures.kanban') }}" class="btn bg-white w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                            <a href="{{ route('entreprise.offres.selection') }}" class="btn bg-white w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="min-height: 100px;">
                                 <i class="fas fa-tasks fa-2x mb-2"></i>
                                 <span>Suivi candidatures</span>
                             </a>
@@ -371,8 +371,8 @@
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: #1040BB !important;
-    border-color: #1040BB !important;
+    background: #14224F !important;
+                border-color: #14224F !important;
     color: white !important;
 }
 

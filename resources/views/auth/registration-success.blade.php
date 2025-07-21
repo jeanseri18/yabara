@@ -200,7 +200,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            background: #14224F;
             color: white;
         }
 

@@ -51,6 +51,7 @@ Route::middleware(['auth'])->group(function () {
     // WF-E02: Publication Offre d'Emploi
     Route::prefix('entreprise/offres')->name('entreprise.offres.')->group(function () {
         Route::get('/', [EntrepriseController::class, 'indexOffres'])->name('index');
+        Route::get('/selection', [EntrepriseController::class, 'showOffresSelection'])->name('selection');
         Route::get('/create', function () {
             return redirect()->route('entreprise.offres.publier.step1');
         })->name('create');
@@ -73,6 +74,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('entreprise/talents')->name('entreprise.talents.')->group(function () {
         Route::get('/recherche', [EntrepriseController::class, 'showTalentSearch'])->name('search');
         Route::post('/recherche', [EntrepriseController::class, 'searchTalents'])->name('search.post');
+        Route::get('/profil/{id}', [EntrepriseController::class, 'showTalentProfile'])->name('profile');
         Route::post('/lier-offre', [EntrepriseController::class, 'linkTalentToOffer'])->name('link');
     });
     

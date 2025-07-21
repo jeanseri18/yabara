@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi des Candidatures - Tableau Kanban</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .main-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-card {
+            border-radius: 20px;
+            padding: 1.5rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-card.warning {
+            background: linear-gradient(135deg, #f6cd45 0%, #f39c12 100%);
+            color: #14224F;
+        }
+
+        .stats-card.success {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+        }
+
+        .kanban-container {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 1rem 0;
+            min-height: 70vh;
+        }
+
+        .kanban-column {
+            min-width: 320px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            max-height: 80vh;
+        }
+
+        .kanban-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .kanban-header h5 {
+            color: #14224F;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .kanban-count {
+            background: #14224F;
+            color: white;
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .kanban-body {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .kanban-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .kanban-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .kanban-body::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+
+        .candidature-card {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .candidature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .candidature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .candidature-card.dragging {
+            opacity: 0.7;
+            transform: rotate(2deg);
+        }
+
+        .poste-tag {
+            background: #f6cd45;
+            color: #14224F;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .candidate-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .candidate-title {
+            color: #f6cd45;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .candidate-details {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .candidate-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .location-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+        }
+
+        .reference-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+        }
+
+        .experience-icons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .experience-icon {
+            color: #f6cd45;
+            font-size: 0.9rem;
+        }
+
+        .drop-zone {
+            border: 2px dashed #dee2e6;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            color: #6c757d;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #14224F;
+            background: rgba(20, 34, 79, 0.1);
+            color: #14224F;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .filters-btn {
+            background: #14224F;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filters-btn:hover {
+            background: #1a2a5e;
+            transform: translateY(-2px);
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+
+        .custom-toast {
+            background: #14224F;
+            color: white;
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .kanban-container {
+                flex-direction: column;
+            }
+            
+            .kanban-column {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid px-4 py-4">
+        <!-- En-tête principal -->
+        <div class="main-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-1">
+                        <i class="fas fa-tasks me-2" style="color: #14224F;"></i>
+                        Suivi des Candidatures
+                    </h2>
+                    <p class="text-muted mb-0">Gérez vos candidatures avec le tableau Kanban</p>
+                </div>
+                <div>
+                    <button class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left me-2"></i>Retour au dashboard
+                    </button>
+                    <button class="filters-btn" data-bs-toggle="modal" data-bs-target="#filtersModal">
+                        <i class="fas fa-filter me-2"></i>Filtres
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistiques -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <i class="fas fa-inbox fa-2x mb-2"></i>
+                    <h4 class="mb-0" id="stat-recues">24</h4>
+                    <small>Candidatures reçues</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card warning">
+                    <i class="fas fa-star fa-2x mb-2"></i>
+                    <h4 class="mb-0" id="stat-preselections">8</h4>
+                    <small>Présélectionnées</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <i class="fas fa-comments fa-2x mb-2"></i>
+                    <h4 class="mb-0" id="stat-entretiens">5</h4>
+                    <small>En entretiens</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card success">
+                    <i class="fas fa-check-circle fa-2x mb-2"></i>
+                    <h4 class="mb-0" id="stat-recrutes">3</h4>
+                    <small>Recrutés</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau Kanban -->
+        <div class="kanban-container">
+            <!-- Candidatures reçues -->
+            <div class="kanban-column" data-status="candidature_recue">
+                <div class="kanban-header">
+                    <h5>Candidatures reçues</h5>
+                    <span class="kanban-count" id="count-candidature_recue">24</span>
+                </div>
+                <div class="kanban-body" id="column-candidature_recue">
+                    <div class="candidature-card" data-candidature-id="1">
+                        <div class="poste-tag">CDI</div>
+                        <div class="candidate-name">Chargé de Projet Junior</div>
+                        <div class="candidate-title">
+                            <i class="fas fa-building me-2"></i>Orange CI
+                        </div>
+                        <div class="candidate-details">
+                            Tertiaire (Services & Fonctions support)
+                        </div>
+                        <div class="candidate-meta">
+                            <span><i class="fas fa-map-marker-alt me-1"></i>Abidjan</span>
+                            <span class="reference-badge">YB0953AC</span>
+                        </div>
+                        <div class="experience-icons">
+                            <span class="experience-icon"><i class="fas fa-graduation-cap"></i> BAC+5</span>
+                            <span class="experience-icon"><i class="fas fa-clock"></i> 3-5 ans</span>
+                            <span class="experience-icon"><i class="fas fa-users"></i> RH</span>
+                        </div>
+                    </div>
+
+                    <div class="candidature-card" data-candidature-id="2">
+                        <div class="poste-tag">CDI</div>
+                        <div class="candidate-name">Développeur Full Stack</div>
+                        <div class="candidate-title">
+                            <i class="fas fa-building me-2"></i>TechCorp
+                        </div>
+                        <div class="candidate-details">
+                            Informatique & Technologies
+                        </div>
+                        <div class="candidate-meta">
+                            <span><i class="fas fa-map-marker-alt me-1"></i>Abidjan</span>
+                            <span class="reference-badge">TC0124XY</span>
+                        </div>
+                        <div class="experience-icons">
+                            <span class="experience-icon"><i class="fas fa-graduation-cap"></i> BAC+3</span>
+                            <span class="experience-icon"><i class="fas fa-clock"></i> 2-4 ans</span>
+                            <span class="experience-icon"><i class="fas fa-code"></i> IT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Présélectionnées -->
+            <div class="kanban-column" data-status="preselctionnee">
+                <div class="kanban-header">
+                    <h5>Présélectionnées</h5>
+                    <span class="kanban-count" id="count-preselctionnee">8</span>
+                </div>
+                <div class="kanban-body" id="column-preselctionnee">
+                    <div class="candidature-card" data-candidature-id="3">
+                        <div class="poste-tag">CDI</div>
+                        <div class="candidate-name">Chef de Projet Digital</div>
+                        <div class="candidate-title">
+                            <i class="fas fa-building me-2"></i>Digital Agency
+                        </div>
+                        <div class="candidate-details">
+                            Marketing & Communication
+                        </div>
+                        <div class="candidate-meta">
+                            <span><i class="fas fa-map-marker-alt me-1"></i>Abidjan</span>
+                            <span class="reference-badge">DA0456MN</span>
+                        </div>
+                        <div class="experience-icons">
+                            <span class="experience-icon"><i class="fas fa-graduation-cap"></i> BAC+4</span>
+                            <span class="experience-icon"><i class="fas fa-clock"></i> 4-6 ans</span>
+                            <span class="experience-icon"><i class="fas fa-chart-line"></i> Marketing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- En entretiens -->
+            <div class="kanban-column" data-status="entretien">
+                <div class="kanban-header">
+                    <h5>En entretiens</h5>
+                    <span class="kanban-count" id="count-entretien">5</span>
+                </div>
+                <div class="kanban-body" id="column-entretien">
+                    <div class="candidature-card" data-candidature-id="4">
+                        <div class="poste-tag">CDI</div>
+                        <div class="candidate-name">Analyste Financier</div>
+                        <div class="candidate-title">
+                            <i class="fas fa-building me-2"></i>FinanceGroup
+                        </div>
+                        <div class="candidate-details">
+                            Finance & Comptabilité
+                        </div>
+                        <div class="candidate-meta">
+                            <span><i class="fas fa-map-marker-alt me-1"></i>Abidjan</span>
+                            <span class="reference-badge">FG0789QR</span>
+                        </div>
+                        <div class="experience-icons">
+                            <span class="experience-icon"><i class="fas fa-graduation-cap"></i> BAC+5</span>
+                            <span class="experience-icon"><i class="fas fa-clock"></i> 3-5 ans</span>
+                            <span class="experience-icon"><i class="fas fa-calculator"></i> Finance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recrutés -->
+            <div class="kanban-column" data-status="retenue">
+                <div class="kanban-header">
+                    <h5>Recrutés</h5>
+                    <span class="kanban-count" id="count-retenue">3</span>
+                </div>
+                <div class="kanban-body" id="column-retenue">
+                    <div class="candidature-card" data-candidature-id="5">
+                        <div class="poste-tag">CDI</div>
+                        <div class="candidate-name">Responsable Commercial</div>
+                        <div class="candidate-title">
+                            <i class="fas fa-building me-2"></i>SalesCorpIA
+                        </div>
+                        <div class="candidate-details">
+                            Ventes & Commerce
+                        </div>
+                        <div class="candidate-meta">
+                            <span><i class="fas fa-map-marker-alt me-1"></i>Abidjan</span>
+                            <span class="reference-badge">SC0321VB</span>
+                        </div>
+                        <div class="experience-icons">
+                            <span class="experience-icon"><i class="fas fa-graduation-cap"></i> BAC+4</span>
+                            <span class="experience-icon"><i class="fas fa-clock"></i> 5-7 ans</span>
+                            <span class="experience-icon"><i class="fas fa-handshake"></i> Vente</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Refusées -->
+            <div class="kanban-column" data-status="refusee">
+                <div class="kanban-header">
+                    <h5>Refusées</h5>
+                    <span class="kanban-count" id="count-refusee">12</span>
+                </div>
+                <div class="kanban-body" id="column-refusee">
+                    <div class="empty-state">
+                        <i class="fas fa-times-circle"></i>
+                        <p>Aucune candidature refusée récemment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de filtres -->
+    <div class="modal fade" id="filtersModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">
+                        <i class="fas fa-filter text-primary me-2"></i>Filtres
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="filtersForm">
+                        <div class="mb-3">
+                            <label for="filter_offre" class="form-label">Offre d'emploi</label>
+                            <select class="form-select" id="filter_offre">
+                                <option value="">Toutes les offres</option>
+                                <option value="1">Chargé de Projet Junior</option>
+                                <option value="2">Développeur Full Stack</option>
+                                <option value="3">Chef de Projet Digital</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="filter_periode" class="form-label">Période</label>
+                            <select class="form-select" id="filter_periode">
+                                <option value="">Toute période</option>
+                                <option value="today">Aujourd'hui</option>
+                                <option value="week">Cette semaine</option>
+                                <option value="month">Ce mois</option>
+                                <option value="quarter">Ce trimestre</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="filter_famille_metier" class="form-label">Famille de métier</label>
+                            <select class="form-select" id="filter_famille_metier">
+                                <option value="">Toutes les familles</option>
+                                <option value="1">Informatique & Technologies</option>
+                                <option value="2">Marketing & Communication</option>
+                                <option value="3">Finance & Comptabilité</option>
+                                <option value="4">Ressources Humaines</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-outline-secondary" id="resetFilters">Réinitialiser</button>
+                    <button type="button" class="btn btn-primary" id="applyFilters">Appliquer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container pour les toasts -->
+    <div class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        // Données simulées
+        const candidatures = {
+            candidature_recue: [
+                {
+                    id: 1,
+                    poste: "Chargé de Projet Junior",
+                    entreprise: "Orange CI",
+                    domaine: "Tertiaire (Services & Fonctions support)",
+                    localisation: "Abidjan",
+                    reference: "YB0953AC",
+                    niveau: "BAC+5",
+                    experience: "3-5 ans",
+                    secteur: "RH"
+                },
+                {
+                    id: 2,
+                    poste: "Développeur Full Stack",
+                    entreprise: "TechCorp",
+                    domaine: "Informatique & Technologies",
+                    localisation: "Abidjan",
+                    reference: "TC0124XY",
+                    niveau: "BAC+3",
+                    experience: "2-4 ans",
+                    secteur: "IT"
+                }
+            ],
+            preselctionnee: [
+                {
+                    id: 3,
+                    poste: "Chef de Projet Digital",
+                    entreprise: "Digital Agency",
+                    domaine: "Marketing & Communication",
+                    localisation: "Abidjan",
+                    reference: "DA0456MN",
+                    niveau: "BAC+4",
+                    experience: "4-6 ans",
+                    secteur: "Marketing"
+                }
+            ],
+            entretien: [
+                {
+                    id: 4,
+                    poste: "Analyste Financier",
+                    entreprise: "FinanceGroup",
+                    domaine: "Finance & Comptabilité",
+                    localisation: "Abidjan",
+                    reference: "FG0789QR",
+                    niveau: "BAC+5",
+                    experience: "3-5 ans",
+                    secteur: "Finance"
+                }
+            ],
+            retenue: [
+                {
+                    id: 5,
+                    poste: "Responsable Commercial",
+                    entreprise: "SalesCorpIA",
+                    domaine: "Ventes & Commerce",
+                    localisation: "Abidjan",
+                    reference: "SC0321VB",
+                    niveau: "BAC+4",
+                    experience: "5-7 ans",
+                    secteur: "Vente"
+                }
+            ],
+            refusee: []
+        };
+
+        // Initialisation du drag and drop
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDragAndDrop();
+            setupFilters();
+        });
+
+        function initializeDragAndDrop() {
+            const columns = document.querySelectorAll('.kanban-body');
+            
+            columns.forEach(column => {
+                new Sortable(column, {
+                    group: 'kanban',
+                    animation: 150,
+                    ghostClass: 'dragging',
+                    onEnd: function(evt) {
+                        const candidatureId = evt.item.dataset.candidatureId;
+                        const newStatus = evt.to.closest('.kanban-column').dataset.status;
+                        const oldStatus = evt.from.closest('.kanban-column').dataset.status;
+                        
+                        if (newStatus !== oldStatus) {
+                            updateCandidatureStatus(candidatureId, newStatus, oldStatus);
+                        }
+                    }
+                });
+            });
+        }
+
+        function updateCandidatureStatus(candidatureId, newStatus, oldStatus) {
+            // Simulation d'une mise à jour
+            console.log(`Candidature ${candidatureId} déplacée de ${oldStatus} vers ${newStatus}`);
+            
+            // Mettre à jour les compteurs
+            updateColumnCount(oldStatus, -1);
+            updateColumnCount(newStatus, 1);
+            
+            // Afficher une notification
+            showToast(`Candidature déplacée vers "${getStatusLabel(newStatus)}"`, 'success');
+            
+            // Animation spéciale pour les recrutements
+            if (newStatus === 'retenue') {
+                showCelebration();
+            }
+        }
+
+        function updateColumnCount(status, delta) {
+            const counter = document.getElementById(`count-${status}`);
+            if (counter) {
+                const currentCount = parseInt(counter.textContent) || 0;
+                counter.textContent = Math.max(0, currentCount + delta);
+            }
+        }
+
+        function getStatusLabel(status) {
+            const labels = {
+                'candidature_recue': 'Candidatures reçues',
+                'preselctionnee': 'Présélectionnées',
+                'entretien': 'En entretiens',
+                'retenue': 'Recrutés',
+                'refusee': 'Refusées'
+            };
+            return labels[status] || status;
+        }
+
+        function setupFilters() {
+            const applyBtn = document.getElementById('applyFilters');
+            const resetBtn = document.getElementById('resetFilters');
+            
+            applyBtn.addEventListener('click', function() {
+                const offre = document.getElementById('filter_offre').value;
+                const periode = document.getElementById('filter_periode').value;
+                const famille = document.getElementById('filter_famille_metier').value;
+                
+                // Appliquer les filtres
+                applyFilters(offre, periode, famille);
+                
+                // Fermer le modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('filtersModal'));
+                modal.hide();
+                
+                showToast('Filtres appliqués', 'success');
+            });
+            
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('filtersForm').reset();
+                showToast('Filtres réinitialisés', 'success');
+            });
+        }
+
+        function applyFilters(offre, periode, famille) {
+            // Simulation de l'application des filtres
+            console.log('Filtres appliqués:', { offre, periode, famille });
+            
+            // Ici vous pourriez filtrer les candidatures affichées
+            // ou faire un appel API pour récupérer les données filtrées
+        }
+
+        function showToast(message, type = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+            const toastId = 'toast-' + Date.now();
+            
+            const toastHtml = `
+                <div id="${toastId}" class="toast custom-toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-body d-flex align-items-center">
+                        <i class="fas fa-${type === 'success' ? 'check' : 'exclamation-triangle'} me-2"></i>
+                        ${message}
+                        <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            `;
+            
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+            
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement);
+            
+            toast.show();
+            
+            // Supprimer le toast après fermeture
+            toastElement.addEventListener('hidden.bs.toast', function() {
+                this.remove();
+            });
+        }
+
+        function showCelebration() {
+            // Animation de confettis
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b', '#eb4d4b'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.cssText = `
+                        position: fixed;
+                        top: -10px;
+                        left: ${Math.random() * window.innerWidth}px;
+                        width: 10px;
+                        height: 10px

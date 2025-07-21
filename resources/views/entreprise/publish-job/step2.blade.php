@@ -25,7 +25,7 @@
         <div class="col-lg-8">
             <div class="card shadow-lg border-0">
                 <div class="card-header bg-white border-0 py-4">
-                    <h4 class="mb-0 text-center" style="color: #283C5A;">
+                    <h4 class="mb-0 text-center" style="color: #14224F;">
                         <i class="bi bi-list-check me-2"></i>
                         Étape 2 : Critères et exigences du poste
                     </h4>
@@ -34,8 +34,8 @@
                 <div class="card-body p-5">
                     <!-- Résumé de l'étape 1 -->
                     <div class="alert alert-info border-0 mb-4" style="background-color: rgba(40, 60, 90, 0.1);">
-                        <h6 class="fw-bold mb-2" style="color: #283C5A;">
-                            <i class="bi bi-info-circle me-2"></i>
+                        <h6 class="fw-bold mb-2" style="color: #14224F;">
+                            ℹ️
                             Récapitulatif de votre offre
                         </h6>
                         <p class="mb-1"><strong>Poste :</strong> {{ $offre->titre }}</p>
@@ -48,46 +48,57 @@
                         
                         <!-- Niveau de diplôme requis -->
                         <div class="mb-4">
-                            <label for="niveau_diplome_requis" class="form-label fw-bold">
-                                <i class="bi bi-mortarboard me-2" style="color: #f6cd45;"></i>
+                            <label class="form-label fw-bold">
+                                🎓
                                 Niveau de diplôme requis *
                             </label>
-                            <select class="form-select form-select-lg" id="niveau_diplome_requis" name="niveau_diplome_requis" required>
-                                <option value="">Sélectionnez le niveau minimum requis</option>
+                            <div class="row g-3">
                                 @foreach($niveauxDiplome as $niveau)
-                                    <option value="{{ $niveau->id }}" {{ old('niveau_diplome_requis', $offre->niveau_diplome_requis) == $niveau->id ? 'selected' : '' }}>
-                                        {{ $niveau->nom }}
-                                    </option>
+                                    <div class="col-md-6">
+                                        <div class="card diplome-card h-100" data-value="{{ $niveau->id }}" 
+                                             style="cursor: pointer; transition: all 0.3s ease; {{ old('niveau_diplome_requis', $offre->niveau_diplome_requis) == $niveau->id ? 'border-color: #14224F; background-color: #f8f9ff;' : 'border-color: #dee2e6;' }}">
+                                            <div class="card-body text-center p-3">
+                                                <h6 class="card-title mb-0" style="color: #14224F;">{{ $niveau->nom }}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
-                            </select>
+                            </div>
+                            <input type="hidden" id="niveau_diplome_requis" name="niveau_diplome_requis" value="{{ old('niveau_diplome_requis', $offre->niveau_diplome_requis) }}" required>
                         </div>
 
                         <!-- Expérience minimum -->
                         <div class="mb-4">
-                            <label for="experience_minimum" class="form-label fw-bold">
-                                <i class="bi bi-clock-history me-2" style="color: #f6cd45;"></i>
+                            <label class="form-label fw-bold">
+                                ⏰
                                 Expérience minimum requise *
                             </label>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <select class="form-select form-select-lg" id="experience_minimum" name="experience_minimum" required>
-                                        <option value="">Sélectionnez l'expérience</option>
-                                        <option value="0" {{ old('experience_minimum', $offre->experience_minimum) == '0' ? 'selected' : '' }}>Débutant accepté (0 an)</option>
-                                        <option value="1" {{ old('experience_minimum', $offre->experience_minimum) == '1' ? 'selected' : '' }}>1 an minimum</option>
-                                        <option value="2" {{ old('experience_minimum', $offre->experience_minimum) == '2' ? 'selected' : '' }}>2 ans minimum</option>
-                                        <option value="3" {{ old('experience_minimum', $offre->experience_minimum) == '3' ? 'selected' : '' }}>3 ans minimum</option>
-                                        <option value="5" {{ old('experience_minimum', $offre->experience_minimum) == '5' ? 'selected' : '' }}>5 ans minimum</option>
-                                        <option value="10" {{ old('experience_minimum', $offre->experience_minimum) == '10' ? 'selected' : '' }}>10 ans et plus</option>
-                                    </select>
+                            <div class="d-flex">
+                                <div class="experience-card flex-fill text-center p-3" data-value="0-2" 
+                                     style="cursor: pointer; transition: all 0.3s ease; background-color: #14224F; color: white; border-right: 2px solid rgba(255, 255, 255, 0.5); {{ old('experience_minimum', $offre->experience_minimum) == '0-2' ? 'opacity: 1;' : 'opacity: 0.85;' }}">
+                                    <h6 class="card-title mb-0" style="color: white;">0-2 ans</h6>
+                                </div>
+                                <div class="experience-card flex-fill text-center p-3" data-value="3-5" 
+                                     style="cursor: pointer; transition: all 0.3s ease; background-color: #14224F; color: white; border-right: 2px solid rgba(255, 255, 255, 0.5); {{ old('experience_minimum', $offre->experience_minimum) == '3-5' ? 'opacity: 1;' : 'opacity: 0.85;' }}">
+                                    <h6 class="card-title mb-0" style="color: white;">3-5 ans</h6>
+                                </div>
+                                <div class="experience-card flex-fill text-center p-3" data-value="6-10" 
+                                     style="cursor: pointer; transition: all 0.3s ease; background-color: #14224F; color: white; border-right: 2px solid rgba(255, 255, 255, 0.5); {{ old('experience_minimum', $offre->experience_minimum) == '6-10' ? 'opacity: 1;' : 'opacity: 0.85;' }}">
+                                    <h6 class="card-title mb-0" style="color: white;">6-10 ans</h6>
+                                </div>
+                                <div class="experience-card flex-fill text-center p-3" data-value="10+" 
+                                     style="cursor: pointer; transition: all 0.3s ease; background-color: #14224F; color: white; {{ old('experience_minimum', $offre->experience_minimum) == '10+' ? 'opacity: 1;' : 'opacity: 0.85;' }}">
+                                    <h6 class="card-title mb-0" style="color: white;">+10 ans</h6>
                                 </div>
                             </div>
+                            <input type="hidden" id="experience_minimum" name="experience_minimum" value="{{ old('experience_minimum', $offre->experience_minimum) }}" required>
                         </div>
 
                         <!-- Rémunération -->
                         <div class="mb-4">
                             <label for="remuneration" class="form-label fw-bold">
-                                <i class="bi bi-currency-euro me-2" style="color: #f6cd45;"></i>
-                                Rémunération (optionnel)
+                                💰
+                                Rémunération annuelle (optionnel)
                             </label>
                             <div class="row">
                                 <div class="col-md-6">
@@ -104,7 +115,7 @@
                         <!-- Lieu du poste -->
                         <div class="mb-4">
                             <label for="lieu_poste" class="form-label fw-bold">
-                                <i class="bi bi-geo-alt me-2" style="color: #f6cd45;"></i>
+                                📍
                                 Lieu du poste *
                             </label>
                             <input type="text" class="form-control form-control-lg" id="lieu_poste" name="lieu_poste" 
@@ -116,7 +127,7 @@
                         <!-- Options de travail -->
                         <div class="mb-4">
                             <label class="form-label fw-bold">
-                                <i class="bi bi-laptop me-2" style="color: #f6cd45;"></i>
+                                💻
                                 Modalités de travail
                             </label>
                             <div class="row">
@@ -144,7 +155,7 @@
                         <!-- Compétences recherchées (optionnel) -->
                         <div class="mb-4">
                             <label for="competences_recherchees" class="form-label fw-bold">
-                                <i class="bi bi-star me-2" style="color: #f6cd45;"></i>
+                                ⭐
                                 Compétences clés recherchées (optionnel)
                             </label>
                             <textarea class="form-control" id="competences_recherchees" name="competences_recherchees" rows="4" 
@@ -163,7 +174,7 @@
                                     <i class="bi bi-save me-2"></i>
                                     Sauvegarder
                                 </button>
-                                <button type="submit" class="btn btn-lg px-5" style="background-color: #283C5A; color: white;">
+                                <button type="submit" class="btn btn-lg px-5" style="background-color: #14224F; color: white;">
                                     Continuer
                                     <i class="bi bi-arrow-right ms-2"></i>
                                 </button>
@@ -181,7 +192,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-body text-center py-5">
-                <div class="spinner-border" style="color: #283C5A;" role="status">
+                <div class="spinner-border" style="color: #14224F;" role="status">
                     <span class="visually-hidden">Chargement...</span>
                 </div>
                 <p class="mt-3 mb-0">Sauvegarde en cours...</p>
@@ -192,9 +203,82 @@
 
 @endsection
 
+@push('styles')
+<style>
+.diplome-card:hover {
+    border-color: #14224F !important;
+    background-color: #f8f9ff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(20, 34, 79, 0.15);
+}
+
+.experience-card:hover {
+    opacity: 1 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(20, 34, 79, 0.15);
+}
+
+.diplome-card.selected {
+    border-color: #14224F !important;
+    background-color: #f8f9ff !important;
+    border-width: 2px;
+}
+
+.experience-card {
+    border-radius: 0;
+    margin: 0;
+    padding: 10px 15px;
+    border-right: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.experience-card:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.experience-card:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-right: none;
+}
+
+.card {
+    border-radius: 8px;
+}
+
+.card-body h6 {
+    font-weight: 600;
+}
+</style>
+@endpush
+
 @push('scripts')
 <script>
 $(document).ready(function() {
+    // Gestion des cartes sélectionnables pour le niveau de diplôme
+    $('.diplome-card').click(function() {
+        $('.diplome-card').css({
+            'border-color': '#dee2e6',
+            'background-color': 'white'
+        });
+        $(this).css({
+            'border-color': '#14224F',
+            'background-color': '#f8f9ff'
+        });
+        $('#niveau_diplome_requis').val($(this).data('value'));
+    });
+
+    // Gestion des cartes sélectionnables pour l'expérience minimum
+    $('.experience-card').click(function() {
+        $('.experience-card').css({
+            'opacity': '0.85'
+        });
+        $(this).css({
+            'opacity': '1'
+        });
+        $('#experience_minimum').val($(this).data('value'));
+    });
+
     // Soumission du formulaire
     $('#step2Form').submit(function(e) {
         e.preventDefault();

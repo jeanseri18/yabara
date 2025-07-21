@@ -21,6 +21,8 @@ class Entreprise extends Model
         'effectif',
         'responsable_rh_nom',
         'responsable_rh_prenom',
+        'responsable_rh_email',
+        'responsable_rh_telephone',
         'is_verified',
         'total_offres_publiees',
         'total_candidatures_recues',

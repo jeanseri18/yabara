@@ -24,13 +24,13 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h1 class="h3 mb-1 text-gray-800">
-                        <i class="fas fa-briefcase me-2" style="color: #1040BB;"></i>
+                        <i class="fas fa-briefcase me-2" style="color: #14224F;"></i>
                         Mes offres d'emploi
                     </h1>
-                    <p class="text-muted mb-0">Gérez vos offres d'emploi et suivez leurs performances</p>
+                    <p class="text-muted mb-0">🎯 Parce que recruter, c’est bien plus qu’un CV : c’est une rencontre humaine. Visualisez, sélectionnez, recrutez... simplement</p>
                 </div>
                 <div>
-                    <a href="{{ route('entreprise.offres.create') }}" class="btn text-white" style="background-color: #1040BB;">
+                    <a href="{{ route('entreprise.offres.create') }}" class="btn text-white" style="background-color: #14224F;">
                         <i class="fas fa-plus me-2"></i>
                         Publier une nouvelle offre
                     </a>
@@ -142,8 +142,8 @@
                     @if($offres->count() > 0)
                         <!-- <div class="table-responsive"> -->
                             <table class="table table-hover mb-0" id="offres-datatable">
-                                <thead style="background-color: #14224A; color: white;">
-                                    <tr  style="background-color: #14224A; color: white;">
+                                <thead style="background-color: #14224F; color: white;">
+                                    <tr  style="background-color: #14224F; color: white;">
                                         <th>Offre</th>
                                         <th>Statut</th>
                                         <th>Date publication</th>
@@ -154,12 +154,12 @@
                                 </thead>
                                 <tbody style="background-color: white;">
                                     @foreach($offres as $offre)
-                                        <tr>
+                                        <tr style="cursor: pointer;" onclick="window.location.href='{{ route('entreprise.candidatures.kanban', ['offre' => $offre->id]) }}'">
                                             <td>
                                                 <div>
                                                     <h6 class="mb-1">{{ $offre->titre }}</h6>
                                                     <small class="text-muted">
-                                                        <i class="fas fa-hashtag me-1"></i>{{ $offre->reference_offre ?? 'Brouillon' }}
+                                                        {{ $offre->reference_offre ?? 'Brouillon' }}
                                                         <span class="mx-2">•</span>
                                                         <i class="fas fa-map-marker-alt me-1"></i>{{ $offre->lieu_poste }}
                                                     </small>
@@ -232,7 +232,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="btn-group btn-group-sm">
+                                                <div class="btn-group btn-group-sm" onclick="event.stopPropagation();">
                                                     @if($offre->statut === 'brouillon')
                                                         <a href="{{ route('entreprise.offres.edit', $offre) }}" class="btn btn-outline-primary" title="Continuer l'édition">
                                                             <i class="fas fa-edit"></i>
@@ -281,7 +281,7 @@
                             </div>
                             <h5 class="text-muted">Aucune offre d'emploi</h5>
                             <p class="text-muted mb-4">Vous n'avez pas encore publié d'offre d'emploi.</p>
-                            <a href="{{ route('entreprise.offres.create') }}" class="btn btn-primary">
+                            <a href="{{ route('entreprise.offres.create') }}" class="btn " style="background-color: #14224F; color:white">
                                 <i class="fas fa-plus me-2"></i>
                                 Publier votre première offre
                             </a>
@@ -353,22 +353,22 @@
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: #14224A !important;
-    border-color: #14224A !important;
+    background: #14224F !important;
+    border-color: #14224F !important;
     color: white !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: #1040BB !important;
-    border-color: #1040BB !important;
+    background: #14224F !important;
+    border-color: #14224F !important;
     color: white !important;
 }
 
 /* En-têtes personnalisés */
 #offres-datatable thead th {
-    background-color: #14224A !important;
+    background-color: #14224F !important;
     color: white !important;
-    border-color: #14224A !important;
+    border-color: #14224F !important;
     font-weight: 600;
     text-align: center;
     vertical-align: middle;
@@ -446,7 +446,7 @@ $(document).ready(function() {
         language: {
             url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/fr-FR.json'
         },
-        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6">>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
         columnDefs: [

@@ -10,6 +10,7 @@ use App\Models\Talent;
 use App\Models\Entreprise;
 use App\Models\Pole;
 use App\Models\FamilleMetier;
+use App\Models\NiveauDiplome;
 
 class RegistrationController extends Controller
 {
@@ -23,7 +24,8 @@ class RegistrationController extends Controller
     {
         $poles = Pole::orderBy('ordre_affichage')->get();
         $famillesMetiers = FamilleMetier::orderBy('ordre_affichage')->get();
-        return view('auth.register-talent', compact('poles', 'famillesMetiers'));
+        $niveauxDiplome = NiveauDiplome::where('is_active', true)->orderBy('niveau')->get();
+        return view('auth.register-talent', compact('poles', 'famillesMetiers', 'niveauxDiplome'));
     }
 
     public function showEntrepriseForm()
@@ -43,7 +45,7 @@ class RegistrationController extends Controller
             'phone' => 'nullable|string|max:20',
             'pole_id' => 'nullable|exists:poles,id',
             'famille_metier_id' => 'nullable|exists:familles_metiers,id',
-            'niveau_etude' => 'nullable|in:BAC,BAC+1,BAC+2,BAC+3,BAC+4,BAC+5,BAC+6,BAC+7,BAC+8',
+            'niveau_diplome_id' => 'nullable|exists:niveaux_diplomes,id',
             'avatar_type' => 'nullable|string|max:50'
         ]);
 
@@ -71,7 +73,7 @@ class RegistrationController extends Controller
                 'phone' => $request->phone,
                 'pole_id' => $request->pole_id,
                 'famille_metier_id' => $request->famille_metier_id,
-                'niveau_etude' => $request->niveau_etude,
+                'niveau_diplome_id' => $request->niveau_diplome_id,
                 'cv_reference' => $cvReference,
                 'avatar_type' => $request->avatar_type,
                 'profile_completion_percentage' => 60.00 // 60% pour les informations de base
@@ -98,7 +100,9 @@ class RegistrationController extends Controller
             'numero_legal' => 'nullable|string|max:100',
             'effectif' => 'nullable|in:<50,50-100,100-500,>500',
             'responsable_rh_nom' => 'nullable|string|max:255',
-            'responsable_rh_prenom' => 'nullable|string|max:255'
+            'responsable_rh_prenom' => 'nullable|string|max:255',
+            'responsable_rh_email' => 'nullable|email|max:255',
+            'responsable_rh_telephone' => 'nullable|string|max:20'
         ]);
 
         DB::beginTransaction();
@@ -121,6 +125,8 @@ class RegistrationController extends Controller
                 'effectif' => $request->effectif,
                 'responsable_rh_nom' => $request->responsable_rh_nom,
                 'responsable_rh_prenom' => $request->responsable_rh_prenom,
+                'responsable_rh_email' => $request->responsable_rh_email,
+                'responsable_rh_telephone' => $request->responsable_rh_telephone,
                 'is_verified' => false
             ]);
 

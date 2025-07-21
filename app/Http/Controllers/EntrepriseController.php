@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Entreprise;
 use App\Models\OffreEmploi;
 use App\Models\Talent;
@@ -177,6 +178,26 @@ class EntrepriseController extends Controller
         return view('entreprise.offres.index', compact('offres'));
     }
 
+    // Page de sélection des offres pour le suivi des candidatures
+    public function showOffresSelection()
+    {
+        $entreprise = Auth::user()->entreprise;
+        
+        $offres = $entreprise->offresEmploi()
+            ->with(['typeContrat', 'pole', 'familleMetier', 'candidatures', 'entreprise'])
+            ->where('statut', 'publiee')
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+            
+        // Ajouter des statistiques pour chaque offre
+        $offres->getCollection()->transform(function ($offre) {
+            $offre->candidatures_count = $offre->candidatures->count();
+            return $offre;
+        });
+        
+        return view('entreprise.offres-selection', compact('offres'));
+    }
+
     // WF-E03: Recherche de Talents
     public function showTalentSearch()
     {
@@ -188,28 +209,71 @@ class EntrepriseController extends Controller
 
     public function searchTalents(Request $request)
     {
-        $query = Talent::with(['pole', 'familleMetier'])
+        $query = Talent::with(['pole', 'familleMetier', 'user', 'experiencesProfessionnelles', 'niveauDiplome'])
             ->whereHas('user', function($q) {
-                $q->where('is_active', 1);
+                $q->where('status', 'active');
             });
 
-        if ($request->pole_id) {
+        // Filtrer par pôle (seulement si spécifié)
+        if ($request->filled('pole_id') && $request->pole_id !== '') {
             $query->where('pole_id', $request->pole_id);
         }
         
-        if ($request->famille_metier_id) {
+        // Filtrer par famille de métier (seulement si spécifié)
+        if ($request->filled('famille_metier_id') && $request->famille_metier_id !== '') {
             $query->where('famille_metier_id', $request->famille_metier_id);
         }
         
-        if ($request->experience_min) {
-            // Logique pour filtrer par expérience
+        // Filtrer par expérience minimum (seulement si spécifié)
+        if ($request->filled('experience_min') && $request->experience_min !== '') {
+            $experienceMin = (int) $request->experience_min;
+            
+            if ($experienceMin === 0) {
+                // 0-2 ans : inclure tous les talents avec 0 à 2 ans d'expérience
+                $query->whereHas('experiencesProfessionnelles', function($q) {
+                    $q->selectRaw('talent_id, SUM(TIMESTAMPDIFF(YEAR, date_debut, COALESCE(date_fin, NOW()))) as total_experience')
+                      ->groupBy('talent_id')
+                      ->havingRaw('total_experience <= 2');
+                }, '<=', 1); // Au moins une expérience qui respecte la condition
+            } else {
+                // Pour les autres tranches, calculer l'expérience totale
+                $query->whereHas('experiencesProfessionnelles', function($q) use ($experienceMin) {
+                    $q->selectRaw('talent_id, SUM(TIMESTAMPDIFF(YEAR, date_debut, COALESCE(date_fin, NOW()))) as total_experience')
+                      ->groupBy('talent_id')
+                      ->havingRaw('total_experience >= ?', [$experienceMin]);
+                });
+            }
         }
         
-        if ($request->niveau_diplome) {
-            $query->where('niveau_etude', $request->niveau_diplome);
+        // Filtrer par niveau de diplôme (seulement si spécifié)
+        if ($request->filled('niveau_diplome') && $request->niveau_diplome !== '') {
+            $query->where('niveau_diplome_id', $request->niveau_diplome);
         }
 
+        // Ordonner par pertinence (profil complété, puis par date de création)
+        $query->orderByDesc('profile_completion_percentage')
+              ->orderByDesc('created_at');
+
         $talents = $query->paginate(12);
+        
+        // Ajouter des données calculées pour chaque talent
+        $talents->getCollection()->transform(function ($talent) {
+            // Calculer l'expérience totale
+            $totalExperience = 0;
+            foreach ($talent->experiencesProfessionnelles as $exp) {
+                $dateDebut = \Carbon\Carbon::parse($exp->date_debut);
+                $dateFin = $exp->date_fin ? \Carbon\Carbon::parse($exp->date_fin) : \Carbon\Carbon::now();
+                $totalExperience += $dateDebut->diffInYears($dateFin);
+            }
+            $talent->total_experience_years = $totalExperience;
+            
+            // S'assurer que les compteurs sont définis
+            $talent->total_applications = $talent->total_applications ?? 0;
+            $talent->total_interviews = $talent->total_interviews ?? 0;
+            $talent->total_offers_viewed = $talent->total_offers_viewed ?? 0;
+            
+            return $talent;
+        });
         
         return response()->json($talents);
     }
@@ -224,7 +288,7 @@ class EntrepriseController extends Controller
         Candidature::create([
             'talent_id' => $request->talent_id,
             'offre_emploi_id' => $request->offre_id,
-            'type' => 'liee_entreprise',
+            'type' => 'reponse_offre',
             'statut_entreprise' => 'candidature_recue',
             'statut_talent' => 'en_attente'
         ]);
@@ -233,16 +297,22 @@ class EntrepriseController extends Controller
     }
 
     // WF-E04: Suivi Candidatures KANBAN
-    public function showKanban()
+    public function showKanban(Request $request)
     {
         $entreprise = Auth::user()->entreprise;
+        $offreId = $request->get('offre');
         
-        $candidatures = Candidature::with(['talent.user', 'offreEmploi'])
+        $candidaturesQuery = Candidature::with(['talent.user', 'offreEmploi'])
             ->whereHas('offreEmploi', function($q) use ($entreprise) {
                 $q->where('entreprise_id', $entreprise->id);
-            })
-            ->get()
-            ->groupBy('statut_entreprise');
+            });
+            
+        // Filtrer par offre si spécifiée
+        if ($offreId) {
+            $candidaturesQuery->where('offre_emploi_id', $offreId);
+        }
+        
+        $candidatures = $candidaturesQuery->get()->groupBy('statut_entreprise');
 
         // Statistiques pour le kanban
         $stats = [
@@ -255,10 +325,13 @@ class EntrepriseController extends Controller
         // Offres pour le filtre
         $offres = $entreprise->offresEmploi()->where('statut', 'publiee')->get();
         
+        // Offre sélectionnée pour affichage
+        $offreSelectionnee = $offreId ? $entreprise->offresEmploi()->find($offreId) : null;
+        
         // Familles métiers pour le filtre
         $famillesMetiers = FamilleMetier::all();
 
-        return view('entreprise.candidatures-kanban', compact('candidatures', 'stats', 'offres', 'famillesMetiers'));
+        return view('entreprise.candidatures-kanban', compact('candidatures', 'stats', 'offres', 'famillesMetiers', 'offreSelectionnee'));
     }
 
     public function updateCandidatureStatus(Request $request, $candidatureId = null)
@@ -709,7 +782,7 @@ class EntrepriseController extends Controller
         $entreprise = Auth::user()->entreprise;
         
         $candidatures = $entreprise->candidatures()
-            ->with(['talent.user', 'offreEmploi.familleMetier'])
+            ->with(['talent.user', 'talent.niveauDiplome', 'offreEmploi.familleMetier'])
             ->when($request->offre_id, fn($q) => $q->where('offre_emploi_id', $request->offre_id))
             ->when($request->statut, fn($q) => $q->where('statut_entreprise', $request->statut))
             ->when($request->famille_metier_id, function($q) use ($request) {
@@ -744,7 +817,7 @@ class EntrepriseController extends Controller
     {
         $entreprise = Auth::user()->entreprise;
         $candidature = $entreprise->candidatures()
-            ->with(['talent.user', 'talent.experiencesProfessionnelles', 'talent.formations', 'offreEmploi'])
+            ->with(['talent.user', 'talent.niveauDiplome', 'talent.experiencesProfessionnelles', 'talent.formations', 'offreEmploi'])
             ->findOrFail($candidatureId);
             
         $html = view('entreprise.partials.candidature-details', compact('candidature'))->render();
@@ -875,10 +948,13 @@ class EntrepriseController extends Controller
             'nom_entreprise' => 'required|string|max:255',
             'numero_legal' => 'nullable|string|max:50',
             'pole_activite_id' => 'required|exists:poles,id',
-            'effectif' => 'nullable|in:1-10,11-50,51-200,201-500,500+',
+            'effectif' => 'nullable|in:<50,50-100,100-500,>500',
             'responsable_rh_prenom' => 'nullable|string|max:100',
             'responsable_rh_nom' => 'nullable|string|max:100',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'responsable_rh_email' => 'nullable|email|max:255',
+            'responsable_rh_telephone' => 'nullable|string|max:20',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'remove_logo' => 'nullable|in:0,1'
         ]);
         
         $data = $request->only([
@@ -887,11 +963,30 @@ class EntrepriseController extends Controller
             'pole_activite_id',
             'effectif',
             'responsable_rh_prenom',
-            'responsable_rh_nom'
+            'responsable_rh_nom',
+            'responsable_rh_email',
+            'responsable_rh_telephone'
         ]);
         
         // Gestion du logo
-        if ($request->hasFile('logo')) {
+        if ($request->has('remove_logo') && $request->remove_logo == '1') {
+            // Supprimer l'ancien logo du stockage si il existe
+            if ($entreprise->logo_url) {
+                $oldLogoPath = str_replace('/storage/', '', $entreprise->logo_url);
+                if (\Storage::disk('public')->exists($oldLogoPath)) {
+                    \Storage::disk('public')->delete($oldLogoPath);
+                }
+            }
+            $data['logo_url'] = null;
+        } elseif ($request->hasFile('logo')) {
+            // Supprimer l'ancien logo si il existe
+            if ($entreprise->logo_url) {
+                $oldLogoPath = str_replace('/storage/', '', $entreprise->logo_url);
+                if (\Storage::disk('public')->exists($oldLogoPath)) {
+                    \Storage::disk('public')->delete($oldLogoPath);
+                }
+            }
+            // Stocker le nouveau logo
             $logoPath = $request->file('logo')->store('logos', 'public');
             $data['logo_url'] = '/storage/' . $logoPath;
         }
@@ -1209,7 +1304,7 @@ class EntrepriseController extends Controller
         
         // Construire la requête des candidatures avec filtres
         $candidaturesQuery = $offre->candidatures()
-            ->with(['talent.user', 'talent.experiences'])
+            ->with(['talent.user', 'talent.niveauDiplome', 'talent.experiences'])
             ->orderBy('created_at', 'desc');
         
         // Filtrer par statut
@@ -1284,5 +1379,23 @@ class EntrepriseController extends Controller
             });
             
         return view('entreprise.offres.statistiques', compact('offre', 'statistiques', 'candidaturesParJour'));
+    }
+
+    // WF-E03: Affichage du profil d'un talent
+    public function showTalentProfile($id)
+    {
+        $talent = Talent::with([
+            'user',
+            'pole',
+            'familleMetier',
+            'niveauDiplome',
+            'experiencesProfessionnelles',
+            'formations',
+            'competences',
+            'langues',
+            'candidatures.offreEmploi'
+        ])->findOrFail($id);
+        
+        return view('entreprise.talent-profile', compact('talent'));
     }
 }

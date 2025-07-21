@@ -163,9 +163,9 @@
                                                             @else
                                                                 Débutant
                                                             @endif
-                                                            @if($candidature->talent->niveau_etude)
-                                                                • {{ $candidature->talent->niveau_etude }}
-                                                            @endif
+                                                            @if($candidature->talent->niveauDiplome)
+                                            • {{ $candidature->talent->niveauDiplome->nom }}
+                                        @endif
                                                         </small>
                                                     </div>
                                                 </div>
@@ -290,7 +290,7 @@
 }
 
 .talent-info h6 {
-    color: #283C5A;
+    color: #14224F;
     font-size: 16px;
     margin-bottom: 4px;
 }
@@ -317,7 +317,7 @@
     background-color: #f8f9fa;
     border-bottom: 2px solid #dee2e6;
     font-weight: 600;
-    color: #283C5A;
+    color: #14224F;
     padding: 12px;
 }
 

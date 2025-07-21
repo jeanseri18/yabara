@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('phone', 20)->nullable();
             $table->foreignId('pole_id')->nullable()->constrained('poles')->onDelete('set null');
             $table->foreignId('famille_metier_id')->nullable()->constrained('familles_metiers')->onDelete('set null');
-            $table->enum('niveau_etude', ['BAC', 'BAC+1', 'BAC+2', 'BAC+3', 'BAC+4', 'BAC+5', 'BAC+6', 'BAC+7', 'BAC+8'])->nullable();
+            $table->foreignId('niveau_diplome_id')->nullable()->constrained('niveaux_diplomes')->onDelete('set null');
             $table->string('cv_reference', 20)->unique();
             $table->decimal('profile_completion_percentage', 5, 2)->default(0.00);
             $table->string('parrain_cv_reference', 20)->nullable();

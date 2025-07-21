@@ -185,12 +185,12 @@
         }
 
         .btn-primary {
-            background: #162359;
+            background: #14224F;
             color: white;
         }
 
         .btn-primary:hover {
-            background: #162359;
+            background: #14224F;
         }
 
         .btn-secondary {
@@ -376,6 +376,18 @@
                             <div class="form-group">
                                 <label class="form-label">Nom du responsable RH</label>
                                 <input type="text" name="responsable_rh_nom" class="form-input" placeholder="Optionnel">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Email du responsable RH</label>
+                                <input type="email" name="responsable_rh_email" class="form-input" placeholder="Optionnel">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Téléphone du responsable RH</label>
+                                <input type="tel" name="responsable_rh_telephone" class="form-input" placeholder="Optionnel">
                             </div>
                         </div>
                         

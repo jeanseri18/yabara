@@ -9,7 +9,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h2 class="mb-1"><i class="fas fa-handshake me-2" style="color: #1040BB;"></i>Parrainage Entreprise</h2>
+                    <h2 class="mb-1"><i class="fas fa-handshake me-2" style="color: #14224F;"></i>Parrainage Entreprise</h2>
                     <p class="text-muted mb-0">Invitez d'autres entreprises et gagnez des récompenses</p>
                 </div>
                 <div>
@@ -24,7 +24,7 @@
     <!-- Statistiques de parrainage -->
     <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card border-0 text-white" style="background-color: #1040BB;">
+            <div class="card border-0 text-white" style="background-color: #14224F;">
                 <div class="card-body text-center">
                     <i class="fas fa-paper-plane fa-2x mb-2"></i>
                     <h3 class="mb-0">{{ $stats['invitations_envoyees'] }}</h3>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0 text-white" style="background-color: #071D55;">
+            <div class="card border-0 text-white" style="background-color: #14224F;">
                 <div class="card-body text-center">
                     <i class="fas fa-user-check fa-2x mb-2"></i>
                     <h3 class="mb-0">{{ $stats['inscriptions_reussies'] }}</h3>
@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0" style="background-color: #f6cd45; color: #071D55;">
+            <div class="card border-0" style="background-color: #f6cd45; color: #14224F;">
                 <div class="card-body text-center">
                     <i class="fas fa-chart-line fa-2x mb-2"></i>
                     <h3 class="mb-0">{{ $stats['entreprises_actives'] }}</h3>
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0 text-white" style="background-color: #f6cd45; color: #071D55;">
+            <div class="card border-0 " style="background-color: #f6cd45; color: #14224F;">
                 <div class="card-body text-center">
                     <i class="fas fa-gift fa-2x mb-2"></i>
                     <h3 class="mb-0">{{ $stats['recompenses_gagnees'] }}</h3>
@@ -65,7 +65,7 @@
         <!-- Formulaire d'invitation -->
         <div class="col-lg-6">
             <div class="card border-0 shadow-sm h-100">
-                <div class="card-header text-white" style="background-color: #1040BB;">
+                <div class="card-header text-white" style="background-color: #14224F;">
                     <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Inviter une entreprise</h5>
                 </div>
                 <div class="card-body">
@@ -120,7 +120,7 @@
         <!-- Programme de récompenses -->
         <div class="col-lg-6">
             <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-success text-white">
+                <div class="card-header  " style="background-color:#f6cd45; color: #14224F;">
                     <h5 class="mb-0"><i class="fas fa-trophy me-2"></i>Programme de récompenses</h5>
                 </div>
                 <div class="card-body">
@@ -214,16 +214,16 @@
                         <h5 class="mb-0"><i class="fas fa-history me-2"></i>Historique des parrainages</h5>
                         <div class="btn-group" role="group">
                             <input type="radio" class="btn-check" name="status-filter" id="all-status" value="all" checked>
-                            <label class="btn btn-outline-secondary btn-sm" for="all-status">Tous</label>
+                            <label class="btn btn-outline-primaray btn-sm" for="all-status">Tous</label>
                             
                             <input type="radio" class="btn-check" name="status-filter" id="pending-status" value="en_attente">
-                            <label class="btn btn-outline-warning btn-sm" for="pending-status">En attente</label>
+                            <label class="btn btn-outline-primary btn-sm" for="pending-status">En attente</label>
                             
                             <input type="radio" class="btn-check" name="status-filter" id="accepted-status" value="accepte">
-                            <label class="btn btn-outline-success btn-sm" for="accepted-status">Acceptés</label>
+                            <label class="btn btn-outline-primary btn-sm" for="accepted-status">Acceptés</label>
                             
                             <input type="radio" class="btn-check" name="status-filter" id="active-status" value="actif">
-                            <label class="btn btn-outline-info btn-sm" for="active-status">Actifs</label>
+                            <label class="btn btn-outline-primary btn-sm" for="active-status">Actifs</label>
                         </div>
                     </div>
                 </div>

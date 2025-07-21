@@ -25,7 +25,7 @@ class NiveauDiplome extends Model
 
     public function talents()
     {
-        return $this->hasMany(Talent::class, 'niveau_etude');
+        return $this->hasMany(Talent::class, 'niveau_diplome_id');
     }
 
     public function offresEmploi()

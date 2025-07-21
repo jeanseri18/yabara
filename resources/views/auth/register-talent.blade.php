@@ -218,12 +218,12 @@
         }
 
         .btn-primary {
-            background: #162359;
+            background: #14224F;
             color: white;
         }
 
         .btn-primary:hover {
-            background: #162359;
+            background: #14224F;
         }
 
         .btn-secondary {
@@ -395,17 +395,13 @@
                         
                         <div class="form-group">
                             <label class="form-label">Niveau d'étude</label>
-                            <select name="niveau_etude" class="form-select">
+                            <select name="niveau_diplome_id" class="form-select">
                                 <option value="">Sélectionnez votre niveau</option>
-                                <option value="BAC" {{ old('niveau_etude') == 'BAC' ? 'selected' : '' }}>BAC</option>
-                                <option value="BAC+1" {{ old('niveau_etude') == 'BAC+1' ? 'selected' : '' }}>BAC+1</option>
-                                <option value="BAC+2" {{ old('niveau_etude') == 'BAC+2' ? 'selected' : '' }}>BAC+2</option>
-                                <option value="BAC+3" {{ old('niveau_etude') == 'BAC+3' ? 'selected' : '' }}>BAC+3</option>
-                                <option value="BAC+4" {{ old('niveau_etude') == 'BAC+4' ? 'selected' : '' }}>BAC+4</option>
-                                <option value="BAC+5" {{ old('niveau_etude') == 'BAC+5' ? 'selected' : '' }}>BAC+5</option>
-                                <option value="BAC+6" {{ old('niveau_etude') == 'BAC+6' ? 'selected' : '' }}>BAC+6</option>
-                                <option value="BAC+7" {{ old('niveau_etude') == 'BAC+7' ? 'selected' : '' }}>BAC+7</option>
-                                <option value="BAC+8" {{ old('niveau_etude') == 'BAC+8' ? 'selected' : '' }}>BAC+8</option>
+                                @foreach($niveauxDiplome as $niveau)
+                                    <option value="{{ $niveau->id }}" {{ old('niveau_diplome_id') == $niveau->id ? 'selected' : '' }}>
+                                        {{ $niveau->nom }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         

@@ -9,7 +9,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h2 class="mb-1"><i class="fas fa-building me-2" style="color: #1040BB;"></i>Profil Entreprise</h2>
+                    <h2 class="mb-1"><i class="fas fa-building me-2" style="color: #14224F;"></i>Profil Entreprise</h2>
                     <p class="text-muted mb-0">Gérez les informations de votre entreprise</p>
                 </div>
                 <div>
@@ -25,7 +25,7 @@
         <!-- Informations générales -->
         <div class="col-md-8">
             <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header" style="background-color: #1040BB; color: white;">
+                <div class="card-header" style="background-color: #14224F; color: white;">
                     <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Informations générales</h5>
                 </div>
                 <div class="card-body">
@@ -72,11 +72,10 @@
                                 <label for="effectif" class="form-label fw-bold">Effectif</label>
                                 <select class="form-select" id="effectif" name="effectif">
                                     <option value="">Sélectionnez l'effectif</option>
-                                    <option value="1-10" {{ old('effectif', $entreprise->effectif) == '1-10' ? 'selected' : '' }}>1-10 employés</option>
-                                    <option value="11-50" {{ old('effectif', $entreprise->effectif) == '11-50' ? 'selected' : '' }}>11-50 employés</option>
-                                    <option value="51-200" {{ old('effectif', $entreprise->effectif) == '51-200' ? 'selected' : '' }}>51-200 employés</option>
-                                    <option value="201-500" {{ old('effectif', $entreprise->effectif) == '201-500' ? 'selected' : '' }}>201-500 employés</option>
-                                    <option value="500+" {{ old('effectif', $entreprise->effectif) == '500+' ? 'selected' : '' }}>500+ employés</option>
+                                    <option value="<50" {{ old('effectif', $entreprise->effectif) == '<50' ? 'selected' : '' }}>Moins de 50 employés</option>
+                                    <option value="50-100" {{ old('effectif', $entreprise->effectif) == '50-100' ? 'selected' : '' }}>50 à 100 employés</option>
+                                    <option value="100-500" {{ old('effectif', $entreprise->effectif) == '100-500' ? 'selected' : '' }}>100 à 500 employés</option>
+                                    <option value=">500" {{ old('effectif', $entreprise->effectif) == '>500' ? 'selected' : '' }}>Plus de 500 employés</option>
                                 </select>
                                 @error('effectif')
                                     <div class="text-danger small mt-1">{{ $message }}</div>
@@ -103,23 +102,56 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="responsable_rh_email" class="form-label fw-bold">Email du responsable RH</label>
+                                <input type="email" class="form-control" id="responsable_rh_email" name="responsable_rh_email" 
+                                       value="{{ old('responsable_rh_email', $entreprise->responsable_rh_email) }}">
+                                @error('responsable_rh_email')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="responsable_rh_telephone" class="form-label fw-bold">Téléphone du responsable RH</label>
+                                <input type="tel" class="form-control" id="responsable_rh_telephone" name="responsable_rh_telephone" 
+                                       value="{{ old('responsable_rh_telephone', $entreprise->responsable_rh_telephone) }}">
+                                @error('responsable_rh_telephone')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="mb-3">
                             <label for="logo" class="form-label fw-bold">Logo de l'entreprise</label>
-                            <input type="file" class="form-control" id="logo" name="logo" accept="image/*">
+                            <input type="file" class="form-control" id="logo" name="logo" accept="image/*" onchange="previewLogo(this)">
                             <small class="text-muted">Formats acceptés: JPG, PNG, GIF. Taille max: 2MB</small>
-                            @if($entreprise->logo_url)
-                                <div class="mt-2">
-                                    <img src="{{ $entreprise->logo_url }}" alt="Logo actuel" class="img-thumbnail" style="max-height: 100px;">
-                                    <p class="small text-muted mt-1">Logo actuel</p>
-                                </div>
-                            @endif
+                            
+                            <!-- Prévisualisation du logo -->
+                            <div class="mt-2" id="logo-preview-container">
+                                @if($entreprise->logo_url)
+                                    <div class="d-flex align-items-center gap-2">
+                                        <img src="{{ $entreprise->logo_url }}" alt="Logo actuel" class="img-thumbnail" style="max-height: 100px;" id="logo-preview">
+                                        <div>
+                                            <!-- <p class="small text-muted mb-1">Logo actuel</p> -->
+                                            <!-- <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeLogo()">
+                                                <i class="fas fa-trash me-1"></i>Supprimer
+                                            </button> -->
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="remove_logo" id="remove_logo" value="0">
+                                @else
+                                    <img src="" alt="Prévisualisation du logo" class="img-thumbnail d-none" style="max-height: 100px;" id="logo-preview">
+                                    <p class="small text-muted mt-1 d-none" id="logo-preview-text">Prévisualisation du nouveau logo</p>
+                                @endif
+                            </div>
+                            
                             @error('logo')
                                 <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn" style="background-color: #1040BB; color: white;">
+                            <button type="submit" class="btn" style="background-color: #14224F; color: white;">
                                 <i class="fas fa-save me-2"></i>Enregistrer les modifications
                             </button>
                         </div>
@@ -131,7 +163,7 @@
         <!-- Paramètres de notification -->
         <div class="col-md-4">
             <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header" style="background-color: #071D55; color: white;">
+                <div class="card-header" style="background-color: #14224F; color: white;">
                     <h5 class="mb-0"><i class="fas fa-bell me-2"></i>Notifications</h5>
                 </div>
                 <div class="card-body">
@@ -157,7 +189,7 @@
                             </label>
                         </div>
                         
-                        <button type="submit" class="btn btn-sm" style="background-color: #f6cd45; color: #071D55;">
+                        <button type="submit" class="btn btn-sm" style="background-color: #f6cd45; color: #14224F;">
                             <i class="fas fa-save me-2"></i>Sauvegarder
                         </button>
                     </form>
@@ -166,17 +198,17 @@
 
             <!-- Statistiques du profil -->
             <div class="card border-0 shadow-sm">
-                <div class="card-header" style="background-color: #f6cd45; color: #071D55;">
+                <div class="card-header" style="background-color: #f6cd45; color: #14224F;">
                     <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Statistiques</h5>
                 </div>
                 <div class="card-body">
                     <div class="row text-center">
                         <div class="col-6 mb-3">
-                            <h4 class="mb-1" style="color: #1040BB;">{{ $entreprise->total_offres_publiees ?? 0 }}</h4>
+                            <h4 class="mb-1" style="color: #14224F;">{{ $entreprise->total_offres_publiees ?? 0 }}</h4>
                             <small class="text-muted">Offres publiées</small>
                         </div>
                         <div class="col-6 mb-3">
-                            <h4 class="mb-1" style="color: #071D55;">{{ $entreprise->total_candidatures_recues ?? 0 }}</h4>
+                            <h4 class="mb-1" style="color: #14224F;">{{ $entreprise->total_candidatures_recues ?? 0 }}</h4>
                             <small class="text-muted">Candidatures reçues</small>
                         </div>
                     </div>
@@ -196,25 +228,44 @@
 
 @section('scripts')
 <script>
-    // Prévisualisation du logo
-    document.getElementById('logo').addEventListener('change', function(e) {
-        const file = e.target.files[0];
+    function previewLogo(input) {
+        const file = input.files[0];
+        const preview = document.getElementById('logo-preview');
+        const previewText = document.getElementById('logo-preview-text');
+        
         if (file) {
+            // Vérifier la taille du fichier (2MB max)
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Le fichier est trop volumineux. Taille maximum: 2MB');
+                input.value = '';
+                return;
+            }
+            
+            // Vérifier le type de fichier
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Format de fichier non supporté. Utilisez JPG, PNG ou GIF.');
+                input.value = '';
+                return;
+            }
+            
             const reader = new FileReader();
             reader.onload = function(e) {
-                // Créer ou mettre à jour l'aperçu
-                let preview = document.getElementById('logo-preview');
-                if (!preview) {
-                    preview = document.createElement('img');
-                    preview.id = 'logo-preview';
-                    preview.className = 'img-thumbnail mt-2';
-                    preview.style.maxHeight = '100px';
-                    e.target.parentNode.appendChild(preview);
-                }
                 preview.src = e.target.result;
+                preview.classList.remove('d-none');
+                if (previewText) {
+                    previewText.classList.remove('d-none');
+                }
             };
             reader.readAsDataURL(file);
         }
-    });
+    }
+    
+    function removeLogo() {
+        if (confirm('Êtes-vous sûr de vouloir supprimer le logo ?')) {
+            document.getElementById('remove_logo').value = '1';
+            document.getElementById('logo-preview-container').innerHTML = '<p class="text-muted">Logo supprimé - sera effectif après enregistrement</p>';
+        }
+    }
 </script>
 @endsection

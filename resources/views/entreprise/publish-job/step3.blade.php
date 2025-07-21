@@ -25,7 +25,7 @@
         <div class="col-lg-10">
             <div class="card shadow-lg border-0">
                 <div class="card-header bg-white border-0 py-4">
-                    <h4 class="mb-0 text-center" style="color: #283C5A;">
+                    <h4 class="mb-0 text-center" style="color: #14224F;">
                         <i class="bi bi-eye me-2"></i>
                         Étape 3 : Validation et publication
                     </h4>
@@ -36,26 +36,26 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="border rounded-3 p-4 mb-4" style="background-color: #f8f9fa;">
-                                <h5 class="fw-bold mb-3" style="color: #283C5A;">
-                                    <i class="bi bi-file-text me-2"></i>
+                                <h5 class="fw-bold mb-3" style="color: #14224F;">
+                                    📄
                                     Aperçu de votre offre
                                 </h5>
                                 
                                 <!-- Titre et informations principales -->
                                 <div class="mb-4">
-                                    <h3 class="fw-bold mb-2" style="color: #283C5A;">{{ $offre->titre }}</h3>
+                                    <h3 class="fw-bold mb-2" style="color: #14224F;">{{ $offre->titre }}</h3>
                                     <div class="d-flex flex-wrap gap-2 mb-3">
                                         <span class="badge bg-primary px-3 py-2">{{ $offre->typeContrat->nom ?? 'Type non défini' }}</span>
                                         <span class="badge bg-secondary px-3 py-2">{{ $offre->pole->nom ?? 'Pôle non défini' }}</span>
                                         <span class="badge bg-info px-3 py-2">{{ $offre->familleMetier->nom ?? 'Métier non défini' }}</span>
                                     </div>
                                     <p class="text-muted mb-2">
-                                        <i class="bi bi-geo-alt me-1"></i>
+                                        📍
                                         {{ $offre->lieu_poste ?? 'Lieu non défini' }}
                                     </p>
                                     @if($offre->remuneration)
                                         <p class="text-success fw-bold mb-2">
-                                            <i class="bi bi-currency-euro me-1"></i>
+                                            💰
                                             {{ number_format($offre->remuneration, 0, ',', ' ') }} € / an
                                         </p>
                                     @endif
@@ -73,11 +73,11 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <p class="mb-2">
-                                                <i class="bi bi-mortarboard me-2" style="color: #f6cd45;"></i>
+                                                🎓
                                                 <strong>Diplôme :</strong> {{ $offre->niveauDiplome->nom ?? 'Non défini' }}
                                             </p>
                                             <p class="mb-2">
-                                                <i class="bi bi-clock-history me-2" style="color: #f6cd45;"></i>
+                                                ⏰
                                                 <strong>Expérience :</strong> 
                                                 @if($offre->experience_minimum == 0)
                                                     Débutant accepté
@@ -89,7 +89,7 @@
                                         <div class="col-md-6">
                                             @if($offre->teletravail || $offre->mobilite_requise)
                                                 <p class="mb-2">
-                                                    <i class="bi bi-laptop me-2" style="color: #f6cd45;"></i>
+                                                    💻
                                                     <strong>Modalités :</strong>
                                                     @if($offre->teletravail)
                                                         <span class="badge bg-success ms-1">Télétravail</span>
@@ -116,7 +116,7 @@
                         <div class="col-lg-4">
                             <div class="card border-0" style="background-color: #f8f9fa;">
                                 <div class="card-body">
-                                    <h6 class="fw-bold mb-3" style="color: #283C5A;">
+                                    <h6 class="fw-bold mb-3" style="color: #14224F;">
                                         <i class="bi bi-rocket me-2"></i>
                                         Publication de l'offre
                                     </h6>
@@ -136,15 +136,18 @@
                                         <div class="mb-3">
                                             <small class="text-muted">Après publication</small>
                                             <ul class="list-unstyled small mt-2">
-                                                <li><i class="bi bi-check text-success me-2"></i>Visible par les talents</li>
-                                                <li><i class="bi bi-check text-success me-2"></i>Référence automatique</li>
-                                                <li><i class="bi bi-check text-success me-2"></i>Statistiques de vues</li>
-                                                <li><i class="bi bi-check text-success me-2"></i>Réception de candidatures</li>
+                                                <li>✅ Visible par les talents</li>
+                                                <li>✅ Référence automatique</li>
+                                                <li>✅ Statistiques de vues</li>
+                                                <li>✅ Réception de candidatures</li>
                                             </ul>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="duree_publication" class="form-label fw-bold">Durée de publication</label>
+                                            <label for="duree_publication" class="form-label fw-bold">
+                                📅
+                                Durée de publication
+                            </label>
                                             <select class="form-select" id="duree_publication" name="duree_publication">
                                                 <option value="30">30 jours</option>
                                                 <option value="60" selected>60 jours</option>
@@ -153,7 +156,7 @@
                                         </div>
 
                                         <div class="alert alert-info border-0 small">
-                                            <i class="bi bi-info-circle me-2"></i>
+                                            ℹ️
                                             Vous pourrez modifier ou désactiver cette offre à tout moment depuis votre tableau de bord.
                                         </div>
                                     @endif
@@ -176,7 +179,7 @@
 
                             <!-- Actions de modification -->
                             <div class="mt-3">
-                                <h6 class="fw-bold mb-3" style="color: #283C5A;">
+                                <h6 class="fw-bold mb-3" style="color: #14224F;">
                                     <i class="bi bi-pencil me-2"></i>
                                     Modifications
                                 </h6>
@@ -211,7 +214,7 @@
                                     Publier l'offre
                                 </button>
                             @else
-                                <a href="{{ route('entreprise.offres.index') }}" class="btn btn-lg px-5" style="background-color: #283C5A; color: white;">
+                                <a href="{{ route('entreprise.offres.index') }}" class="btn btn-lg px-5" style="background-color: #14224F; color: white;">
                                     <i class="bi bi-list me-2"></i>
                                     Voir mes offres
                                 </a>
@@ -229,7 +232,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold" style="color: #283C5A;">
+                <h5 class="modal-title fw-bold" style="color: #14224F;">
                     <i class="bi bi-rocket me-2"></i>
                     Confirmer la publication
                 </h5>
@@ -238,7 +241,7 @@
             <div class="modal-body">
                 <p>Êtes-vous sûr de vouloir publier cette offre d'emploi ?</p>
                 <div class="alert alert-info border-0">
-                    <i class="bi bi-info-circle me-2"></i>
+                    ℹ️
                     Une fois publiée, votre offre sera visible par tous les talents de la plateforme et vous commencerez à recevoir des candidatures.
                 </div>
             </div>
@@ -258,7 +261,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-body text-center py-5">
-                <div class="spinner-border" style="color: #283C5A;" role="status">
+                <div class="spinner-border" style="color: #14224F;" role="status">
                     <span class="visually-hidden">Chargement...</span>
                 </div>
                 <p class="mt-3 mb-0" id="loadingText">Traitement en cours...</p>
@@ -273,12 +276,12 @@
         <div class="modal-content border-0">
             <div class="modal-body text-center py-5">
                 <div class="mb-4">
-                    <i class="bi bi-check-circle" style="font-size: 4rem; color: #28a745;"></i>
+                    ✅
                 </div>
-                <h4 class="fw-bold mb-3" style="color: #283C5A;">Offre publiée avec succès !</h4>
+                <h4 class="fw-bold mb-3" style="color: #14224F;">Offre publiée avec succès !</h4>
                 <p class="text-muted mb-4">Votre offre d'emploi est maintenant visible par tous les talents de YABARA.</p>
                 <div class="d-grid gap-2">
-                    <a href="{{ route('entreprise.offres.index') }}" class="btn btn-lg" style="background-color: #283C5A; color: white;">
+                    <a href="{{ route('entreprise.offres.index') }}" class="btn btn-lg" style="background-color: #14224F; color: white;">
                         <i class="bi bi-list me-2"></i>
                         Voir mes offres
                     </a>

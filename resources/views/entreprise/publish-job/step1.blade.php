@@ -25,7 +25,7 @@
         <div class="col-lg-8">
             <div class="card shadow-lg border-0">
                 <div class="card-header bg-white border-0 py-4">
-                    <h4 class="mb-0 text-center" style="color: #283C5A;">
+                    <h4 class="mb-0 text-center" style="color: #14224F;">
                         <i class="bi bi-briefcase me-2"></i>
                         Étape 1 : Informations générales de l'offre
                     </h4>
@@ -38,7 +38,7 @@
                         <!-- Titre du poste -->
                         <div class="mb-4">
                             <label for="titre" class="form-label fw-bold">
-                                <i class="bi bi-tag me-2" style="color: #f6cd45;"></i>
+                                🏷️
                                 Titre du poste *
                             </label>
                             <input type="text" class="form-control form-control-lg" id="titre" name="titre" 
@@ -50,7 +50,7 @@
                         <!-- Description du poste -->
                         <div class="mb-4">
                             <label for="descriptif" class="form-label fw-bold">
-                                <i class="bi bi-file-text me-2" style="color: #f6cd45;"></i>
+                                📝
                                 Description du poste *
                             </label>
                             <textarea class="form-control" id="descriptif" name="descriptif" rows="8" 
@@ -62,49 +62,72 @@
 
                         <!-- Type de contrat -->
                         <div class="mb-4">
-                            <label for="type_contrat_id" class="form-label fw-bold">
-                                <i class="bi bi-file-earmark-text me-2" style="color: #f6cd45;"></i>
+                            <label class="form-label fw-bold">
+                                📄
                                 Type de contrat *
                             </label>
-                            <select class="form-select form-select-lg" id="type_contrat_id" name="type_contrat_id" required>
-                                <option value="">Sélectionnez le type de contrat</option>
+                            <div class="row g-3">
                                 @foreach($typesContrat as $type)
-                                    <option value="{{ $type->id }}" {{ old('type_contrat_id', $offre->type_contrat_id ?? '') == $type->id ? 'selected' : '' }}>
-                                        {{ $type->nom }}
-                                    </option>
+                                    <div class="col-md-6">
+                                        <div class="card contract-card h-100" data-value="{{ $type->id }}" 
+                                             style="cursor: pointer; transition: all 0.3s ease; {{ old('type_contrat_id', $offre->type_contrat_id ?? '') == $type->id ? 'border-color: #14224F; background-color: #f8f9ff;' : 'border-color: #dee2e6;' }}">
+                                            <div class="card-body text-center p-3">
+                                                <h6 class="card-title mb-0" style="color: #14224F;">{{ $type->nom }}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
-                            </select>
+                            </div>
+                            <input type="hidden" id="type_contrat_id" name="type_contrat_id" value="{{ old('type_contrat_id', $offre->type_contrat_id ?? '') }}" required>
                         </div>
 
                         <!-- Pôle d'activité -->
                         <div class="mb-4">
-                            <label for="pole_id" class="form-label fw-bold">
-                                <i class="bi bi-diagram-3 me-2" style="color: #f6cd45;"></i>
+                            <label class="form-label fw-bold">
+                                🏢
                                 Pôle d'activité *
                             </label>
-                            <select class="form-select form-select-lg" id="pole_id" name="pole_id" required>
-                                <option value="">Sélectionnez un pôle d'activité</option>
+                            <div class="row g-3">
                                 @foreach($poles as $pole)
-                                    <option value="{{ $pole->id }}" {{ old('pole_id', $offre->pole_id ?? '') == $pole->id ? 'selected' : '' }}>
-                                        {{ $pole->nom }}
-                                    </option>
+                                    <div class="col-md-6">
+                                        <div class="card pole-card h-100" data-value="{{ $pole->id }}" 
+                                             style="cursor: pointer; transition: all 0.3s ease; {{ old('pole_id', $offre->pole_id ?? '') == $pole->id ? 'border-color: #14224F; background-color: #f8f9ff;' : 'border-color: #dee2e6;' }}">
+                                            <div class="card-body text-center p-3">
+                                                <h6 class="card-title mb-0" style="color: #14224F;">{{ $pole->nom }}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
-                            </select>
+                            </div>
+                            <input type="hidden" id="pole_id" name="pole_id" value="{{ old('pole_id', $offre->pole_id ?? '') }}" required>
                         </div>
 
                         <!-- Famille de métier -->
                         <div class="mb-4">
-                            <label for="famille_metier_id" class="form-label fw-bold">
-                                <i class="bi bi-people me-2" style="color: #f6cd45;"></i>
+                            <label class="form-label fw-bold">
+                                👥
                                 Famille de métier *
                             </label>
-                            <select class="form-select form-select-lg" id="famille_metier_id" name="famille_metier_id" required {{ !$offre || !$offre->pole_id ? 'disabled' : '' }}>
+                            <div id="famille-metier-container">
                                 @if($offre && $offre->familleMetier)
-                                    <option value="{{ $offre->famille_metier_id }}" selected>{{ $offre->familleMetier->nom }}</option>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="card famille-card h-100" data-value="{{ $offre->famille_metier_id }}" 
+                                                 style="cursor: pointer; transition: all 0.3s ease; border-color: #14224F; background-color: #f8f9ff;">
+                                                <div class="card-body text-center p-3">
+                                                    <h6 class="card-title mb-0" style="color: #14224F;">{{ $offre->familleMetier->nom }}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @else
-                                    <option value="">Sélectionnez d'abord un pôle d'activité</option>
+                                    <div class="alert alert-info text-center">
+                                        <i class="bi bi-info-circle me-2"></i>
+                                        Sélectionnez d'abord un pôle d'activité
+                                    </div>
                                 @endif
-                            </select>
+                            </div>
+                            <input type="hidden" id="famille_metier_id" name="famille_metier_id" value="{{ old('famille_metier_id', $offre->famille_metier_id ?? '') }}" required>
                         </div>
 
                         <!-- Boutons d'action -->
@@ -113,7 +136,7 @@
                                 <i class="bi bi-arrow-left me-2"></i>
                                 Retour
                             </a>
-                            <button type="submit" class="btn btn-lg px-5" style="background-color: #283C5A; color: white;">
+                            <button type="submit" class="btn btn-lg px-5" style="background-color: #14224F; color: white;">
                                 Continuer
                                 <i class="bi bi-arrow-right ms-2"></i>
                             </button>
@@ -130,7 +153,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-body text-center py-5">
-                <div class="spinner-border" style="color: #283C5A;" role="status">
+                <div class="spinner-border" style="color: #14224F;" role="status">
                     <span class="visually-hidden">Chargement...</span>
                 </div>
                 <p class="mt-3 mb-0">Sauvegarde en cours...</p>
@@ -140,6 +163,35 @@
 </div>
 
 @endsection
+
+@push('styles')
+<style>
+.contract-card:hover,
+.pole-card:hover,
+.famille-card:hover {
+    border-color: #14224F !important;
+    background-color: #f8f9ff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(20, 34, 79, 0.15);
+}
+
+.contract-card.selected,
+.pole-card.selected,
+.famille-card.selected {
+    border-color: #14224F !important;
+    background-color: #f8f9ff !important;
+    border-width: 2px;
+}
+
+.card {
+    border-radius: 8px;
+}
+
+.card-body h6 {
+    font-weight: 600;
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>$(document).ready(function() {
@@ -161,18 +213,56 @@
     // Initialiser le compteur au chargement
     updateCharCount();
 
-    // Chargement des familles de métiers selon le pôle sélectionné
-    $('#pole_id').change(function() {
-        console.log('Pôle changé');
-        const poleId = $(this).val();
-        const familleSelect = $('#famille_metier_id');
+    // Gestion des cartes sélectionnables pour le type de contrat
+    $('.contract-card').click(function() {
+        $('.contract-card').css({
+            'border-color': '#dee2e6',
+            'background-color': 'white'
+        });
+        $(this).css({
+            'border-color': '#14224F',
+            'background-color': '#f8f9ff'
+        });
+        $('#type_contrat_id').val($(this).data('value'));
+    });
+
+    // Gestion des cartes sélectionnables pour le pôle d'activité
+    $('.pole-card').click(function() {
+        $('.pole-card').css({
+            'border-color': '#dee2e6',
+            'background-color': 'white'
+        });
+        $(this).css({
+            'border-color': '#14224F',
+            'background-color': '#f8f9ff'
+        });
+        const poleId = $(this).data('value');
+        $('#pole_id').val(poleId);
         
-        console.log('Pôle sélectionné:', poleId); // Debug
+        // Charger les familles de métiers
+        loadFamillesMetiers(poleId);
+    });
+
+    // Gestion des cartes sélectionnables pour la famille de métier
+    $(document).on('click', '.famille-card', function() {
+        $('.famille-card').css({
+            'border-color': '#dee2e6',
+            'background-color': 'white'
+        });
+        $(this).css({
+            'border-color': '#14224F',
+            'background-color': '#f8f9ff'
+        });
+        $('#famille_metier_id').val($(this).data('value'));
+    });
+
+    // Fonction pour charger les familles de métiers
+    function loadFamillesMetiers(poleId) {
+        const container = $('#famille-metier-container');
         
         if (poleId) {
-            familleSelect.prop('disabled', true).html('<option value="">Chargement...</option>');
+            container.html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Chargement...</span></div></div>');
             
-            // Ajouter le token CSRF et améliorer la gestion d'erreur
             $.ajax({
                 url: `/api/entreprise/familles-metiers/${poleId}`,
                 method: 'GET',
@@ -182,29 +272,34 @@
                     'Content-Type': 'application/json'
                 },
                 success: function(data) {
-                    console.log('Données reçues:', data); // Debug
-                    
-                    let options = '<option value="">Sélectionnez une famille de métier</option>';
+                    let html = '<div class="row g-3">';
                     
                     // Vérifier si data est un tableau
-                    if (Array.isArray(data)) {
-                        data.forEach(function(famille) {
-                            options += `<option value="${famille.id}">${famille.nom}</option>`;
-                        });
-                    } else if (data.familles && Array.isArray(data.familles)) {
-                        // Si les données sont dans une propriété 'familles'
-                        data.familles.forEach(function(famille) {
-                            options += `<option value="${famille.id}">${famille.nom}</option>`;
+                    const familles = Array.isArray(data) ? data : (data.familles || []);
+                    
+                    if (familles.length > 0) {
+                        familles.forEach(function(famille) {
+                            html += `
+                                <div class="col-md-6">
+                                    <div class="card famille-card h-100" data-value="${famille.id}" 
+                                         style="cursor: pointer; transition: all 0.3s ease; border-color: #dee2e6;">
+                                        <div class="card-body text-center p-3">
+                                            <h6 class="card-title mb-0" style="color: #14224F;">${famille.nom}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
                         });
                     } else {
-                        console.error('Format de données inattendu:', data);
-                        options = '<option value="">Aucune famille disponible</option>';
+                        html = '<div class="alert alert-warning text-center"><i class="bi bi-exclamation-triangle me-2"></i>Aucune famille de métier disponible</div>';
                     }
                     
-                    familleSelect.html(options).prop('disabled', false);
+                    html += '</div>';
+                    container.html(html);
+                    $('#famille_metier_id').val('');
                 },
                 error: function(xhr, status, error) {
-                    console.error('Erreur AJAX:', xhr.status, xhr.responseText); // Debug détaillé
+                    console.error('Erreur AJAX:', xhr.status, xhr.responseText);
                     
                     let errorMessage = 'Erreur de chargement';
                     if (xhr.status === 404) {
@@ -215,13 +310,14 @@
                         errorMessage = 'Accès interdit (403)';
                     }
                     
-                    familleSelect.html(`<option value="">${errorMessage}</option>`);
+                    container.html(`<div class="alert alert-danger text-center"><i class="bi bi-exclamation-circle me-2"></i>${errorMessage}</div>`);
                 }
             });
         } else {
-            familleSelect.prop('disabled', true).html('<option value="">Sélectionnez d\'abord un pôle d\'activité</option>');
+            container.html('<div class="alert alert-info text-center"><i class="bi bi-info-circle me-2"></i>Sélectionnez d\'abord un pôle d\'activité</div>');
+            $('#famille_metier_id').val('');
         }
-    });
+    }
 
     // Soumission du formulaire
     $('#step1Form').submit(function(e) {
