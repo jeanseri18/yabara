@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* background: linear-gradient(135deg, #1e3a8a 0%, #162359 100%); */
+            /* background: linear-gradient(135deg, #1e3a8a 0%, #0066FF 100%); */
             min-height: 100vh;
             display: flex;
         }
@@ -26,7 +26,7 @@
 
         .left-panel {
             flex: 1;
-            background: url('/images/bgleftauth.png') no-repeat center center / cover;
+            background: url('/images/undraw_online-resume_z4sp 1.png') no-repeat center center / contain;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -70,7 +70,7 @@
         .form-title {
             font-size: 2rem;
             font-weight: bold;
-            color: #162359;
+            color: #0066FF;
             margin-bottom: 0.5rem;
         }
 
@@ -90,7 +90,7 @@
 
         .progress-bar {
             height: 100%;
-            background: #162359;
+            background: #0066FF;
             border-radius: 5px;
             transition: width 0.3s ease;
             width: 0%;
@@ -101,7 +101,7 @@
             bottom: -20px;
             right: 0;
             font-size: 0.875rem;
-            color: #162359;
+            color: #0066FF;
         }
 
         .form-step {
@@ -115,7 +115,7 @@
         .section-title {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #162359;
+            color: #0066FF;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid #e5e7eb;
@@ -143,7 +143,7 @@
 
         .form-input:focus {
             outline: none;
-            border-color: #162359;
+            border-color: #0066FF;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
@@ -175,16 +175,16 @@
         }
 
         .selection-card:hover {
-            border-color: #162359;
+            border-color: #0066FF;
             background-color: #f8fafc;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .selection-card.selected {
-            border-color: #162359;
+            border-color: #0066FF;
             background-color: #eff6ff;
-            box-shadow: 0 4px 12px rgba(22, 35, 89, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2);
         }
 
         .selection-card .icon {
@@ -195,7 +195,7 @@
 
         .selection-card .title {
             font-weight: 600;
-            color: #162359;
+            color: #0066FF;
             margin-bottom: 0.5rem;
             font-size: 1.1rem;
         }
@@ -223,12 +223,12 @@
         }
 
         .avatar-option:hover {
-            border-color: #162359;
+            border-color: #0066FF;
             background-color: #f8fafc;
         }
 
         .avatar-option.selected {
-            border-color: #162359;
+            border-color: #0066FF;
             background-color: #eff6ff;
         }
 
@@ -282,7 +282,7 @@
         }
 
         .back-link {
-            color: #162359;
+            color: #0066FF;
             text-decoration: none;
             font-size: 0.9rem;
             margin-bottom: 1rem;

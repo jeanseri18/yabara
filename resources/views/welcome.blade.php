@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YABARA - Connexion Talents</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
             --primary-blue: #1e40af;
@@ -62,10 +63,10 @@
 
         /* Header Section */
         .header {
-    background: linear-gradient(135deg, var(--primary-blue) 0%, #1e3a8a 100%);
-    color: var(--white);
-    padding: 60px 0;
-    position: relative;
+    background: #f2f7ff;
+    color: var(--black);
+    /* padding: 60px 0; */
+    /* position: relative; */
     overflow: hidden;
     min-height: 100vh;
 }
@@ -107,7 +108,7 @@
         }
 
         .header-text h1 {
-            font-size: 42px;
+            font-size: 72px;
             margin-bottom: 24px;
             font-weight: 700;
             line-height: 1.2;
@@ -142,8 +143,8 @@
         }
 
         .qr-code {
-            width: 350px;
-            height: 350px;
+            width: 600px;
+            height: 600px;
             /* background-color: var(--white); */
             border-radius: 10px;
             display: flex;
@@ -297,8 +298,8 @@
 
         /* Why Choose Section */
         .why-choose-section {
-            background-color: var(--primary-purple);
-            color: var(--white);
+            background-color: #f2f7ff;
+            color: var(--black);
             padding: 80px 0;
         }
 
@@ -319,72 +320,50 @@
             line-height: 1.6;
         }
 
-        .benefits {
+        .why-choose-section .row {
             display: flex;
-            flex-direction: column;
-            gap: 60px;
+            flex-wrap: wrap;
+            margin: 0 -15px;
         }
 
-        .benefit-card {
-            display: flex;
-            align-items: center;
-          
-            border-radius: var(--border-radius);
-            overflow: hidden;
-       
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            min-height: 300px;
-            color: white;
+        .why-choose-section .col-md-4 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+            padding: 0 15px;
+            margin-bottom: 30px;
         }
 
-        .benefit-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        .benefit-card:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-
-        .benefit-img {
-            width: 50%;
-            height: 500px;
-        
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .benefit-img img {
-            width: 100%;
+        .why-choose-section .col-md-4 > div {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             height: 100%;
-            object-fit: contain;
-            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .benefit-content {
-            width: 50%;
-            padding: 40px;
-            color:  white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        .why-choose-section .col-md-4 > div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
-        .benefit-content h3 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: white;
-            font-weight: 600;
+        .why-choose-section .col-md-4 h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark-text);
         }
 
-        .benefit-content p {
-            line-height: 1.7;
-            color:  white;
-            font-size: 18px;
+        .why-choose-section .col-md-4 p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--light-text);
+            margin: 0;
         }
 
+      
+    
         /* Partners Section */
         .partners-section {
             background-color: var(--white);
@@ -441,6 +420,74 @@
         .partners-cta {
             text-align: center;
             margin-top: 30px;
+        }
+
+        /* Partners Comments Section */
+        .partners-comments {
+            margin: 60px 0 40px 0;
+        }
+
+        .comments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .comment-card {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid var(--primary-blue);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .comment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .comment-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 60px;
+            color: var(--primary-blue);
+            opacity: 0.3;
+            font-family: serif;
+        }
+
+        .comment-content {
+            margin-bottom: 20px;
+        }
+
+        .comment-content p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--dark-text);
+            font-style: italic;
+            margin: 0;
+        }
+
+        .comment-author {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .comment-author strong {
+            color: var(--primary-blue);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .comment-author span {
+            color: var(--light-text);
+            font-size: 14px;
+            font-weight: 400;
         }
 
         /* FAQ Section */
@@ -563,40 +610,49 @@
 
         /* Footer */
         .footer {
-            background-color: var(--primary-orange);
-            color: var(--white);
-            padding: 40px 0;
-            border-radius: 20px;
+            background-color: #e5e7eb;
+            color: var(--dark-text);
+            padding: 60px 0 0 0;
         }
 
         .footer-content {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
+            padding-bottom: 40px;
         }
 
         .footer-logo {
-            font-size: 24px;
+            font-size: 32px;
             font-weight: bold;
             margin-bottom: 15px;
+            color: #0066FF;
         }
 
         .footer-info {
-            width: 30%;
+            width: 35%;
         }
 
         .footer-info p {
             line-height: 1.6;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            color: var(--light-text);
+        }
+
+        .footer-follow p {
+            margin-bottom: 10px;
+            color: var(--dark-text);
         }
 
         .footer-links {
-            width: 20%;
+            width: 25%;
         }
 
         .footer-links h3 {
             font-size: 18px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--dark-text);
         }
 
         .footer-links ul {
@@ -604,48 +660,110 @@
         }
 
         .footer-links li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .footer-links a {
-            color: var(--white);
+            color: var(--light-text);
             text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
         }
 
         .footer-links a:hover {
-            text-decoration: underline;
+            color: var(--dark-text);
         }
 
-        .footer-social {
-            width: 20%;
+        .footer-newsletter {
+            width: 35%;
         }
 
-        .footer-social h3 {
+        .footer-newsletter h3 {
             font-size: 18px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .newsletter-input:focus {
+            border-color: #0066FF;
+        }
+
+        .newsletter-btn {
+            padding: 12px 24px;
+            background-color: #0066FF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            background-color: #0052cc;
         }
 
         .social-icons {
             display: flex;
-            gap: 15px;
+            gap: 10px;
         }
 
         .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--white);
-            color: var(--primary-orange);
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
             display: flex;
             justify-content: center;
             align-items: center;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 16px;
             transition: all 0.3s ease;
         }
 
+        .social-icon.facebook {
+            background-color: #1877f2;
+            color: white;
+        }
+
+        .social-icon.linkedin {
+            background-color: #0077b5;
+            color: white;
+        }
+
+        .social-icon.twitter {
+            background-color: #1da1f2;
+            color: white;
+        }
+
         .social-icon:hover {
-            transform: translateY(-5px);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #d1d5db;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            margin: 0;
+            color: var(--light-text);
+            font-size: 14px;
         }
 
         /* Responsive Styles */
@@ -689,9 +807,27 @@
                 grid-template-columns: repeat(3, 1fr);
             }
 
-            .footer-info, .footer-links, .footer-social {
+            .footer-info, .footer-links, .footer-newsletter {
                 width: 100%;
                 margin-bottom: 30px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-input {
+                margin-bottom: 10px;
+            }
+
+            .why-choose-section .col-md-4 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+
+            .comments-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 20px;
             }
         }
 
@@ -728,6 +864,20 @@
             .partners-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .why-choose-section .col-md-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .comments-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .comment-card {
+                padding: 20px;
+            }
         }
         /* Navbar Styles */
         .navbar {
@@ -736,26 +886,27 @@
             /* margin: 40px; */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             /* position: fixed; */
-            border-radius: 10px   20px;
+            /* border-radius: 10px   20px; */
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
+            /* z-index: 1000; */
         }
 
         .navbar-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
+            /* max-width: 1200px; */
             margin: 0 auto;
             padding: 0 20px;
+            gap: 600px;
         }
 
         .navbar-logo {
             font-size: 28px;
             font-weight: bold;
-            color: black;
+            color: #0066FF;
             text-decoration: none;
         }
 
@@ -766,15 +917,15 @@
 
         .auth-btn {
             padding: 10px 20px;
-            border-radius: 25px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
         }
 
         .auth-btn.login {
-            color: var(--primary-blue);
-            border: 2px solid var(--primary-blue);
+            color: #0066FF ;
+            border: 2px solid #0066FF ;
             background-color: transparent;
         }
 
@@ -784,9 +935,9 @@
         }
 
         .auth-btn.register {
-            background-color: var(--primary-blue);
+            background-color: #0066FF;
             color: var(--white);
-            border: 2px solid var(--primary-blue);
+            border: 2px solid #0066FF;
         }
 
         .auth-btn.register:hover {
@@ -820,13 +971,9 @@
  
     <!-- Header Section -->
     <header class="header">
-    <div class="video-container">
-        <video autoplay muted loop playsinline>
-            <source src="{{ asset('images/square-chips-falling-in-place.mp4') }}" type="video/mp4">
-            Votre navigateur ne supporte pas la lecture de vidéos.
-        </video>
+    <div class="video-container" style="background-color: #f2f7ff;">
     </div>
-        <div class="container">
+        <div class="container-fluid">
              <nav class="navbar">
         <div class="navbar-content">
             <a href="#" class="navbar-logo">YABARA</a>
@@ -846,22 +993,27 @@
             
             <div class="header-text">
                 
-                <h1>Nous vous connectons avec les meilleurs talents</h1>
-                <p>Grâce à l'intelligence artificielle et à une forte expertise professionnelle, YABARA vous aide à trouver les meilleurs talents pour opportunités d'emploi.</p>
+                <h1>Votre passerelle 
+vers l’emploi et 
+les talents.</h1>
+                <p>
+Nous connectons les chercheurs d’emploi et les 
+recruteurs sur une même plateforme simple, 
+rapide et efficace.                </p>
                 <br>
     <br>
   
  <div class="app-buttons">
-                    <a href="#" class="app-btn">
-                        <img src="{{ asset('images/appstore.png') }}" alt="App Store" style="width: 230px; height: auto;">
+                    <a href="{{ route('register.talent') }}" class="app-btn" style="background-color: #007bff; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; margin: 10px; font-weight: bold; width: 230px; text-align: center;">
+                        Je cherche un travail
                     </a>
-                    <a href="#" class="app-btn">
-                        <img src="{{ asset('images/playstore.png') }}" alt="Google Play" style="width: 230px; height: auto;">
+                    <a href="{{ route('register.entreprise') }}" class="app-btn" style="background-color: white; color: #0066FF; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; margin: 10px; font-weight: bold; width: 230px; text-align: center;">
+                        Je recrute des talents
                     </a>
                 </div>
             </div>
             <div class="qr-code">
-                <img src="{{ asset('images/qrcode.png') }}" alt="QR Code">
+                <img src="{{ asset('images/OD15EW.png') }}" alt="QR Code">
             </div>
         </div>
     </header>
@@ -886,30 +1038,24 @@
                 <h2>Pourquoi choisir YABARA ?</h2>
                 <p>Mise en relation transparente. Trouvez l'association idéale des professionnels et des entreprises correspondant à vos besoins.</p>
             </div>
-            <div class="benefits">
-                <div class="benefit-card">
-                    <div class="benefit-img">
-                        <img src="{{ asset('images/reseau.png') }}" alt="Réseautage efficace">
-                    </div>
-                    <div class="benefit-content text-white">
+            <div class="row">
+                <div class="col-md-4">
+              
+                    <div class=" ">
                         <h3>Réseautage efficace</h3>
                         <p>Rencontrez vos clients ou vos employeurs idéaux grâce à notre algorithme de mise en relation.</p>
                     </div>
                 </div>
-                <div class="benefit-card">
-                    <div class="benefit-img">
-                        <img src="{{ asset('images/fiabilite.png') }}" alt="Fiabilité et sécurité">
-                    </div>
-                    <div class="benefit-content text-white">
+                <div class="col-md-4">
+                  
+                    <div class=" ">
                         <h3>Fiabilité et sécurité</h3>
                         <p>Plateforme sécurisée pour gérer vos candidatures et assurer la protection des données.</p>
                     </div>
                 </div>
-                <div class="benefit-card">
-                    <div class="benefit-img">
-                        <img src="{{ asset('images/outils.png') }}" alt="Outils performants">
-                    </div>
-                    <div class="benefit-content text-white">
+                <div class="col-md-4">
+       
+                    <div class=" ">
                         <h3>Outils performants</h3>
                         <p>Accédez à des fonctionnalités avancées pour optimiser votre processus de recrutement.</p>
                     </div>
@@ -928,120 +1074,169 @@
             </div>
             <div class="partners-grid">
                 <!-- 12 entreprises partenaires -->
-                <div class="partner-logo">Orange CI</div>
-                <div class="partner-logo">MTN</div>
-                <div class="partner-logo">Bolloré</div>
-                <div class="partner-logo">NSIA</div>
-                <div class="partner-logo">Nestlé</div>
-                <div class="partner-logo">Ecobank</div>
-                <div class="partner-logo">Total</div>
-                <div class="partner-logo">Société Générale</div>
-                <div class="partner-logo">Lafarge</div>
-                <div class="partner-logo">Unilever</div>
-                <div class="partner-logo">Dangote</div>
-                <div class="partner-logo">SGBCI</div>
-                <div class="partner-logo">Total Energies</div>
-                <div class="partner-logo">Canal+</div>
-                <div class="partner-logo">Wave</div>
-                <div class="partner-logo">Moov</div>
-                <div class="partner-logo">CIE</div>
-                <div class="partner-logo">Jumia</div>
-                <div class="partner-logo">UBA</div>
-                <div class="partner-logo">Advans</div>
-                <div class="partner-logo">SIFCA</div>
-                <div class="partner-logo">BNI</div>
-                <div class="partner-logo">BICICI</div>
-                <div class="partner-logo">Bernabé</div>
+                <div class="partner-logo">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="60" fill="#FF6600"/>
+                        <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">orange</text>
+                        <text x="105" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8">TM</text>
+                    </svg>
+                </div>
+                <div class="partner-logo">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="60" fill="#FFCC00"/>
+                        <ellipse cx="60" cy="30" rx="45" ry="20" fill="none" stroke="#000" stroke-width="3"/>
+                        <text x="60" y="38" text-anchor="middle" fill="black" font-family="Arial, sans-serif" font-size="20" font-weight="bold">MTN</text>
+                    </svg>
+                </div>
+                <div class="partner-logo">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="60" fill="#4CAF50"/>
+                        <rect x="10" y="10" width="30" height="40" fill="#66BB6A" stroke="white" stroke-width="2"/>
+                        <path d="M15 15 L35 15 L35 45 L15 45 Z" fill="none" stroke="white" stroke-width="1"/>
+                        <text x="85" y="25" text-anchor="middle" fill="black" font-family="Arial, sans-serif" font-size="14" font-weight="bold">BICICI</text>
+                        <text x="85" y="40" text-anchor="middle" fill="black" font-family="Arial, sans-serif" font-size="8">La banque en toute confiance</text>
+                    </svg>
+                </div>
+                <div class="partner-logo">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="60" fill="#1E3A8A"/>
+                        <ellipse cx="60" cy="20" rx="25" ry="12" fill="white"/>
+                        <path d="M35 20 Q60 35 85 20" fill="white"/>
+                        <text x="60" y="45" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">AGL</text>
+                        <text x="60" y="55" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="6">AFRICA GLOBAL LOGISTICS</text>
+                    </svg>
+                </div>
+                <div class="partner-logo">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="60" fill="white"/>
+                        <text x="20" y="25" fill="#666" font-family="Arial, sans-serif" font-size="14" font-weight="bold">ADV</text>
+                        <text x="50" y="25" fill="#4CAF50" font-family="Arial, sans-serif" font-size="14" font-weight="bold">ANS</text>
+                        <text x="20" y="45" fill="#666" font-family="Arial, sans-serif" font-size="8">Growing together</text>
+                    </svg>
+                </div>
+                <div class="partner-logo">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="60" fill="#E3F2FD"/>
+                        <text x="60" y="35" text-anchor="middle" fill="#1976D2" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Ecobank</text>
+                    </svg>
+                </div>
+                <div class="partner-logo">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="60" fill="#FF0000"/>
+                        <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Total</text>
+                    </svg>
+                </div>
+                <div class="partner-logo">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="60" fill="#000080"/>
+                        <text x="60" y="30" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Société</text>
+                        <text x="60" y="42" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Générale</text>
+                    </svg>
+                </div>
+                <div class="partner-logo">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="60" fill="#0066CC"/>
+                        <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Lafarge</text>
+                    </svg>
+                </div>
+                <div class="partner-logo">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="60" fill="#0066CC"/>
+                        <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">Unilever</text>
+                    </svg>
+                </div>
+                <div class="partner-logo">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="60" fill="#FF6600"/>
+                        <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Dangote</text>
+                    </svg>
+                </div>
+                <div class="partner-logo">
+                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="60" fill="#000080"/>
+                        <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">SGBCI</text>
+                    </svg>
+                </div>
             </div>
+            
+            <!-- Commentaires des partenaires -->
+            <div class="partners-comments">
+                <div class="comments-grid">
+                    <div class="comment-card">
+                        <div class="comment-content">
+                            <p>"YABARA nous a permis de recruter des talents exceptionnels en un temps record. Une plateforme innovante et efficace."</p>
+                        </div>
+                        <div class="comment-author">
+                            <strong>Orange CI</strong>
+                            <span>Directeur RH</span>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-card">
+                        <div class="comment-content">
+                            <p>"Grâce à YABARA, nous avons trouvé des profils qualifiés qui correspondent parfaitement à nos besoins. Excellent service !"</p>
+                        </div>
+                        <div class="comment-author">
+                            <strong>MTN Côte d'Ivoire</strong>
+                            <span>Responsable Recrutement</span>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-card">
+                        <div class="comment-content">
+                            <p>"Une plateforme qui révolutionne le recrutement en Côte d'Ivoire. Interface intuitive et résultats concrets."</p>
+                        </div>
+                        <div class="comment-author">
+                            <strong>BICICI</strong>
+                            <span>Chef de Projet RH</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="partners-cta">
-                <a href="#" class="btn btn-black">Voir plus</a>
+                <a href="{{ route('login') }}" class="btn btn-black">Voir plus</a>
             </div>
         </div>
     </section>
 
-    <!-- FAQ Section -->
-    <section class="faq-section">
-        <div class="container">
-            <div class="faq-header">
-                <h2>FAQs</h2>
-                <p>Avez vous des questions concernant yabara ?</p>
-            </div>
-
-<iframe src='https://my.spline.design/robotfollowcursorforlandingpage-pbTQ1XKHEoMyalQKMQPnlfMa/' frameborder='0' width='100%' height='100%'></iframe>            <div class="faq-container">
-                <div class="faq-item">
-                    <p>Comment fonctionne l'anonymisation des CV ?</p>
-                    <div class="faq-answer">
-                        <p>Vos informations personnelles (nom, photo, email, téléphone) sont automatiquement masquées. Seuls vos compétences, expériences et formations sont visibles avec une référence unique comme CVYB0675BC. Cela garantit un recrutement basé uniquement sur le mérite.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <p>Qu'est-ce que le système de badges ?</p>
-                    <div class="faq-answer">
-                        <p>Notre système de gamification vous récompense pour votre activité sur la plateforme. Talents et entreprises peuvent débloquer des badges en complétant leur profil, en étant actifs, ou en réussissant des recrutements. Cela inclut des récompenses tangibles !</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <p>Comment fonctionne le parrainage ?</p>
-                    <div class="faq-answer">
-                        <p>Invitez vos amis avec votre référence unique ! Quand ils s'inscrivent et deviennent actifs, vous gagnez des badges spéciaux et des récompenses. C'est un moyen de faire grandir la communauté YABARA tout en étant récompensé.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <p>Quels sont les 5 pôles d'activité ?</p>
-                    <div class="faq-answer">
-                        <p>Nous couvrons :<br> 1) TERTIAIRE (RH, Finance, Santé...), <br>2) SECONDAIRE (BTP, Industrie, Logistique...),<br> 3) NUMÉRIQUE (IT, Télécoms, Design...), <br>4) COMMERCIAL (Marketing, Ventes, Immobilier...),<br> 5) MÉTIERS PRATIQUES (Artisanat, Tourisme, Arts...).<br> Chaque pôle contient de nombreuses familles de métiers.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <p>La plateforme est-elle gratuite ?</p>
-                    <div class="faq-answer">
-                        <p>L'inscription sur YABARA est entièrement gratuite pour les talents. Les entreprises bénéficient également d'une offre de base gratuite, avec des options premium pour des fonctionnalités avancées.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="faq-cta">
-                <a href="#" class="btn">Commencer</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Application Section -->
-    <section class="application-section">
-        <div class="container">
-            <div class="application-img">
-                <img src="{{ asset('images/candidat smplifie.png') }}" alt="Candidature simplifié">
-            </div>
-            <div class="application-content">
-                <h2>Candidature simplifié</h2>
-                <p>Envoyez directement votre dossier depuis la plateforme</p>
-                <a href="#" class="btn btn-black">Commencer</a>
-            </div>
-        </div>
-    </section>
 
     <!-- Footer -->
-    <footer class="footer container">
+    <footer class="footer ">
         <div class="container footer-content">
             <div class="footer-info">
                 <div class="footer-logo">YABARA</div>
-                <p>Plateforme innovante de mise en relation entre professionnels et entreprises.</p>
+                <p>Une plateforme pour connecter talents et entreprises.</p>
+                <div class="footer-follow">
+                    <p><strong>Suivez-nous !</strong></p>
+                    <div class="social-icons">
+                        <a href="https://facebook.com/yabara" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://linkedin.com/company/yabara" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://twitter.com/yabara" class="social-icon twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
             </div>
             <div class="footer-links">
-                <h3>Pages</h3>
+                <h3>Page</h3>
                 <ul>
-                    <li><a href="#">Accueil</a></li>
-                    <li><a href="#">À propos</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="{{ route('welcome') }}">Accueil</a></li>
+                    <li><a href="#about">À propos</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#privacy">Politique et confidentialité</a></li>
+                    <li><a href="#terms">Condition général d'utilisation</a></li>
                 </ul>
             </div>
-            <div class="footer-social">
-                <h3>Restez social</h3>
-                <div class="social-icons">
-                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            <div class="footer-newsletter">
+                <h3>Newsletter</h3>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Abonnez-vous à la newsletter de Yabara" class="newsletter-input">
+                    <button type="submit" class="newsletter-btn">Envoyer</button>
                 </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>Copyright 2025 © Yabara</p>
             </div>
         </div>
     </footer>

@@ -380,24 +380,48 @@
 /* Styles pour la salle de trophées */
 .badges-container {
     position: relative;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%);
-    border-radius: 25px;
-    padding: 2rem;
-    margin: 1rem 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+    border-radius: 30px;
+    padding: 3rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 25px 50px rgba(102, 126, 234, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+}
+
+.badges-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%);
+    animation: container-shimmer 8s infinite;
+    pointer-events: none;
+}
+
+@keyframes container-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
 .trophy-card {
-    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
     padding: 0;
     height: 100%;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 3px solid transparent;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5);
+    box-shadow: 
+        0 20px 40px rgba(102, 126, 234, 0.1),
+        0 8px 16px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .trophy-card .card-header {
@@ -418,16 +442,24 @@
 }
 
 .trophy-card:hover {
-    transform: translateY(-12px) scale(1.03) rotateX(5deg);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.2), 0 0 30px rgba(20, 34, 79, 0.1);
-    border-color: rgba(20, 34, 79, 0.3);
+    transform: translateY(-20px) scale(1.05);
+    box-shadow: 
+        0 35px 70px rgba(102, 126, 234, 0.25),
+        0 15px 30px rgba(0, 0, 0, 0.1),
+        0 0 40px rgba(102, 126, 234, 0.15);
+    border-color: rgba(102, 126, 234, 0.4);
+    background: rgba(255, 255, 255, 1);
 }
 
 .trophy-obtained {
-    border-color: #28a745;
-    background: linear-gradient(145deg, #ffffff 0%, #f0fff4 50%, #e8f5e8 100%);
-    box-shadow: 0 12px 35px rgba(40, 167, 69, 0.25), 0 0 20px rgba(40, 167, 69, 0.1);
+    border-color: rgba(52, 211, 153, 0.4);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(236, 253, 245, 0.9) 50%, rgba(209, 250, 229, 0.8) 100%);
+    box-shadow: 
+        0 20px 40px rgba(52, 211, 153, 0.2),
+        0 8px 16px rgba(0, 0, 0, 0.05),
+        0 0 30px rgba(52, 211, 153, 0.1);
     position: relative;
+    backdrop-filter: blur(25px);
 }
 
 .trophy-obtained::before {
@@ -448,10 +480,11 @@
 }
 
 .trophy-locked {
-    border-color: #dee2e6;
-    background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
-    opacity: 0.7;
-    filter: grayscale(0.3);
+    border-color: rgba(156, 163, 175, 0.3);
+    background: linear-gradient(145deg, rgba(248, 250, 252, 0.9) 0%, rgba(241, 245, 249, 0.8) 50%, rgba(226, 232, 240, 0.7) 100%);
+    opacity: 0.8;
+    filter: grayscale(0.2) blur(0.5px);
+    backdrop-filter: blur(15px);
 }
 
 .trophy-obtained:hover {
@@ -470,18 +503,28 @@
     background: linear-gradient(45deg, 
         transparent 20%, 
         rgba(255,255,255,0.1) 40%, 
-        rgba(255,255,255,0.4) 50%, 
+        rgba(255,255,255,0.6) 50%, 
         rgba(255,255,255,0.1) 60%, 
         transparent 80%);
     transform: rotate(45deg);
-    animation: shine 4s infinite;
+    animation: shine 6s infinite;
     z-index: 2;
+    opacity: 0.8;
 }
 
 @keyframes shine {
-    0% { transform: translateX(-150%) translateY(-150%) rotate(45deg); }
-    50% { transform: translateX(0%) translateY(0%) rotate(45deg); }
-    100% { transform: translateX(150%) translateY(150%) rotate(45deg); }
+    0% { 
+        transform: translateX(-150%) translateY(-150%) rotate(45deg);
+        opacity: 0;
+    }
+    50% { 
+        transform: translateX(0%) translateY(0%) rotate(45deg);
+        opacity: 1;
+    }
+    100% { 
+        transform: translateX(150%) translateY(150%) rotate(45deg);
+        opacity: 0;
+    }
 }
 
 /* Effet de particules flottantes */
@@ -546,14 +589,34 @@
 }
 
 .trophy-icon.obtained {
-    background: linear-gradient(145deg, #28a745 0%, #20c997 50%, #17a2b8 100%);
+    background: linear-gradient(145deg, #10b981 0%, #059669 50%, #047857 100%);
     color: white;
     box-shadow: 
-        0 12px 30px rgba(40, 167, 69, 0.4),
-        inset 0 2px 0 rgba(255,255,255,0.3),
+        0 15px 35px rgba(16, 185, 129, 0.4),
+        0 5px 15px rgba(0, 0, 0, 0.1),
+        inset 0 2px 0 rgba(255,255,255,0.4),
         inset 0 -2px 0 rgba(0,0,0,0.1);
-    animation: trophy-pulse 3s infinite;
-    border-color: rgba(255,255,255,0.3);
+    animation: trophy-pulse 4s infinite;
+    border-color: rgba(255,255,255,0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.trophy-icon.obtained::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+    animation: icon-shine 3s infinite;
+    pointer-events: none;
+}
+
+@keyframes icon-shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
 .trophy-icon.obtained::before {
@@ -576,25 +639,30 @@
 }
 
 .trophy-icon.locked {
-    background: linear-gradient(145deg, #e9ecef 0%, #dee2e6 100%);
-    color: #6c757d;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    background: linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%);
+    color: #94a3b8;
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.1),
+        0 4px 8px rgba(0,0,0,0.05);
+    backdrop-filter: blur(10px);
 }
 
 @keyframes trophy-pulse {
     0%, 100% { 
         box-shadow: 
-            0 12px 30px rgba(40, 167, 69, 0.4),
-            inset 0 2px 0 rgba(255,255,255,0.3),
+            0 15px 35px rgba(16, 185, 129, 0.4),
+            0 5px 15px rgba(0, 0, 0, 0.1),
+            inset 0 2px 0 rgba(255,255,255,0.4),
             inset 0 -2px 0 rgba(0,0,0,0.1);
         transform: scale(1);
     }
     50% { 
         box-shadow: 
-            0 15px 40px rgba(40, 167, 69, 0.6),
-            inset 0 2px 0 rgba(255,255,255,0.4),
+            0 20px 45px rgba(16, 185, 129, 0.6),
+            0 8px 20px rgba(0, 0, 0, 0.15),
+            inset 0 2px 0 rgba(255,255,255,0.5),
             inset 0 -2px 0 rgba(0,0,0,0.1);
-        transform: scale(1.05);
+        transform: scale(1.08);
     }
 }
 
@@ -683,42 +751,73 @@
 
 /* Statistiques rapides */
 .stat-card {
-    background: white;
-    border-radius: 15px;
-    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
     text-align: center;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     height: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.stat-card:hover::before {
+    opacity: 1;
+    animation: stat-shine 1.5s ease-out;
+}
+
+@keyframes stat-shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
 .stat-card.obtained {
-    border-color: #28a745;
-    background: linear-gradient(135deg, #28a745, #20c997);
+    border-color: rgba(16, 185, 129, 0.3);
+    background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
     color: white;
+    box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
 }
 
 .stat-card.progress {
-    border-color: #17a2b8;
-    background: linear-gradient(135deg, #17a2b8, #138496);
+    border-color: rgba(59, 130, 246, 0.3);
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
     color: white;
+    box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
 }
 
 .stat-card.points {
-    border-color: #ffc107;
-    background: linear-gradient(135deg, #ffc107, #e0a800);
+    border-color: rgba(245, 158, 11, 0.3);
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
     color: white;
+    box-shadow: 0 15px 30px rgba(245, 158, 11, 0.3);
 }
 
 .stat-card.level {
-    border-color: #6f42c1;
-    background: linear-gradient(135deg, #6f42c1, #5a32a3);
+    border-color: rgba(139, 92, 246, 0.3);
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
     color: white;
+    box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3);
 }
 
 .stat-icon {
@@ -750,28 +849,57 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    border: 2px solid #e9ecef;
-    border-radius: 25px;
-    background: white;
-    color: #6c757d;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(15px);
+    color: #64748b;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     font-weight: 500;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(102, 126, 234, 0.1) 50%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
 .filter-tab:hover {
-    border-color: #14224F;
-    color: #14224F;
-    transform: translateY(-2px);
+    border-color: rgba(102, 126, 234, 0.4);
+    color: #667eea;
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.filter-tab:hover::before {
+    opacity: 1;
+    animation: filter-shine 1s ease-out;
+}
+
+@keyframes filter-shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
 .btn-check:checked + .filter-tab {
-    background: #14224F;
-    border-color: #14224F;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: rgba(102, 126, 234, 0.5);
     color: white;
-    box-shadow: 0 4px 15px rgba(20, 34, 79, 0.3);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    transform: translateY(-2px);
 }
 
 .status-filters {
@@ -783,15 +911,19 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border: 2px solid #e9ecef;
-    border-radius: 20px;
-    background: white;
-    color: #6c757d;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(15px);
+    color: #64748b;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
 }
 
 .status-filter.obtained:hover {

@@ -13,9 +13,9 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3a8a 0%, #1F335C 100%);
             min-height: 100vh;
             display: flex;
+            padding: 20px;
         }
 
         .container {
@@ -26,7 +26,7 @@
 
         .left-panel {
             flex: 1;
-            background: url('/images/bgleftauth.png') no-repeat center center / cover;
+            background: url('/images/undraw_interview_yz52 1.png') no-repeat center center / contain;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -90,7 +90,7 @@
 
         .progress-bar {
             height: 100%;
-            background: #162359;
+            background: #0066FF;
             border-radius: 5px;
             transition: width 0.3s ease;
             width: 0%;
@@ -101,7 +101,7 @@
             bottom: -20px;
             right: 0;
             font-size: 0.875rem;
-            color: #162359;
+            color: #0066FF;
         }
 
         .form-step {
@@ -143,7 +143,7 @@
 
         .form-input:focus {
             outline: none;
-            border-color: #162359;
+            border-color: #0066FF;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
@@ -198,7 +198,7 @@
         }
 
         .back-link {
-            color: #162359;
+            color: #0066FF;
             text-decoration: none;
             font-size: 0.9rem;
             margin-bottom: 1rem;
@@ -215,7 +215,7 @@
             border-radius: 8px;
             padding: 1rem;
             margin-bottom: 1.5rem;
-            color: #162359;
+            color: #0066FF;
             font-size: 0.9rem;
         }
 
@@ -244,15 +244,15 @@
         }
 
         .selection-card:hover {
-            border-color: #162359;
-            box-shadow: 0 4px 12px rgba(22, 35, 89, 0.1);
+            border-color: #0066FF;
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.1);
             transform: translateY(-2px);
         }
 
         .selection-card.selected {
-            border-color: #162359;
+            border-color: #0066FF;
             background: #f8fafc;
-            box-shadow: 0 4px 12px rgba(22, 35, 89, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.15);
         }
 
         .selection-card .icon {

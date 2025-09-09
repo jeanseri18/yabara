@@ -26,7 +26,7 @@
 
         .left-panel {
             flex: 1;
-            background:  url('/images/bgleftauth.png') no-repeat center center / cover;
+            background: url('/images/undraw_team-page_q5am 1.png') no-repeat center center / contain;
             display: flex;
             align-items: center;
             justify-content: center;

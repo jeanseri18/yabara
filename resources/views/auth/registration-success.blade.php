@@ -14,7 +14,8 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #132B98FF 0%, #0f1a3d 100%);
+            background: url('/images/undraw_portfolio_btd8 1.png') no-repeat center center / cover,
+                        linear-gradient(135deg, #132B98FF 0%, #0f1a3d 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
