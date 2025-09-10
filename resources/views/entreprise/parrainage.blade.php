@@ -3,19 +3,17 @@
 @section('title', 'Parrainage Entreprise')
 
 @section('content')
-<div class="container-fluid px-4">
+<div class="container-fluid px-3" style="background-color: #f8f9fa; min-height: 100vh;">
     <!-- En-tête -->
-    <div class="row mb-4">
+    <div class="row mb-4 pt-3">
         <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center mb-2">
+                <a href="{{ route('entreprise.dashboard') }}" class="btn btn-link p-0 me-3" style="color: #666;">
+                    <i class="fas fa-arrow-left" style="font-size: 18px;"></i>
+                </a>
                 <div>
-                    <h2 class="mb-1"><i class="fas fa-handshake me-2" style="color: #14224F;"></i>Parrainage Entreprise</h2>
-                    <p class="text-muted mb-0">Invitez d'autres entreprises et gagnez des récompenses</p>
-                </div>
-                <div>
-                    <a href="{{ route('entreprise.dashboard') }}" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left me-2"></i>Retour au dashboard
-                    </a>
+                    <h5 class="mb-0" style="color: #333; font-weight: 600;">Parrainage Entreprise</h5>
+                    <small class="text-muted">Invitez d'autres entreprises et gagnez des récompenses</small>
                 </div>
             </div>
         </div>
@@ -23,39 +21,39 @@
 
     <!-- Statistiques de parrainage -->
     <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card border-0 text-white" style="background-color: #14224F;">
-                <div class="card-body text-center">
-                    <i class="fas fa-paper-plane fa-2x mb-2"></i>
-                    <h3 class="mb-0">{{ $stats['invitations_envoyees'] }}</h3>
-                    <small>Invitations envoyées</small>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm text-white" style="background-color: #0066FF; border-radius: 12px;">
+                <div class="card-body text-center p-4">
+                    <i class="fas fa-paper-plane mb-3" style="font-size: 2rem;"></i>
+                    <div class="fw-bold h4 mb-1">{{ $stats['invitations_envoyees'] }}</div>
+                    <small style="font-size: 14px;">Invitations envoyées</small>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card border-0 text-white" style="background-color: #14224F;">
-                <div class="card-body text-center">
-                    <i class="fas fa-user-check fa-2x mb-2"></i>
-                    <h3 class="mb-0">{{ $stats['inscriptions_reussies'] }}</h3>
-                    <small>Inscriptions réussies</small>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm text-white" style="background-color: #0066FF; border-radius: 12px;">
+                <div class="card-body text-center p-4">
+                    <i class="fas fa-user-check mb-3" style="font-size: 2rem;"></i>
+                    <div class="fw-bold h4 mb-1">{{ $stats['inscriptions_reussies'] }}</div>
+                    <small style="font-size: 14px;">Inscriptions réussies</small>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card border-0" style="background-color: #f6cd45; color: #14224F;">
-                <div class="card-body text-center">
-                    <i class="fas fa-chart-line fa-2x mb-2"></i>
-                    <h3 class="mb-0">{{ $stats['entreprises_actives'] }}</h3>
-                    <small>Entreprises actives</small>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm" style="background-color: #ff6b35; color: white; border-radius: 12px;">
+                <div class="card-body text-center p-4">
+                    <i class="fas fa-chart-line mb-3" style="font-size: 2rem;"></i>
+                    <div class="fw-bold h4 mb-1">{{ $stats['entreprises_actives'] }}</div>
+                    <small style="font-size: 14px;">Entreprises actives</small>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card border-0 " style="background-color: #f6cd45; color: #14224F;">
-                <div class="card-body text-center">
-                    <i class="fas fa-gift fa-2x mb-2"></i>
-                    <h3 class="mb-0">{{ $stats['recompenses_gagnees'] }}</h3>
-                    <small>Récompenses gagnées</small>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm" style="background-color: #ff6b35; color: white; border-radius: 12px;">
+                <div class="card-body text-center p-4">
+                    <i class="fas fa-gift mb-3" style="font-size: 2rem;"></i>
+                    <div class="fw-bold h4 mb-1">{{ $stats['recompenses_gagnees'] }}</div>
+                    <small style="font-size: 14px;">Récompenses gagnées</small>
                 </div>
             </div>
         </div>
@@ -63,12 +61,10 @@
 
     <div class="row">
         <!-- Formulaire d'invitation -->
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header text-white" style="background-color: #14224F;">
-                    <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Inviter une entreprise</h5>
-                </div>
-                <div class="card-body">
+        <div class="col-lg-6 mb-3">
+            <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-plus-circle me-2" style="color: #ff6b35;"></i>Inviter une entreprise</h6>
                     <form id="invitationForm">
                         @csrf
                         <div class="mb-4">
@@ -118,26 +114,22 @@
         </div>
         
         <!-- Programme de récompenses -->
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header  " style="background-color:#f6cd45; color: #14224F;">
-                    <h5 class="mb-0"><i class="fas fa-trophy me-2"></i>Programme de récompenses</h5>
-                </div>
-                <div class="card-body">
+        <div class="col-lg-6 mb-3">
+            <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-trophy me-2" style="color: #ff6b35;"></i>Programme de récompenses</h6>
                     <div class="reward-levels">
-                        <div class="reward-level {{ $stats['inscriptions_reussies'] >= 1 ? 'achieved' : '' }}">
+                        <div class="mb-3 p-3 {{ $stats['inscriptions_reussies'] >= 1 ? 'bg-light border-success' : 'bg-light' }}" style="border: 1px solid #e9ecef; border-radius: 12px;">
                             <div class="d-flex align-items-center mb-3">
-                                <div class="reward-icon bg-bronze text-white me-3">
-                                    <i class="fas fa-medal"></i>
+                                <div class="me-3">
+                                    <i class="fas fa-medal" style="color: #cd7f32; font-size: 1.5rem;"></i>
                                 </div>
-                                <div>
-                                    <h6 class="mb-1">Niveau Bronze</h6>
-                                    <small class="text-muted">1 entreprise inscrite</small>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-bold" style="color: #333;">Bronze</h6>
+                                    <small class="text-muted" style="font-size: 14px;">1 entreprise inscrite</small>
                                 </div>
                                 @if($stats['inscriptions_reussies'] >= 1)
-                                    <div class="ms-auto">
-                                        <i class="fas fa-check-circle text-success fa-lg"></i>
-                                    </div>
+                                    <i class="fas fa-check-circle text-success"></i>
                                 @endif
                             </div>
                             <div class="reward-benefits">
@@ -149,19 +141,17 @@
                             </div>
                         </div>
                         
-                        <div class="reward-level {{ $stats['inscriptions_reussies'] >= 3 ? 'achieved' : '' }}">
+                        <div class="mb-3 p-3 {{ $stats['inscriptions_reussies'] >= 3 ? 'bg-light border-success' : 'bg-light' }}" style="border: 1px solid #e9ecef; border-radius: 12px;">
                             <div class="d-flex align-items-center mb-3">
-                                <div class="reward-icon bg-silver text-white me-3">
-                                    <i class="fas fa-medal"></i>
+                                <div class="me-3">
+                                    <i class="fas fa-medal" style="color: #c0c0c0; font-size: 1.5rem;"></i>
                                 </div>
-                                <div>
-                                    <h6 class="mb-1">Niveau Argent</h6>
-                                    <small class="text-muted">3 entreprises inscrites</small>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-bold" style="color: #333;">Argent</h6>
+                                    <small class="text-muted" style="font-size: 14px;">3 entreprises inscrites</small>
                                 </div>
                                 @if($stats['inscriptions_reussies'] >= 3)
-                                    <div class="ms-auto">
-                                        <i class="fas fa-check-circle text-success fa-lg"></i>
-                                    </div>
+                                    <i class="fas fa-check-circle text-success"></i>
                                 @endif
                             </div>
                             <div class="reward-benefits">
@@ -174,19 +164,17 @@
                             </div>
                         </div>
                         
-                        <div class="reward-level {{ $stats['inscriptions_reussies'] >= 5 ? 'achieved' : '' }}">
+                        <div class="mb-3 p-3 {{ $stats['inscriptions_reussies'] >= 5 ? 'bg-light border-success' : 'bg-light' }}" style="border: 1px solid #e9ecef; border-radius: 12px;">
                             <div class="d-flex align-items-center mb-3">
-                                <div class="reward-icon bg-gold text-white me-3">
-                                    <i class="fas fa-crown"></i>
+                                <div class="me-3">
+                                    <i class="fas fa-crown" style="color: #ffd700; font-size: 1.5rem;"></i>
                                 </div>
-                                <div>
-                                    <h6 class="mb-1">Niveau Or</h6>
-                                    <small class="text-muted">5 entreprises inscrites</small>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-bold" style="color: #333;">Or</h6>
+                                    <small class="text-muted" style="font-size: 14px;">5 entreprises inscrites</small>
                                 </div>
                                 @if($stats['inscriptions_reussies'] >= 5)
-                                    <div class="ms-auto">
-                                        <i class="fas fa-check-circle text-success fa-lg"></i>
-                                    </div>
+                                    <i class="fas fa-check-circle text-success"></i>
                                 @endif
                             </div>
                             <div class="reward-benefits">
@@ -208,106 +196,102 @@
     <!-- Historique des parrainages -->
     <div class="row mt-4">
         <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-light">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0"><i class="fas fa-history me-2"></i>Historique des parrainages</h5>
+            <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h6 class="mb-0" style="color: #333; font-weight: 600;"><i class="fas fa-history me-2" style="color: #ff6b35;"></i>Historique des parrainages</h6>
                         <div class="btn-group" role="group">
                             <input type="radio" class="btn-check" name="status-filter" id="all-status" value="all" checked>
-                            <label class="btn btn-outline-primaray btn-sm" for="all-status">Tous</label>
+                            <label class="btn btn-outline-secondary btn-sm" for="all-status" style="border-radius: 6px 0 0 6px;">Tous</label>
                             
                             <input type="radio" class="btn-check" name="status-filter" id="pending-status" value="en_attente">
-                            <label class="btn btn-outline-primary btn-sm" for="pending-status">En attente</label>
+                            <label class="btn btn-outline-secondary btn-sm" for="pending-status">En attente</label>
                             
                             <input type="radio" class="btn-check" name="status-filter" id="accepted-status" value="accepte">
-                            <label class="btn btn-outline-primary btn-sm" for="accepted-status">Acceptés</label>
+                            <label class="btn btn-outline-secondary btn-sm" for="accepted-status">Acceptés</label>
                             
                             <input type="radio" class="btn-check" name="status-filter" id="active-status" value="actif">
-                            <label class="btn btn-outline-primary btn-sm" for="active-status">Actifs</label>
+                            <label class="btn btn-outline-secondary btn-sm" for="active-status" style="border-radius: 0 6px 6px 0;">Actifs</label>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Entreprise</th>
-                                    <th>Email</th>
-                                    <th>Date d'invitation</th>
-                                    <th>Statut</th>
-                                    <th>Date d'inscription</th>
-                                    <th>Activité</th>
-                                    <th>Récompense</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
+                     <div class="table-responsive" style="border-radius: 8px; overflow: hidden;">
+                         <table class="table table-hover mb-0">
+                             <thead class="table-light">
+                                 <tr>
+                                     <th style="border: none; font-weight: 600; color: #333; padding: 16px;">Entreprise</th>
+                                     <th style="border: none; font-weight: 600; color: #333; padding: 16px;">Email</th>
+                                     <th style="border: none; font-weight: 600; color: #333; padding: 16px;">Date d'invitation</th>
+                                     <th style="border: none; font-weight: 600; color: #333; padding: 16px;">Statut</th>
+                                     <th style="border: none; font-weight: 600; color: #333; padding: 16px;">Date d'inscription</th>
+                                     <th style="border: none; font-weight: 600; color: #333; padding: 16px;">Activité</th>
+                                     <th style="border: none; font-weight: 600; color: #333; padding: 16px;">Récompense</th>
+                                     <th style="border: none; font-weight: 600; color: #333; padding: 16px;">Actions</th>
+                                 </tr>
+                             </thead>
                             <tbody id="parrainages-table">
                                 @foreach($parrainages as $parrainage)
-                                    <tr class="parrainage-row" data-status="{{ $parrainage->statut }}">
-                                        <td>
+                                    <tr class="parrainage-row" data-status="{{ $parrainage->statut }}" style="border-bottom: 1px solid #f1f3f4;">
+                                        <td style="padding: 16px; border: none;">
                                             <div class="d-flex align-items-center">
-                                                <div class="company-avatar me-2">
+                                                <div class="company-avatar me-3">
                                                     @if($parrainage->entreprise_parrainee && $parrainage->entreprise_parrainee->logo)
                                                         <img src="{{ $parrainage->entreprise_parrainee->logo }}" 
-                                                             alt="Logo" class="rounded" width="32" height="32">
+                                                             alt="Logo" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
                                                     @else
-                                                        <div class="bg-secondary text-white rounded d-flex align-items-center justify-content-center" 
-                                                             style="width: 32px; height: 32px;">
+                                                        <div class="text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                                             style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                                                             <i class="fas fa-building"></i>
                                                         </div>
                                                     @endif
                                                 </div>
                                                 <div>
-                                                    <div class="fw-bold">{{ $parrainage->nom_entreprise ?: 'Non spécifié' }}</div>
-                                                    <small class="text-muted">Code: {{ $parrainage->code_parrainage }}</small>
+                                                    <div class="fw-bold" style="color: #333; font-size: 14px;">{{ $parrainage->nom_entreprise ?: 'Non spécifié' }}</div>
+                                                    <small class="text-muted" style="font-size: 12px;">Code: {{ $parrainage->code_parrainage }}</small>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ $parrainage->email_entreprise }}</td>
-                                        <td>{{ $parrainage->created_at->format('d/m/Y H:i') }}</td>
-                                        <td>
-                                            <span class="badge bg-{{ $parrainage->statut === 'en_attente' ? 'warning' : ($parrainage->statut === 'accepte' ? 'success' : 'info') }}">
+                                        <td style="padding: 16px; border: none; color: #666; font-size: 14px;">{{ $parrainage->email_entreprise }}</td>
+                                        <td style="padding: 16px; border: none; color: #666; font-size: 14px;">{{ $parrainage->created_at->format('d/m/Y H:i') }}</td>
+                                        <td style="padding: 16px; border: none;">
+                                            <span class="badge" style="background-color: {{ $parrainage->statut === 'en_attente' ? '#ffc107' : ($parrainage->statut === 'accepte' ? '#28a745' : '#17a2b8') }}; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px;">
                                                 {{ ucfirst(str_replace('_', ' ', $parrainage->statut)) }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td style="padding: 16px; border: none; color: #666; font-size: 14px;">
                                             @if($parrainage->date_inscription)
                                                 {{ $parrainage->date_inscription->format('d/m/Y') }}
                                             @else
                                                 <span class="text-muted">-</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td style="padding: 16px; border: none;">
                                             @if($parrainage->entreprise_parrainee)
-                                                <div class="activity-indicator">
-                                                    <span class="badge bg-{{ $parrainage->entreprise_parrainee->is_active ? 'success' : 'secondary' }}">
-                                                        {{ $parrainage->entreprise_parrainee->is_active ? 'Active' : 'Inactive' }}
-                                                    </span>
-                                                </div>
+                                                <span class="badge" style="background-color: {{ $parrainage->entreprise_parrainee->is_active ? '#28a745' : '#6c757d' }}; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px;">
+                                                    {{ $parrainage->entreprise_parrainee->is_active ? 'Active' : 'Inactive' }}
+                                                </span>
                                             @else
                                                 <span class="text-muted">-</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td style="padding: 16px; border: none;">
                                             @if($parrainage->recompense_accordee)
-                                                <span class="text-success">
+                                                <span class="text-success fw-bold" style="font-size: 14px;">
                                                     <i class="fas fa-check-circle me-1"></i>
                                                     {{ $parrainage->montant_recompense }}€
                                                 </span>
                                             @else
-                                                <span class="text-muted">En attente</span>
+                                                <span class="text-muted" style="font-size: 14px;">En attente</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td style="padding: 16px; border: none;">
                                             <div class="btn-group btn-group-sm">
                                                 @if($parrainage->statut === 'en_attente')
-                                                    <button class="btn btn-outline-primary" 
+                                                    <button class="btn btn-outline-secondary btn-sm" style="border-radius: 6px; margin-right: 4px;" 
                                                             onclick="resendInvitation({{ $parrainage->id }})">
                                                         <i class="fas fa-redo"></i>
                                                     </button>
                                                 @endif
-                                                <button class="btn btn-outline-info" 
+                                                <button class="btn btn-outline-secondary btn-sm" style="border-radius: 6px;" 
                                                         onclick="viewDetails({{ $parrainage->id }})">
                                                     <i class="fas fa-eye"></i>
                                                 </button>

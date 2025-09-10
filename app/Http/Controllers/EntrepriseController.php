@@ -396,6 +396,62 @@ class EntrepriseController extends Controller
         ]);
     }
 
+    // WF-E01: Page d'accueil entreprise
+    public function accueil()
+    {
+        $entreprise = Auth::user()->entreprise;
+        
+        // Statistiques de base pour l'accueil
+        $stats = [
+            'offres_publiees' => $entreprise->offresEmploi()->count(),
+            'vues_totales' => $entreprise->offresEmploi()->sum('nb_vues'),
+            'candidatures_mois' => $entreprise->candidatures()
+                ->whereMonth('candidatures.created_at', now()->month)
+                ->whereYear('candidatures.created_at', now()->year)
+                ->count(),
+            'taux_reponse' => $this->calculerTauxReponse($entreprise)
+        ];
+        
+        // Candidatures en attente
+        $candidatures_attente = $entreprise->candidatures()
+            ->where('statut_entreprise', 'candidature_recue')
+            ->count();
+            
+        // Offres expirées
+        $offres_expirees = $entreprise->offresEmploi()
+            ->where('date_expiration', '<', now())
+            ->where('statut', 'active')
+            ->count();
+            
+        // Performances par offre (top 5 offres récentes)
+        $offres_performance = $entreprise->offresEmploi()
+            ->with(['candidatures'])
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get()
+            ->map(function ($offre) {
+                return [
+                    'titre' => $offre->titre,
+                    'vues' => $offre->nb_vues ?? 0,
+                    'candidatures' => $offre->candidatures->count(),
+                    'entretiens' => $offre->candidatures->where('statut_entreprise', 'entretien')->count(),
+                    'recrutes' => $offre->candidatures->where('statut_entreprise', 'retenue')->count()
+                ];
+            });
+        
+        return view('entreprise.accueil', compact('entreprise', 'stats', 'candidatures_attente', 'offres_expirees', 'offres_performance'));
+    }
+    
+    private function calculerTauxReponse($entreprise)
+    {
+        $totalCandidatures = $entreprise->candidatures()->count();
+        $candidaturesTraitees = $entreprise->candidatures()
+            ->whereIn('statut_entreprise', ['preselctionnee', 'entretien', 'retenue', 'refusee'])
+            ->count();
+            
+        return $totalCandidatures > 0 ? round(($candidaturesTraitees / $totalCandidatures) * 100) : 0;
+    }
+
     // WF-E05: Dashboard & Statistiques
     public function dashboard()
     {
@@ -569,13 +625,26 @@ class EntrepriseController extends Controller
             ? round($vuesOffres / $offresPubliees, 1)
             : 0;
         
+        // Calculer les profils visités (talents qui ont vu les offres)
+        $profilsVisites = $entreprise->offresEmploi()
+            ->when($dateDebut, fn($q) => $q->where('created_at', '>=', $dateDebut))
+            ->sum('nb_vues');
+            
+        // Calculer les talents liés aux offres (candidatures uniques)
+        $talentsLies = $entreprise->candidatures()
+            ->when($dateDebut, fn($q) => $q->where('candidatures.created_at', '>=', $dateDebut))
+            ->distinct('talent_id')
+            ->count();
+
         return [
             'offres_publiees' => $offresPubliees,
             'offres_actives' => $offresActives,
-            'vues_offres' => $vuesOffres,
-            'candidatures_recues' => $candidaturesRecues,
+            'candidatures_mois' => $candidaturesRecues,
+            'vues_totales' => $vuesOffres,
+            'profils_visites' => $profilsVisites,
+            'talents_lies' => $talentsLies,
             'entretiens_programmes' => $entretiensProgrammes,
-            'recrutements_finalises' => $recrutementsFinales,
+            'candidats_recrutes' => $recrutementsFinales,
             'taux_conversion' => $tauxConversion,
             'taux_vue_moyen' => $tauxVueMoyen
         ];
@@ -622,6 +691,8 @@ class EntrepriseController extends Controller
         }
         
         return [
+            'labels' => $labels,
+            'data' => $evolutionCandidatures,
             'evolution_labels' => $labels,
             'evolution_offres' => $evolutionOffres,
             'evolution_candidatures' => $evolutionCandidatures,
@@ -633,23 +704,47 @@ class EntrepriseController extends Controller
     {
         $dateDebut = $this->getDateDebut($periode);
         
+        $recues = $entreprise->candidatures()
+            ->where('statut_entreprise', 'candidature_recue')
+            ->when($dateDebut, fn($q) => $q->where('candidatures.created_at', '>=', $dateDebut))
+            ->count();
+            
+        $preselectionnees = $entreprise->candidatures()
+            ->where('statut_entreprise', 'preselctionnee')
+            ->when($dateDebut, fn($q) => $q->where('candidatures.updated_at', '>=', $dateDebut))
+            ->count();
+            
+        $entretiens = $entreprise->candidatures()
+            ->where('statut_entreprise', 'entretien')
+            ->when($dateDebut, fn($q) => $q->where('candidatures.updated_at', '>=', $dateDebut))
+            ->count();
+            
+        $retenues = $entreprise->candidatures()
+            ->where('statut_entreprise', 'retenue')
+            ->when($dateDebut, fn($q) => $q->where('candidatures.updated_at', '>=', $dateDebut))
+            ->count();
+        
         return [
-            'recues' => $entreprise->candidatures()
-                ->where('statut_entreprise', 'candidature_recue')
-                ->when($dateDebut, fn($q) => $q->where('candidatures.created_at', '>=', $dateDebut))
-                ->count(),
-            'preselectionnees' => $entreprise->candidatures()
-                ->where('statut_entreprise', 'preselctionnee')
-                ->when($dateDebut, fn($q) => $q->where('candidatures.updated_at', '>=', $dateDebut))
-                ->count(),
-            'entretien' => $entreprise->candidatures()
-                ->where('statut_entreprise', 'entretien')
-                ->when($dateDebut, fn($q) => $q->where('candidatures.updated_at', '>=', $dateDebut))
-                ->count(),
-            'retenues' => $entreprise->candidatures()
-                ->where('statut_entreprise', 'retenue')
-                ->when($dateDebut, fn($q) => $q->where('candidatures.updated_at', '>=', $dateDebut))
-                ->count()
+            'candidatures_recues' => [
+                'label' => 'Candidatures reçues',
+                'count' => $recues,
+                'color' => '#3B82F6'
+            ],
+            'preselectionnees' => [
+                'label' => 'Présélectionnées',
+                'count' => $preselectionnees,
+                'color' => '#F59E0B'
+            ],
+            'entretiens' => [
+                'label' => 'Entretiens',
+                'count' => $entretiens,
+                'color' => '#10B981'
+            ],
+            'retenues' => [
+                'label' => 'Retenues',
+                'count' => $retenues,
+                'color' => '#8B5CF6'
+            ]
         ];
     }
     

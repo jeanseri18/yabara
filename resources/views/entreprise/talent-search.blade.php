@@ -9,7 +9,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h1 class="h3 mb-1 " style="color:#14224F">🔍 Recherche de Talents</h1>
+                    <h1 class="h3 mb-1 " style="color:#0066FF">🔍 Recherche de Talents</h1>
                     <p class="text-muted mb-0">Trouvez les talents qui correspondent à vos besoins</p>
                 </div>
                 <div class="text-end">
@@ -694,7 +694,7 @@ function showErrorMessage(message) {
 .avatar-circle {
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, #14224F, #f6cd45);
+    background: linear-gradient(135deg, #0066FF, #f6cd45);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -714,11 +714,11 @@ function showErrorMessage(message) {
 
 /* Styles pour les cartes de pôles */
 .pole-card {
-    background:  #14224F;
-    border: 2px solid transparent;
+    background: white;
+    border: 1px solid #e0e0e0;
     border-radius: 12px;
     padding: 20px;
-    color: white;
+    color: #333;
     cursor: pointer;
     transition: all 0.3s ease;
     min-height: 120px;
@@ -735,7 +735,7 @@ function showErrorMessage(message) {
 }
 
 .pole-card.selected {
-    border-color: #fbbf24;
+    border-color: #0066FF;
     box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
     transform: translateY(-3px);
 }
@@ -744,7 +744,7 @@ function showErrorMessage(message) {
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 8px;
-    color: #fbbf24;
+    color: 0066FF;
 }
 
 .pole-card p {
@@ -776,22 +776,27 @@ function showErrorMessage(message) {
 }
 
 .btn-experience.selected {
-    background: #14224F;
-    border-color: #14224F;
+    background: #0066FF;
+                border-color: #0066FF;
     color: white;
 }
 
 /* Styles pour les boutons de famille de métier */
 .btn-famille {
-    background: #f1f5f9;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    padding: 8px 16px;
-    color: #475569;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    color: #333;
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 14px;
     margin: 4px;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .btn-famille:hover {
@@ -800,9 +805,9 @@ function showErrorMessage(message) {
 }
 
 .btn-famille.selected {
-    background: #14224F;
-    border-color: #14224F;
-    color: white;
+    background: white;
+                border-color: #0066FF;
+    color: black;
 }
 
 /* Styles pour le slider de diplôme */
@@ -815,7 +820,7 @@ function showErrorMessage(message) {
     width: 100%;
     height: 6px;
     border-radius: 3px;
-    background: linear-gradient(to right, #fbbf24 0%, #f59e0b 100%);
+    background: linear-gradient(to right, #0066FF 0%, #0066FF 100%);
     outline: none;
     -webkit-appearance: none;
 }
@@ -826,7 +831,7 @@ function showErrorMessage(message) {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #14224F;
+    background: #0066FF;
     cursor: pointer;
     border: 3px solid white;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -836,7 +841,7 @@ function showErrorMessage(message) {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #14224F;
+    background: #0066FF;
     cursor: pointer;
     border: 3px solid white;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -855,7 +860,7 @@ function showErrorMessage(message) {
 }
 
 .slider-label.active {
-    color: #14224F;
+    color: #0066FF;
     font-weight: 600;
     transform: scale(1.1);
 }
@@ -866,11 +871,11 @@ function showErrorMessage(message) {
     padding: 10px;
     background: #f0f9ff;
     border-radius: 8px;
-    border-left: 4px solid #14224F;
+    border-left: 4px solid #0066FF;
 }
 
 .selected-diploma strong {
-    color: #14224F;
+    color: #0066FF;
     font-size: 16px;
 }
 

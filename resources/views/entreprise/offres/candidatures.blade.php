@@ -290,7 +290,7 @@
 }
 
 .talent-info h6 {
-    color: #14224F;
+    color: #0066FF;
     font-size: 16px;
     margin-bottom: 4px;
 }
@@ -317,7 +317,7 @@
     background-color: #f8f9fa;
     border-bottom: 2px solid #dee2e6;
     font-weight: 600;
-    color: #14224F;
+    color: #0066FF;
     padding: 12px;
 }
 

@@ -43,6 +43,9 @@ Route::middleware(['auth'])->group(function () {
         return view('talent.dashboard');
     })->name('talent.dashboard');
     
+    // Entreprise accueil
+    Route::get('/entreprise/accueil', [EntrepriseController::class, 'accueil'])->name('entreprise.accueil');
+    
     // Entreprise dashboard
     Route::get('/entreprise/dashboard', [EntrepriseController::class, 'dashboard'])->name('entreprise.dashboard');
     Route::get('/entreprise/dashboard/data', [EntrepriseController::class, 'getDashboardData'])->name('entreprise.dashboard.data');

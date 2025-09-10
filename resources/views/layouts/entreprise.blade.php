@@ -16,12 +16,12 @@
     <!-- Custom Styles -->
     <style>
         :root {
-            --primary-color: #14224F;
+            --primary-color: #0066FF;
             --secondary-color: #f6cd45;
         }
 
         .bg-primary{
-            background-color: #14224F!important;
+            background-color: #0066FF!important;
         }
         
 /* Styles DataTables personnalisés */
@@ -35,8 +35,8 @@
 /* Styles pour tous les boutons de pagination */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     border-radius: 0.375rem !important;
-    background: #14224F !important;
-    border: 1px solid #14224F !important;
+    background: #0066FF !important;
+            border: 1px solid #0066FF !important;
     color: white !important;
     /* padding: 0.375rem 0.75rem !important; */
     /* margin: 0 0.125rem !important; */
@@ -44,8 +44,8 @@
 
 /* État normal des boutons */
 .dataTables_wrapper .dataTables_paginate .paginate_button a {
-    background: #14224F !important;
-    border-color: #14224F !important;
+    background: #0066FF !important;
+            border-color: #0066FF !important;
     color: white !important;
     text-decoration: none !important;
 }
@@ -81,104 +81,241 @@
     border-color: #6c757d !important;
     color: white !important;
 }
-        /* Navbar Styles */
-        .navbar {
-            background: #ffffff !important;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #e5e7eb;
-            min-height: 70px;
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: #ffffff;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
         }
         
-        .navbar-brand {
-            color: #14224F !important;
+        .sidebar-brand {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .brand-link {
+            text-decoration: none;
+        }
+        
+        .brand-text {
+            color: #0066FF !important;
             font-weight: 700;
             font-size: 1.5rem;
         }
         
-        .nav-link {
-            transition: all 0.3s ease;
-            border-radius: 8px;
-            margin: 0 4px;
-            position: relative;
-            color: #62646A !important;
-            padding: 12px 16px !important;
-            font-weight: 500;
-            text-decoration: none;
+        .sidebar-user {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
             display: flex;
             align-items: center;
-            white-space: nowrap;
+        }
+        
+        .user-details {
+            margin-left: 12px;
+            flex: 1;
+        }
+        
+        .user-name {
+            display: block;
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+        
+        .user-role {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 0;
+        }
+        
+        .nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-item {
+            margin: 0;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: #62646A !important;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
         }
         
         .nav-link:hover {
-            background: rgba(40, 60, 90, 0.1) !important;
-            color: #14224F !important;
-            transform: translateY(-1px);
+            background: rgba(0, 102, 255, 0.1) !important;
+            color: #0066FF !important;
             text-decoration: none;
         }
         
         .nav-link.active {
-            background: #14224F !important;
+            background: #0066FF !important;
             color: #ffffff !important;
             font-weight: 600;
         }
         
-        .nav-link i {
-            font-size: 14px;
-            width: 16px;
+        .nav-icon {
+            width: 20px;
+            font-size: 16px;
             text-align: center;
+            margin-right: 12px;
         }
         
-        .navbar-toggler {
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
+        .nav-text {
+            flex: 1;
         }
         
-        .navbar-toggler:focus {
-            box-shadow: 0 0 0 2px rgba(40, 60, 90, 0.2);
+        .submenu-arrow {
+            font-size: 12px;
+            transition: transform 0.3s ease;
         }
         
-        .dropdown-menu {
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 8px 0;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            animation: fadeInDown 0.3s ease;
-            transition: all 0.3s ease;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
+        .nav-link[aria-expanded="true"] .submenu-arrow {
+            transform: rotate(180deg);
         }
         
-        .dropdown-menu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+        .submenu {
+            background: #f8fafc;
         }
         
-        .nav-item.dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+        .submenu-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
         }
         
-        .dropdown-item {
+        .submenu-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 24px 10px 56px;
             color: #62646A;
-            padding: 10px 20px;
-            border-radius: 8px;
-            margin: 2px 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        
+        .submenu-link:hover {
+            background: rgba(0, 102, 255, 0.1);
+            color: #0066FF;
+            text-decoration: none;
+        }
+        
+        .sidebar-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        /* Mobile Header */
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+        }
+        
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: #62646A;
+            font-size: 18px;
+            padding: 8px;
+            border-radius: 6px;
             transition: all 0.2s ease;
         }
         
-        .dropdown-item:hover {
-            background: rgba(40, 60, 90, 0.1);
-            color: #14224F;
+        .sidebar-toggle:hover {
+            background: rgba(0, 102, 255, 0.1);
+            color: #0066FF;
         }
         
-        .dropdown-item i {
-            width: 16px;
-            text-align: center;
+        .mobile-brand {
+            color: #0066FF;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .mobile-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            body {
+                padding-top: 60px;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .mobile-header {
+                display: none;
+            }
+            
+            .sidebar-overlay {
+                display: none;
+            }
         }
         
         /* Notification Badge */
@@ -209,8 +346,8 @@
         
 /* Redéfinition des styles btn-primary avec la nouvelle couleur */
 .btn-primary {
-    background-color: #14224F !important;
-    border-color: #14224F !important;
+    background-color: #0066FF !important;
+            border-color: #0066FF !important;
     color: white !important;
 }
 
@@ -233,24 +370,24 @@
     border-color: #0d1533 !important;
 }
 
-/* Styles pour btn-outline-primary avec la couleur #14224F */
-.btn-outline-primary {
-    color: #14224F !important;
-    border-color: #14224F !important;
+/* Styles pour btn-outline-primary avec la couleur #0066FF */
+        .btn-outline-primary {
+            color: #0066FF !important;
+            border-color: #0066FF !important;
     background-color: transparent !important;
 }
 
 .btn-outline-primary:hover {
     color: white !important;
-    background-color: #14224F !important;
-    border-color: #14224F !important;
+    background-color: #0066FF !important;
+            border-color: #0066FF !important;
 }
 
 .btn-outline-primary:focus,
 .btn-outline-primary.focus {
     color: white !important;
-    background-color: #14224F !important;
-    border-color: #14224F !important;
+    background-color: #0066FF !important;
+            border-color: #0066FF !important;
     box-shadow: 0 0 0 0.2rem rgba(20, 34, 79, 0.5) !important;
 }
 
@@ -282,7 +419,7 @@
         .company-logo {
             width: 32px;
             height: 32px;
-            background: #14224F;
+            background: #0066FF;
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -299,7 +436,7 @@
         .user-avatar {
             width: 32px;
             height: 32px;
-            background: #14224F;
+            background: #0066FF;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -354,8 +491,16 @@
         /* Main content */
         .main-content {
             background: #f8fafc;
-            min-height: calc(100vh - 140px);
-            padding: 24px 0;
+            min-height: 100vh;
+            margin-left: 280px;
+            padding: 24px;
+        }
+        
+        @media (max-width: 991.98px) {
+            .main-content {
+                margin-left: 0;
+                padding-top: 84px;
+            }
         }
         
         .btn-action {
@@ -369,7 +514,7 @@
         
         .btn-action:hover {
             background: rgba(40, 60, 90, 0.1);
-            color: #14224F;
+            color: #0066FF;
         }
         
         .btn-logout {
@@ -383,124 +528,154 @@
     </style>
 </head>
 <body class="bg-light">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-        <div class="container-fluid px-4">
-            <!-- Brand -->
-            <a class="navbar-brand d-flex align-items-center" href="{{ route('entreprise.dashboard') }}">
-            
-                <span>YABARA</span>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <!-- Brand -->
+        <div class="sidebar-brand">
+            <a href="{{ route('entreprise.dashboard') }}" class="brand-link">
+                <span class="brand-text">YABARA</span>
             </a>
-            
-            <!-- Mobile toggle -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <!-- Navigation Links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <!-- Dashboard -->
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('entreprise.dashboard') ? 'active' : '' }}" href="{{ route('entreprise.dashboard') }}">
-                            Tableau de bord
-                        </a>
-                    </li>
-                    
-                    <!-- Offres d'emploi -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->routeIs('entreprise.offres.*') ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Offres d'emploi
-                            @if(isset($offres_actives_count) && $offres_actives_count > 0)
-                                <span class="badge bg-warning text-dark ms-1">{{ $offres_actives_count }}</span>
-                            @endif
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('entreprise.offres.create') }}">
+        </div>
+        
+        <!-- User Info -->
+        <div class="sidebar-user">
+            <div class="user-avatar">
+                <i class="fas fa-building text-white"></i>
+            </div>
+            <div class="user-details">
+                <span class="user-name">{{ Auth::user()->entreprise->nom_entreprise ?? 'Mon Entreprise' }}</span>
+                <span class="user-role">Entreprise</span>
+            </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="sidebar-nav">
+            <ul class="nav-list">
+                <!-- Accueil -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('entreprise.accueil') ? 'active' : '' }}" href="{{ route('entreprise.accueil') }}">
+                        <i class="fas fa-home nav-icon"></i>
+                        <span class="nav-text">Accueil</span>
+                    </a>
+                </li>
+                
+                <!-- Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('entreprise.dashboard') ? 'active' : '' }}" href="{{ route('entreprise.dashboard') }}">
+                        <i class="fas fa-tachometer-alt nav-icon"></i>
+                        <span class="nav-text">Tableau de bord</span>
+                    </a>
+                </li>
+                
+                <!-- Offres d'emploi -->
+                <li class="nav-item has-submenu">
+                    <a class="nav-link {{ request()->routeIs('entreprise.offres.*') ? 'active' : '' }}" href="#" data-bs-toggle="collapse" data-bs-target="#offresSubmenu" aria-expanded="false">
+                        <i class="fas fa-briefcase nav-icon"></i>
+                        <span class="nav-text">Offres d'emploi</span>
+                        @if(isset($offres_actives_count) && $offres_actives_count > 0)
+                            <span class="badge bg-warning text-dark ms-auto">{{ $offres_actives_count }}</span>
+                        @endif
+                        <i class="fas fa-chevron-down submenu-arrow"></i>
+                    </a>
+                    <div class="collapse submenu" id="offresSubmenu">
+                        <ul class="submenu-list">
+                            <li><a class="submenu-link" href="{{ route('entreprise.offres.create') }}">
                                 <i class="fas fa-plus-circle me-2"></i>Publier une offre
                             </a></li>
-                            <li><a class="dropdown-item" href="{{ route('entreprise.offres.index') }}">
+                            <li><a class="submenu-link" href="{{ route('entreprise.offres.index') }}">
                                 <i class="fas fa-list me-2"></i>Mes offres
                             </a></li>
                         </ul>
-                    </li>
-                    
-                    <!-- Candidatures -->
-                    <li class="nav-item">
-                        <a class="nav-link position-relative {{ request()->routeIs('entreprise.candidatures.*') || request()->routeIs('entreprise.offres.selection') ? 'active' : '' }}" href="{{ route('entreprise.offres.selection') }}">
-                           Suivi candidatures
-                            @if(isset($nouvelles_candidatures_count) && $nouvelles_candidatures_count > 0)
-                                <span class="notification-badge">{{ $nouvelles_candidatures_count }}</span>
-                            @endif
-                        </a>
-                    </li>
-                    
-                    <!-- Talents -->
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('entreprise.talent-search') ? 'active' : '' }}" href="{{ route('entreprise.talent-search') }}">
-                            Recherche talents
-                        </a>
-                    </li>
-                    
-                    <!-- Récompenses -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->routeIs('entreprise.badges.*') || request()->routeIs('entreprise.parrainage.*') ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Badges & Parrainage
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('entreprise.badges.index') }}">
+                    </div>
+                </li>
+                
+                <!-- Candidatures -->
+                <li class="nav-item">
+                    <a class="nav-link position-relative {{ request()->routeIs('entreprise.candidatures.*') || request()->routeIs('entreprise.offres.selection') ? 'active' : '' }}" href="{{ route('entreprise.offres.selection') }}">
+                        <i class="fas fa-users nav-icon"></i>
+                        <span class="nav-text">Suivi candidatures</span>
+                        @if(isset($nouvelles_candidatures_count) && $nouvelles_candidatures_count > 0)
+                            <span class="notification-badge">{{ $nouvelles_candidatures_count }}</span>
+                        @endif
+                    </a>
+                </li>
+                
+                <!-- Talents -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('entreprise.talent-search') ? 'active' : '' }}" href="{{ route('entreprise.talent-search') }}">
+                        <i class="fas fa-search nav-icon"></i>
+                        <span class="nav-text">Recherche talents</span>
+                    </a>
+                </li>
+                
+                <!-- Badges & Parrainage -->
+                <li class="nav-item has-submenu">
+                    <a class="nav-link {{ request()->routeIs('entreprise.badges.*') || request()->routeIs('entreprise.parrainage.*') ? 'active' : '' }}" href="#" data-bs-toggle="collapse" data-bs-target="#badgesSubmenu" aria-expanded="false">
+                        <i class="fas fa-trophy nav-icon"></i>
+                        <span class="nav-text">Badges & Parrainage</span>
+                        <i class="fas fa-chevron-down submenu-arrow"></i>
+                    </a>
+                    <div class="collapse submenu" id="badgesSubmenu">
+                        <ul class="submenu-list">
+                            <li><a class="submenu-link" href="{{ route('entreprise.badges.index') }}">
                                 <i class="fas fa-trophy me-2"></i>Mes badges
                             </a></li>
-                            <li><a class="dropdown-item" href="{{ route('entreprise.parrainage.index') }}">
-                                <i class="fas fa-handshake me-2"></i>
-                                Parrainage
+                            <li><a class="submenu-link" href="{{ route('entreprise.parrainage.index') }}">
+                                <i class="fas fa-handshake me-2"></i>Parrainage
                             </a></li>
                         </ul>
-                    </li>
-                    
-                    <!-- Paramètres -->
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('entreprise.profile.*') ? 'active' : '' }}" href="{{ route('entreprise.profile.index') }}">
-                            Mon profil
-                        </a>
-                    </li>
-                </ul>
-                
-                <!-- User Info & Actions -->
-                <div class="d-flex align-items-center">
-                    <div class="user-info d-none d-lg-flex">
-                        <div class="user-avatar">
-                            <i class="fas fa-building text-white"></i>
-                        </div>
-                        <span class="text-dark small">
-                            {{ Auth::user()->entreprise->nom_entreprise ?? 'Mon Entreprise' }}
-                        </span>
                     </div>
-                    
-                    <!-- Notifications -->
-                    <button class="btn-action me-2 position-relative">
-                        <i class="bi bi-bell"></i>
-                        <span class="notification-badge" style="top: 0; right: 0;">2</span>
-                    </button>
-                    
-                    <!-- Logout -->
-                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn-action btn-logout">
-                            <i class="bi bi-box-arrow-right"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
+                </li>
+                
+                <!-- Mon profil -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('entreprise.profile.*') ? 'active' : '' }}" href="{{ route('entreprise.profile.index') }}">
+                        <i class="fas fa-user nav-icon"></i>
+                        <span class="nav-text">Mon profil</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+            <!-- Notifications -->
+            <button class="btn-action position-relative">
+                <i class="bi bi-bell"></i>
+                <span class="notification-badge">2</span>
+            </button>
+            
+            <!-- Logout -->
+            <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                @csrf
+                <button type="submit" class="btn-action btn-logout" title="Déconnexion">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </form>
         </div>
-    </nav>
+    </div>
+    
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Top Header for Mobile -->
+    <div class="mobile-header d-lg-none">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <span class="mobile-brand">YABARA</span>
+        <div class="mobile-actions">
+            <button class="btn-action position-relative">
+                <i class="bi bi-bell"></i>
+                <span class="notification-badge">2</span>
+            </button>
+        </div>
+    </div>
 
-    <!-- Page Header -->
- 
-<div style="padding-top: 50px;"></div>
-      <main class="p-6">
-            @yield('content')
-        </main>
+    <!-- Main Content -->
+    <main class="main-content">
+        @yield('content')
+    </main>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -509,22 +684,44 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Navigation Management
+        // Sidebar Management
         document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            
+            // Toggle sidebar on mobile
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                    sidebarOverlay.classList.toggle('show');
+                });
+            }
+            
+            // Close sidebar when clicking overlay
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', function() {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                });
+            }
+            
+            // Close sidebar on window resize to desktop
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 992) {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                }
+            });
+            
             // Active navigation management
-            const navLinks = document.querySelectorAll('.nav-link:not(.dropdown-toggle)');
+            const navLinks = document.querySelectorAll('.nav-link:not([data-bs-toggle])');
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
-                    // Remove active class from all links
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    // Add active class to clicked link
-                    this.classList.add('active');
-                    
-                    // Close mobile menu if open
-                    const navbarCollapse = document.getElementById('navbarNav');
-                    if (navbarCollapse.classList.contains('show')) {
-                        const bsCollapse = new bootstrap.Collapse(navbarCollapse);
-                        bsCollapse.hide();
+                    // Close mobile sidebar if open
+                    if (window.innerWidth < 992) {
+                        sidebar.classList.remove('show');
+                        sidebarOverlay.classList.remove('show');
                     }
                 });
             });
@@ -550,44 +747,6 @@
                         }
                     }
                 });
-            });
-        });
-        
-        // Responsive navigation helper
-        function updateNavigation() {
-            const navbar = document.querySelector('.navbar');
-            const isExpanded = window.innerWidth >= 992;
-            
-            if (isExpanded) {
-                navbar.classList.remove('navbar-mobile');
-            } else {
-                navbar.classList.add('navbar-mobile');
-            }
-        }
-        
-        // Update on load and resize
-        window.addEventListener('load', updateNavigation);
-        window.addEventListener('resize', updateNavigation);
-        
-        // Dropdown hover functionality
-        const dropdowns = document.querySelectorAll('.nav-item.dropdown');
-        
-        dropdowns.forEach(dropdown => {
-            const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
-            const dropdownMenu = dropdown.querySelector('.dropdown-menu');
-            
-            // Show dropdown on hover
-            dropdown.addEventListener('mouseenter', function() {
-                dropdownToggle.classList.add('show');
-                dropdownToggle.setAttribute('aria-expanded', 'true');
-                dropdownMenu.classList.add('show');
-            });
-            
-            // Hide dropdown when mouse leaves
-            dropdown.addEventListener('mouseleave', function() {
-                dropdownToggle.classList.remove('show');
-                dropdownToggle.setAttribute('aria-expanded', 'false');
-                dropdownMenu.classList.remove('show');
             });
         });
     </script>

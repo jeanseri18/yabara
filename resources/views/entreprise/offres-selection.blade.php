@@ -9,7 +9,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h2 class="mb-1"><i class="fas fa-briefcase me-2" style="color: #14224F;"></i>Sélectionner une offre</h2>
+                    <h2 class="mb-1"><i class="fas fa-briefcase me-2" style="color: #0066FF;"></i>Sélectionner une offre</h2>
                     <p class="text-muted mb-0">Choisissez une offre d'emploi pour voir les candidatures</p>
                 </div>
                 <div>
@@ -136,7 +136,7 @@
 
 <style>
 .offre-card {
-    background:  #14224F;
+    background:  #0066FF;
     border-radius: 20px;
     padding: 24px;
     color: white;
@@ -196,7 +196,7 @@
 
 .badge-contrat {
     background: #F6CD45;
-    color: #14224F;
+    color: #0066FF;
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 0.75rem;

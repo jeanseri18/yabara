@@ -14,7 +14,7 @@
         /* Nouvelle palette de couleurs */
         :root {
             /* Couleurs principales */
-            --yabara-blue: #14224F;      /* Bleu principal */
+            --yabara-blue: #0066FF;      /* Bleu principal */
             --yabara-gold: #ffbf1d;      /* Jaune/Orange */
             --yabara-white: #ffffff;     /* Blanc */
             --yabara-black: #000000;     /* Noir */
@@ -313,7 +313,7 @@
         }
         
         .yabara-gradient {
-            background: linear-gradient(135deg, var(--yabara-blue), #14224F);
+            background: linear-gradient(135deg, var(--yabara-blue), #0066FF);
         }
         
         .gold-gradient {

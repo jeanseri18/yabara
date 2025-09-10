@@ -24,13 +24,13 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h1 class="h3 mb-1 text-gray-800">
-                        <i class="fas fa-briefcase me-2" style="color: #14224F;"></i>
+                        <i class="fas fa-briefcase me-2" style="color: #0066FF;"></i>
                         Mes offres d'emploi
                     </h1>
                     <p class="text-muted mb-0">🎯 Parce que recruter, c’est bien plus qu’un CV : c’est une rencontre humaine. Visualisez, sélectionnez, recrutez... simplement</p>
                 </div>
                 <div>
-                    <a href="{{ route('entreprise.offres.create') }}" class="btn text-white" style="background-color: #14224F;">
+                    <a href="{{ route('entreprise.offres.create') }}" class="btn text-white" style="background-color: #0066FF;">
                         <i class="fas fa-plus me-2"></i>
                         Publier une nouvelle offre
                     </a>
@@ -142,8 +142,8 @@
                     @if($offres->count() > 0)
                         <!-- <div class="table-responsive"> -->
                             <table class="table table-hover mb-0" id="offres-datatable">
-                                <thead style="background-color: #14224F; color: white;">
-                                    <tr  style="background-color: #14224F; color: white;">
+                                <thead style="background-color: #0066FF; color: white;">
+                                    <tr  style="background-color: #0066FF; color: white;">
                                         <th>Offre</th>
                                         <th>Statut</th>
                                         <th>Date publication</th>
@@ -281,7 +281,7 @@
                             </div>
                             <h5 class="text-muted">Aucune offre d'emploi</h5>
                             <p class="text-muted mb-4">Vous n'avez pas encore publié d'offre d'emploi.</p>
-                            <a href="{{ route('entreprise.offres.create') }}" class="btn " style="background-color: #14224F; color:white">
+                            <a href="{{ route('entreprise.offres.create') }}" class="btn " style="background-color: #0066FF; color:white">
                                 <i class="fas fa-plus me-2"></i>
                                 Publier votre première offre
                             </a>
@@ -353,22 +353,22 @@
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: #14224F !important;
-    border-color: #14224F !important;
+    background: #0066FF !important;
+    border-color: #0066FF !important;
     color: white !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: #14224F !important;
-    border-color: #14224F !important;
+    background: #0066FF !important;
+    border-color: #0066FF !important;
     color: white !important;
 }
 
 /* En-têtes personnalisés */
 #offres-datatable thead th {
-    background-color: #14224F !important;
+    background-color: #0066FF !important;
     color: white !important;
-    border-color: #14224F !important;
+    border-color: #0066FF !important;
     font-weight: 600;
     text-align: center;
     vertical-align: middle;

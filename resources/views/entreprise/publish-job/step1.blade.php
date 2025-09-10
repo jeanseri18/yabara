@@ -25,7 +25,7 @@
         <div class="col-lg-8">
             <div class="card shadow-lg border-0">
                 <div class="card-header bg-white border-0 py-4">
-                    <h4 class="mb-0 text-center" style="color: #14224F;">
+                    <h4 class="mb-0 text-center" style="color: #0066FF;">
                         <i class="bi bi-briefcase me-2"></i>
                         Étape 1 : Informations générales de l'offre
                     </h4>
@@ -70,9 +70,9 @@
                                 @foreach($typesContrat as $type)
                                     <div class="col-md-6">
                                         <div class="card contract-card h-100" data-value="{{ $type->id }}" 
-                                             style="cursor: pointer; transition: all 0.3s ease; {{ old('type_contrat_id', $offre->type_contrat_id ?? '') == $type->id ? 'border-color: #14224F; background-color: #f8f9ff;' : 'border-color: #dee2e6;' }}">
+                                             style="cursor: pointer; transition: all 0.3s ease; {{ old('type_contrat_id', $offre->type_contrat_id ?? '') == $type->id ? 'border-color: #0066FF; background-color: #f8f9ff;' : 'border-color: #dee2e6;' }}">
                                             <div class="card-body text-center p-3">
-                                                <h6 class="card-title mb-0" style="color: #14224F;">{{ $type->nom }}</h6>
+                                                <h6 class="card-title mb-0" style="color: #0066FF;">{{ $type->nom }}</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -91,9 +91,9 @@
                                 @foreach($poles as $pole)
                                     <div class="col-md-6">
                                         <div class="card pole-card h-100" data-value="{{ $pole->id }}" 
-                                             style="cursor: pointer; transition: all 0.3s ease; {{ old('pole_id', $offre->pole_id ?? '') == $pole->id ? 'border-color: #14224F; background-color: #f8f9ff;' : 'border-color: #dee2e6;' }}">
+                                             style="cursor: pointer; transition: all 0.3s ease; {{ old('pole_id', $offre->pole_id ?? '') == $pole->id ? 'border-color: #0066FF; background-color: #f8f9ff;' : 'border-color: #dee2e6;' }}">
                                             <div class="card-body text-center p-3">
-                                                <h6 class="card-title mb-0" style="color: #14224F;">{{ $pole->nom }}</h6>
+                                                <h6 class="card-title mb-0" style="color: #0066FF;">{{ $pole->nom }}</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -113,9 +113,9 @@
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <div class="card famille-card h-100" data-value="{{ $offre->famille_metier_id }}" 
-                                                 style="cursor: pointer; transition: all 0.3s ease; border-color: #14224F; background-color: #f8f9ff;">
+                                                 style="cursor: pointer; transition: all 0.3s ease; border-color: #0066FF; background-color: #f8f9ff;">
                                                 <div class="card-body text-center p-3">
-                                                    <h6 class="card-title mb-0" style="color: #14224F;">{{ $offre->familleMetier->nom }}</h6>
+                                                    <h6 class="card-title mb-0" style="color: #0066FF;">{{ $offre->familleMetier->nom }}</h6>
                                                 </div>
                                             </div>
                                         </div>
@@ -136,7 +136,7 @@
                                 <i class="bi bi-arrow-left me-2"></i>
                                 Retour
                             </a>
-                            <button type="submit" class="btn btn-lg px-5" style="background-color: #14224F; color: white;">
+                            <button type="submit" class="btn btn-lg px-5" style="background-color: #0066FF; color: white;">
                                 Continuer
                                 <i class="bi bi-arrow-right ms-2"></i>
                             </button>
@@ -153,7 +153,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-body text-center py-5">
-                <div class="spinner-border" style="color: #14224F;" role="status">
+                <div class="spinner-border" style="color: #0066FF;" role="status">
                     <span class="visually-hidden">Chargement...</span>
                 </div>
                 <p class="mt-3 mb-0">Sauvegarde en cours...</p>
@@ -169,7 +169,7 @@
 .contract-card:hover,
 .pole-card:hover,
 .famille-card:hover {
-    border-color: #14224F !important;
+    border-color: #0066FF !important;
     background-color: #f8f9ff !important;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(20, 34, 79, 0.15);
@@ -178,7 +178,7 @@
 .contract-card.selected,
 .pole-card.selected,
 .famille-card.selected {
-    border-color: #14224F !important;
+    border-color: #0066FF !important;
     background-color: #f8f9ff !important;
     border-width: 2px;
 }
@@ -220,7 +220,7 @@
             'background-color': 'white'
         });
         $(this).css({
-            'border-color': '#14224F',
+            'border-color': '#0066FF',
             'background-color': '#f8f9ff'
         });
         $('#type_contrat_id').val($(this).data('value'));
@@ -233,7 +233,7 @@
             'background-color': 'white'
         });
         $(this).css({
-            'border-color': '#14224F',
+            'border-color': '#0066FF',
             'background-color': '#f8f9ff'
         });
         const poleId = $(this).data('value');
@@ -250,7 +250,7 @@
             'background-color': 'white'
         });
         $(this).css({
-            'border-color': '#14224F',
+            'border-color': '#0066FF',
             'background-color': '#f8f9ff'
         });
         $('#famille_metier_id').val($(this).data('value'));
@@ -284,7 +284,7 @@
                                     <div class="card famille-card h-100" data-value="${famille.id}" 
                                          style="cursor: pointer; transition: all 0.3s ease; border-color: #dee2e6;">
                                         <div class="card-body text-center p-3">
-                                            <h6 class="card-title mb-0" style="color: #14224F;">${famille.nom}</h6>
+                                            <h6 class="card-title mb-0" style="color: #0066FF;">${famille.nom}</h6>
                                         </div>
                                     </div>
                                 </div>

@@ -13,8 +13,8 @@
 
 /* Redéfinition des styles btn-primary avec la nouvelle couleur */
 .btn-primary {
-    background-color: #14224F !important;
-    border-color: #14224F !important;
+    background-color: #0066FF !important;
+border-color: #0066FF !important;
     color: white !important;
 }
 

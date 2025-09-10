@@ -153,8 +153,26 @@
         }
 
         .qr-code img {
-            width: 1000%;
-            height: 100%;
+            width: 700%;
+            height: 80%;
+            animation: pulse 2s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .qr-code img:hover {
+            transform: scale(1.1) rotate(5deg);
+            
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.9;
+            }
         }
 
         /* Tools Section */
@@ -173,6 +191,25 @@
             margin-bottom: 16px;
             font-weight: 700;
             color: var(--dark-text);
+        }
+
+        .tools-image {
+            animation: float 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .tools-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         .metrics-container {
@@ -390,16 +427,33 @@
         }
 
         .partners-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 20px;
+            display: flex;
+            overflow: hidden;
+            white-space: nowrap;
             margin-bottom: 40px;
+            position: relative;
+        }
+
+        .partners-scroll {
+            display: flex;
+            animation: scroll-partners 30s linear infinite;
+            gap: 20px;
+        }
+
+        @keyframes scroll-partners {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
         }
 
         .partner-logo {
             background-color: var(--light-gray);
             border-radius: 8px;
             height: 90px;
+            min-width: 180px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -409,6 +463,7 @@
             padding: 12px;
             font-weight: 500;
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
         .partner-logo:hover {
@@ -883,14 +938,12 @@
         .navbar {
             background-color: var(--white);
             padding: 10px 0;
-            /* margin: 40px; */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            /* position: fixed; */
-            /* border-radius: 10px   20px; */
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            /* z-index: 1000; */
+            z-index: 1000;
         }
 
         .navbar-content {
@@ -900,7 +953,7 @@
             /* max-width: 1200px; */
             margin: 0 auto;
             padding: 0 20px;
-            gap: 600px;
+            gap: 100px;
         }
 
         .navbar-logo {
@@ -908,6 +961,47 @@
             font-weight: bold;
             color: #0066FF;
             text-decoration: none;
+        }
+
+        .navbar-nav {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .nav-link {
+            margin-left: 10px;
+            margin-right: 10px;
+            color: var(--dark-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .nav-link:hover {
+            color: #0066FF;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: #0066FF;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
         }
 
         .navbar-auth {
@@ -945,9 +1039,50 @@
             color: var(--primary-blue);
         }
 
+        /* App buttons styles */
+        .app-btn {
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 10px;
+            font-weight: bold;
+            width: 230px;
+            text-align: center;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: 2px solid #007bff;
+        }
+
+        .app-btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 123, 255, 0.3);
+        }
+
+        .app-btn-secondary {
+            background-color: white;
+            color: #0066FF;
+            border: 2px solid #0066FF;
+        }
+
+        .app-btn-secondary:hover {
+            background-color: #0066FF;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 102, 255, 0.3);
+        }
+
         /* Adjust header to account for fixed navbar */
         .header {
-            margin-top: 0px;
+            margin-top: 70px;
         }
 
         @media (max-width: 768px) {
@@ -977,6 +1112,11 @@
              <nav class="navbar">
         <div class="navbar-content">
             <a href="#" class="navbar-logo">YABARA</a>
+            <div class="navbar-nav">
+                <a href="{{ route('welcome') }}" class="nav-link">Accueil</a>
+                <a href="{{ route('register') }}" class="nav-link">Trouvez une entreprise</a>
+                <a href="{{ route('register') }}" class="nav-link">Recrutez des talents</a>
+            </div>
             <div class="navbar-auth">
                 <a href="{{ route('login') }}" class="auth-btn login">Connexion</a>
                 <a href="{{ route('register') }}" class="auth-btn register">Inscription</a>
@@ -1004,10 +1144,10 @@ rapide et efficace.                </p>
     <br>
   
  <div class="app-buttons">
-                    <a href="{{ route('register.talent') }}" class="app-btn" style="background-color: #007bff; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; margin: 10px; font-weight: bold; width: 230px; text-align: center;">
+                    <a href="{{ route('register.talent') }}" class="app-btn app-btn-primary">
                         Je cherche un travail
                     </a>
-                    <a href="{{ route('register.entreprise') }}" class="app-btn" style="background-color: white; color: #0066FF; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; margin: 10px; font-weight: bold; width: 230px; text-align: center;">
+                    <a href="{{ route('register.entreprise') }}" class="app-btn app-btn-secondary">
                         Je recrute des talents
                     </a>
                 </div>
@@ -1025,7 +1165,7 @@ rapide et efficace.                </p>
                 <h2>Outils performants</h2>
                 <p>Accédez à des fonctionnalités avancées pour gérer vos collaborations et recrutements.</p>
             </div>
-            <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard Analytics" style="width: 100%; height: 100%; object-fit: contain; border-radius: 10px;">
+            <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard Analytics" class="tools-image" style="width: 100%; height: 100%; object-fit: contain; border-radius: 10px;">
 
         
         </div>
@@ -1073,89 +1213,176 @@ rapide et efficace.                </p>
                 <p class="mt-4">Nos partenaires incluent des entreprises de tous secteurs en Côte d'Ivoire, des startups innovantes aux grandes multinationales.</p>
             </div>
             <div class="partners-grid">
-                <!-- 12 entreprises partenaires -->
-                <div class="partner-logo">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="120" height="60" fill="#FF6600"/>
-                        <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">orange</text>
-                        <text x="105" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8">TM</text>
-                    </svg>
-                </div>
-                <div class="partner-logo">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="120" height="60" fill="#FFCC00"/>
-                        <ellipse cx="60" cy="30" rx="45" ry="20" fill="none" stroke="#000" stroke-width="3"/>
-                        <text x="60" y="38" text-anchor="middle" fill="black" font-family="Arial, sans-serif" font-size="20" font-weight="bold">MTN</text>
-                    </svg>
-                </div>
-                <div class="partner-logo">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="120" height="60" fill="#4CAF50"/>
-                        <rect x="10" y="10" width="30" height="40" fill="#66BB6A" stroke="white" stroke-width="2"/>
-                        <path d="M15 15 L35 15 L35 45 L15 45 Z" fill="none" stroke="white" stroke-width="1"/>
-                        <text x="85" y="25" text-anchor="middle" fill="black" font-family="Arial, sans-serif" font-size="14" font-weight="bold">BICICI</text>
-                        <text x="85" y="40" text-anchor="middle" fill="black" font-family="Arial, sans-serif" font-size="8">La banque en toute confiance</text>
-                    </svg>
-                </div>
-                <div class="partner-logo">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="120" height="60" fill="#1E3A8A"/>
-                        <ellipse cx="60" cy="20" rx="25" ry="12" fill="white"/>
-                        <path d="M35 20 Q60 35 85 20" fill="white"/>
-                        <text x="60" y="45" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">AGL</text>
-                        <text x="60" y="55" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="6">AFRICA GLOBAL LOGISTICS</text>
-                    </svg>
-                </div>
-                <div class="partner-logo">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="120" height="60" fill="white"/>
-                        <text x="20" y="25" fill="#666" font-family="Arial, sans-serif" font-size="14" font-weight="bold">ADV</text>
-                        <text x="50" y="25" fill="#4CAF50" font-family="Arial, sans-serif" font-size="14" font-weight="bold">ANS</text>
-                        <text x="20" y="45" fill="#666" font-family="Arial, sans-serif" font-size="8">Growing together</text>
-                    </svg>
-                </div>
-                <div class="partner-logo">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="120" height="60" fill="#E3F2FD"/>
-                        <text x="60" y="35" text-anchor="middle" fill="#1976D2" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Ecobank</text>
-                    </svg>
-                </div>
-                <div class="partner-logo">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="120" height="60" fill="#FF0000"/>
-                        <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Total</text>
-                    </svg>
-                </div>
-                <div class="partner-logo">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="120" height="60" fill="#000080"/>
-                        <text x="60" y="30" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Société</text>
-                        <text x="60" y="42" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Générale</text>
-                    </svg>
-                </div>
-                <div class="partner-logo">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="120" height="60" fill="#0066CC"/>
-                        <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Lafarge</text>
-                    </svg>
-                </div>
-                <div class="partner-logo">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="120" height="60" fill="#0066CC"/>
-                        <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">Unilever</text>
-                    </svg>
-                </div>
-                <div class="partner-logo">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="120" height="60" fill="#FF6600"/>
-                        <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Dangote</text>
-                    </svg>
-                </div>
-                <div class="partner-logo">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="120" height="60" fill="#000080"/>
-                        <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">SGBCI</text>
-                    </svg>
+                <div class="partners-scroll">
+                    <!-- Première série de logos -->
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#FF6600"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">orange</text>
+                            <text x="105" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8">TM</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#FFCC00"/>
+                            <ellipse cx="60" cy="30" rx="45" ry="20" fill="none" stroke="#000" stroke-width="3"/>
+                            <text x="60" y="38" text-anchor="middle" fill="black" font-family="Arial, sans-serif" font-size="20" font-weight="bold">MTN</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#4CAF50"/>
+                            <rect x="10" y="10" width="30" height="40" fill="#66BB6A" stroke="white" stroke-width="2"/>
+                            <path d="M15 15 L35 15 L35 45 L15 45 Z" fill="none" stroke="white" stroke-width="1"/>
+                            <text x="85" y="25" text-anchor="middle" fill="black" font-family="Arial, sans-serif" font-size="14" font-weight="bold">BICICI</text>
+                            <text x="85" y="40" text-anchor="middle" fill="black" font-family="Arial, sans-serif" font-size="8">La banque en toute confiance</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#1E3A8A"/>
+                            <ellipse cx="60" cy="20" rx="25" ry="12" fill="white"/>
+                            <path d="M35 20 Q60 35 85 20" fill="white"/>
+                            <text x="60" y="45" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">AGL</text>
+                            <text x="60" y="55" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="6">AFRICA GLOBAL LOGISTICS</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="white"/>
+                            <text x="20" y="25" fill="#666" font-family="Arial, sans-serif" font-size="14" font-weight="bold">ADV</text>
+                            <text x="50" y="25" fill="#4CAF50" font-family="Arial, sans-serif" font-size="14" font-weight="bold">ANS</text>
+                            <text x="20" y="45" fill="#666" font-family="Arial, sans-serif" font-size="8">Growing together</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#E3F2FD"/>
+                            <text x="60" y="35" text-anchor="middle" fill="#1976D2" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Ecobank</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#FF0000"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Total</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#000080"/>
+                            <text x="60" y="30" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Société</text>
+                            <text x="60" y="42" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Générale</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#0066CC"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Lafarge</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#0066CC"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">Unilever</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#FF6600"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Dangote</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#000080"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">SGBCI</text>
+                        </svg>
+                    </div>
+                    
+                    <!-- Duplication des logos pour l'effet de défilement continu -->
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#FF6600"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">orange</text>
+                            <text x="105" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8">TM</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#FFCC00"/>
+                            <ellipse cx="60" cy="30" rx="45" ry="20" fill="none" stroke="#000" stroke-width="3"/>
+                            <text x="60" y="38" text-anchor="middle" fill="black" font-family="Arial, sans-serif" font-size="20" font-weight="bold">MTN</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#4CAF50"/>
+                            <rect x="10" y="10" width="30" height="40" fill="#66BB6A" stroke="white" stroke-width="2"/>
+                            <path d="M15 15 L35 15 L35 45 L15 45 Z" fill="none" stroke="white" stroke-width="1"/>
+                            <text x="85" y="25" text-anchor="middle" fill="black" font-family="Arial, sans-serif" font-size="14" font-weight="bold">BICICI</text>
+                            <text x="85" y="40" text-anchor="middle" fill="black" font-family="Arial, sans-serif" font-size="8">La banque en toute confiance</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#1E3A8A"/>
+                            <ellipse cx="60" cy="20" rx="25" ry="12" fill="white"/>
+                            <path d="M35 20 Q60 35 85 20" fill="white"/>
+                            <text x="60" y="45" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">AGL</text>
+                            <text x="60" y="55" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="6">AFRICA GLOBAL LOGISTICS</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="white"/>
+                            <text x="20" y="25" fill="#666" font-family="Arial, sans-serif" font-size="14" font-weight="bold">ADV</text>
+                            <text x="50" y="25" fill="#4CAF50" font-family="Arial, sans-serif" font-size="14" font-weight="bold">ANS</text>
+                            <text x="20" y="45" fill="#666" font-family="Arial, sans-serif" font-size="8">Growing together</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#E3F2FD"/>
+                            <text x="60" y="35" text-anchor="middle" fill="#1976D2" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Ecobank</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#FF0000"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Total</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#000080"/>
+                            <text x="60" y="30" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Société</text>
+                            <text x="60" y="42" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Générale</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#0066CC"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Lafarge</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#0066CC"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">Unilever</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#FF6600"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Dangote</text>
+                        </svg>
+                    </div>
+                    <div class="partner-logo">
+                        <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="120" height="60" fill="#000080"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">SGBCI</text>
+                        </svg>
+                    </div>
                 </div>
             </div>
             

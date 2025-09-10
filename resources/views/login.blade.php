@@ -11,7 +11,7 @@
     <style>
         /* Couleurs YABARA */
         :root {
-            --yabara-blue: #162359;
+            --yabara-blue: #0066FF;
             --yabara-gold: #f6cd45;
             --yabara-white: #FFFFFF;
             --yabara-black: #000000;
@@ -47,7 +47,7 @@
         }
         
         .btn-yabara:hover {
-            background-color: #162359;
+            background-color: #0066FF;
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(21, 39, 71, 0.3);
         }
@@ -82,7 +82,7 @@
         }
         
         .bg-pattern {
-            background: var(--yabara-blue) url('/images/bgleftauth.png') no-repeat center center / cover;
+            background: url('/images/undraw_online-resume_z4sp 1.png') no-repeat center center / contain;
             position: relative;
             overflow: hidden;
         }

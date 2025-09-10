@@ -3,323 +3,202 @@
 @section('title', 'Salle de Trophées')
 
 @section('content')
-<div class="container px-4">
-    <!-- Message aléatoire d'accueil -->
-    <div class="row mb-4">
+<div class="container-fluid px-3" style="background-color: #f8f9fa; min-height: 100vh;">
+    <!-- En-tête -->
+    <div class="row mb-4 pt-3">
         <div class="col-12">
-            <div class="alert alert-primary border-0 shadow-sm" style="background: linear-gradient(135deg, #14224F, #1e3a8a); color: white;">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-trophy fa-2x me-3" style="color: #f6cd45;"></i>
-                    <div>
-                        <h4 class="mb-1">{{ $messageAleatoire }}</h4>
-                        <p class="mb-0 opacity-75">Bienvenue dans votre salle de trophées personnelle</p>
+            <div class="d-flex align-items-center mb-2">
+                <div>
+                    <h5 class="mb-0" style="color: #333; font-weight: 600;">Salle de Trophées</h5>
+                    <small class="text-muted">Découvrez vos récompenses et progressions</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistiques principales -->
+    <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px;">
+        <div class="card-body p-4">
+            <div class="row">
+                <div class="col-md-3 text-center mb-3">
+                    <div class="position-relative d-inline-block">
+                        <div class="rounded-circle border border-3 d-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px; background-color: #0066FF; border-color: #0066FF !important;">
+                            <i class="fas fa-trophy text-white" style="font-size: 30px;"></i>
+                        </div>
+                    </div>
+                    <h6 class="mt-2 mb-1" style="color: #333; font-weight: 600;">{{ $stats['badges_obtenus'] }}/{{ $stats['total_badges'] }}</h6>
+                    <small class="text-muted">Badges obtenus</small>
+                </div>
+                
+                <div class="col-md-3 mb-3">
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-chart-line me-2" style="color: #0066FF;"></i>Progression</h6>
+                    <div class="mb-2">
+                        <small class="text-muted d-block" style="font-size: 12px;">Completion</small>
+                        <div class="progress mb-1" style="height: 8px; border-radius: 4px;">
+                            <div class="progress-bar" style="background-color: #0066FF; width: {{ $stats['pourcentage_completion'] }}%;"></div>
+                        </div>
+                        <span style="font-size: 14px; color: #333;">{{ number_format($stats['pourcentage_completion'], 1) }}%</span>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 mb-3">
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-star me-2" style="color: #0066FF;"></i>Points</h6>
+                    <div class="mb-2">
+                        <small class="text-muted d-block" style="font-size: 12px;">Total gagné</small>
+                        <span style="font-size: 18px; color: #333; font-weight: 600;">{{ $stats['points_total'] }}</span>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 mb-3">
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-crown me-2" style="color: #0066FF;"></i>Niveau</h6>
+                    <div class="mb-2">
+                        <small class="text-muted d-block" style="font-size: 12px;">Niveau actuel</small>
+                        <span style="font-size: 18px; color: #333; font-weight: 600;">{{ $stats['niveau_entreprise'] }}</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- En-tête avec barre de progression globale -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #f8f9fa, #ffffff);">
-                <div class="card-body p-4">
-                    <div class="row align-items-center">
-                        <div class="col-md-8">
-                            <h2 class="mb-2">
-                                <i class="fas fa-trophy me-2" style="color: #f6cd45;"></i>
-                                Salle de Trophées
-                                <span class="badge bg-primary ms-2">{{ $stats['badges_obtenus'] }}/{{ $stats['total_badges'] }}</span>
-                            </h2>
-                            <p class="text-muted mb-3">Découvrez vos récompenses et progressions dans votre aventure RH</p>
+    <!-- Filtres simplifiés -->
+    <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px;">
+        <div class="card-body p-4">
+            <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-filter me-2" style="color: #0066FF;"></i>Filtres</h6>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-2">
+                        <small class="text-muted d-block" style="font-size: 12px;">Statut</small>
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="status" id="all-status" value="all" checked>
+                            <label class="btn btn-outline-primary" for="all-status" style="border-radius: 20px 0 0 20px; font-size: 14px;">Tous</label>
                             
-                            <!-- Barre de progression globale -->
-                            <div class="progress mb-2" style="height: 12px; border-radius: 10px;">
-                                <div class="progress-bar bg-gradient-warning" 
-                                     style="width: {{ $stats['pourcentage_completion'] }}%; border-radius: 10px;"
-                                     data-bs-toggle="tooltip" 
-                                     title="{{ number_format($stats['pourcentage_completion'], 1) }}% de progression">
-                                </div>
-                            </div>
-                            <small class="text-muted">
-                                <strong>{{ number_format($stats['pourcentage_completion'], 1) }}%</strong> de badges débloqués
-                            </small>
+                            <input type="radio" class="btn-check" name="status" id="obtained-status" value="obtained">
+                            <label class="btn btn-outline-primary" for="obtained-status" style="font-size: 14px;">Obtenus</label>
+                            
+                            <input type="radio" class="btn-check" name="status" id="locked-status" value="locked">
+                            <label class="btn btn-outline-primary" for="locked-status" style="border-radius: 0 20px 20px 0; font-size: 14px;">Verrouillés</label>
                         </div>
-                        <div class="col-md-4 text-end">
-                            <div class="niveau-badge">
-                                <div class="niveau-circle">
-                                    <i class="fas fa-crown fa-2x"></i>
-                                    <div class="niveau-text">
-                                        <strong>{{ $stats['niveau_entreprise'] }}</strong>
-                                        <small>{{ $stats['points_total'] }} pts</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-2">
+                        <small class="text-muted d-block" style="font-size: 12px;">Catégorie</small>
+                        <select class="form-select" style="border-radius: 20px; font-size: 14px;">
+                            <option value="all">Toutes les catégories</option>
+                            <option value="recrutement">Recrutement</option>
+                            <option value="activite">Activité</option>
+                            <option value="performance">Performance</option>
+                            <option value="special">Spéciaux</option>
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Statistiques rapides -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="stat-card obtained">
-                <div class="stat-icon">
-                    <i class="fas fa-medal"></i>
-                </div>
-                <div class="stat-content">
-                    <h3>{{ $stats['badges_obtenus'] }}</h3>
-                    <p>Badges obtenus</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stat-card progress container">
-                <div class="stat-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="stat-content">
-                    <h3>{{ number_format($stats['pourcentage_completion'], 1) }}%</h3>
-                    <p>Progression</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stat-card points">
-                <div class="stat-icon">
-                    <i class="fas fa-star"></i>
-                </div>
-                <div class="stat-content">
-                    <h3>{{ $stats['points_total'] }}</h3>
-                    <p>Points gagnés</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stat-card level">
-                <div class="stat-icon">
-                    <i class="fas fa-crown"></i>
-                </div>
-                <div class="stat-content">
-                    <h3>{{ $stats['niveau_entreprise'] }}</h3>
-                    <p>Niveau actuel</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Filtres améliorés -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="row align-items-center g-4">
-                        <div class="col-lg-8 col-md-12">
-                            <div class="filter-section">
-                                <h6 class="filter-section-title">
-                                    <i class="fas fa-filter me-2"></i>
-                                    Catégories
-                                    <span class="filter-indicator" id="category-indicator">Tous</span>
-                                </h6>
-                                <div class="filter-tabs">
-                                    <input type="radio" class="btn-check" name="category" id="all" value="all" checked>
-                                    <label class="filter-tab" for="all">
-                                        <i class="fas fa-th-large"></i>
-                                        <span class="filter-text">Tous</span>
-                                        <span class="filter-count" data-category="all">{{ count($badges) }}</span>
-                                    </label>
-                                    
-                                    <input type="radio" class="btn-check" name="category" id="recrutement" value="recrutement">
-                                    <label class="filter-tab" for="recrutement">
-                                        <i class="fas fa-handshake"></i>
-                                        <span class="filter-text">Recrutement</span>
-                                        <span class="filter-count" data-category="recrutement">0</span>
-                                    </label>
-                                    
-                                    <input type="radio" class="btn-check" name="category" id="activite" value="activite">
-                                    <label class="filter-tab" for="activite">
-                                        <i class="fas fa-chart-line"></i>
-                                        <span class="filter-text">Activité</span>
-                                        <span class="filter-count" data-category="activite">0</span>
-                                    </label>
-                                    
-                                    <input type="radio" class="btn-check" name="category" id="performance" value="performance">
-                                    <label class="filter-tab" for="performance">
-                                        <i class="fas fa-target"></i>
-                                        <span class="filter-text">Performance</span>
-                                        <span class="filter-count" data-category="performance">0</span>
-                                    </label>
-                                    
-                                    <input type="radio" class="btn-check" name="category" id="special" value="special">
-                                    <label class="filter-tab" for="special">
-                                        <i class="fas fa-gem"></i>
-                                        <span class="filter-text">Spéciaux</span>
-                                        <span class="filter-count" data-category="special">0</span>
-                                    </label>
-                                </div>
+    <!-- Grille des badges -->
+    <div class="row">
+        @foreach($badges as $badge)
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-3" 
+                 data-category="{{ $badge['category'] }}" 
+                 data-status="{{ $badge['obtained'] ? 'obtained' : 'available' }}">
+                <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;" data-badge-id="{{ $badge['id'] }}">
+                    <div class="card-body p-4 text-center">
+                        <!-- Icône du badge -->
+                        <div class="mb-3">
+                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 60px; height: 60px; background-color: {{ $badge['obtained'] ? '#0066FF' : '#f8f9fa' }}; border: 2px solid {{ $badge['obtained'] ? '#0066FF' : '#e0e0e0' }};">
+                                <i class="{{ $badge['icon'] }} {{ $badge['obtained'] ? 'text-white' : 'text-muted' }}" style="font-size: 24px;"></i>
                             </div>
-                        </div>
-                        <div class="col-lg-4 col-md-12">
-                            <div class="filter-section">
-                                <h6 class="filter-section-title">
-                                    <i class="fas fa-eye me-2"></i>
-                                    Statut
-                                    <span class="filter-indicator" id="status-indicator">Tous</span>
-                                </h6>
-                                <div class="status-filters">
-                                    <input type="radio" class="btn-check" name="status" id="obtained" value="obtained">
-                                    <label class="status-filter obtained" for="obtained">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span class="filter-text">Obtenus</span>
-                                        <span class="filter-count">{{ $stats['badges_obtenus'] }}</span>
-                                    </label>
-                                    
-                                    <input type="radio" class="btn-check" name="status" id="locked" value="locked">
-                                    <label class="status-filter locked" for="locked">
-                                        <i class="fas fa-lock"></i>
-                                        <span class="filter-text">Verrouillés</span>
-                                        <span class="filter-count">{{ $stats['total_badges'] - $stats['badges_obtenus'] }}</span>
-                                    </label>
-                                    
-                                    <input type="radio" class="btn-check" name="status" id="available" value="available" checked>
-                                    <label class="status-filter all" for="available">
-                                        <i class="fas fa-eye"></i>
-                                        <span class="filter-text">Tous</span>
-                                        <span class="filter-count">{{ $stats['total_badges'] }}</span>
-                                    </label>
+                            @if($badge['obtained'])
+                                <div class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge bg-success rounded-circle p-1">
+                                        <i class="fas fa-check" style="font-size: 8px;"></i>
+                                    </span>
                                 </div>
-                            </div>
+                            @endif
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Grille des badges avec effet immersif -->
-    <div class="badges-container">
-        <div class="row g-4" id="badges-grid">
-            @foreach($badges as $badge)
-                <div class="col-xl-3 col-lg-4 col-md-6 badge-item" 
-                     data-category="{{ $badge['category'] }}" 
-                     data-status="{{ $badge['obtained'] ? 'obtained' : 'available' }}">
-                    <div class="card h-100 d-flex flex-column trophy-card {{ $badge['obtained'] ? 'trophy-obtained' : 'trophy-locked' }}" 
-                         data-badge-id="{{ $badge['id'] }}">
                         
-                        <!-- Effet de brillance pour les badges obtenus -->
+                        <!-- Titre et description -->
+                        <h6 class="mb-2" style="color: #333; font-weight: 600;">{{ $badge['nom'] }}</h6>
+                        <p class="text-muted mb-3" style="font-size: 13px;">{{ $badge['description'] }}</p>
+                        
                         @if($badge['obtained'])
-                            <div class="shine-effect"></div>
+                            <!-- Badge obtenu -->
+                            <div class="mb-3">
+                                <small class="text-muted d-block" style="font-size: 11px;">Obtenu le</small>
+                                <span style="font-size: 12px; color: #333;">{{ $badge['date_obtention']->format('d/m/Y') }}</span>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center mb-2">
+                                <span class="badge me-2" style="background-color: #fff3cd; color: #856404; font-size: 11px;">
+                                    <i class="fas fa-star me-1"></i>+{{ $badge['points'] }} pts
+                                </span>
+                            </div>
                         @else
-                            <div class="lock-overlay">
-                                <i class="fas fa-lock fa-2x"></i>
+                            <!-- Badge verrouillé -->
+                            <div class="mb-3">
+                                <div class="progress mb-2" style="height: 6px; border-radius: 3px;">
+                                    <div class="progress-bar" style="background-color: #0066FF; width: {{ $badge['progression'] }}%;"></div>
+                                </div>
+                                <small class="text-muted">{{ number_format($badge['progression'], 1) }}% complété</small>
                             </div>
                         @endif
                         
-                        <div class="card-header trophy-header border-0 bg-transparent text-center">
-                            <div class="trophy-icon {{ $badge['obtained'] ? 'obtained' : 'locked' }}">
-                                <i class="{{ $badge['icon'] }} fa-2x"></i>
-                            </div>
-                            @if($badge['obtained'])
-                                <div class="trophy-date">
-                                    {{ $badge['date_obtention']->format('d/m/Y') }}
-                                </div>
-                            @endif
-                        </div>
-                        
-                        <div class="card-body trophy-content text-center">
-                            <h5 class="card-title trophy-title">{{ $badge['nom'] }}</h5>
-                            <p class="card-text trophy-description">{{ $badge['description'] }}</p>
-                            
-                            @if($badge['obtained'])
-                                <div class="trophy-message">
-                                    <i class="fas fa-quote-left"></i>
-                                    <em>{{ $badge['message_marketing'] }}</em>
-                                </div>
-                                
-                                <div class="trophy-rewards">
-                                    <div class="reward-item">
-                                        <i class="fas fa-star text-warning"></i>
-                                        <span>+{{ $badge['points'] }} pts</span>
-                                    </div>
-                                    <div class="reward-item">
-                                        <i class="fas fa-gift text-info"></i>
-                                        <span>{{ $badge['recompense'] }}</span>
-                                    </div>
-                                </div>
-                            @else
-                                <!-- Barre de progression -->
-                                <div class="progress-section">
-                                    <div class="progress mb-2" style="height: 8px;">
-                                        <div class="progress-bar bg-{{ $badge['color'] }}" 
-                                             style="width: {{ $badge['progression'] }}%"
-                                             data-bs-toggle="tooltip" 
-                                             title="{{ number_format($badge['progression'], 1) }}% complété">
-                                        </div>
-                                    </div>
-                                    <small class="text-muted">
-                                        {{ number_format($badge['progression'], 1) }}% complété
-                                    </small>
-                                </div>
-                                
-                                <div class="unlock-hint">
-                                    <i class="fas fa-info-circle"></i>
-                                    <span>{{ $badge['criteres'] }}</span>
-                                </div>
-                            @endif
-                        </div>
-                        
-                        
                         <!-- Bouton d'action -->
-                        <div class="card-footer trophy-action border-0 bg-transparent text-center">
-                            <button class="btn btn-sm {{ $badge['obtained'] ? 'btn-success' : 'btn-outline-primary' }}" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#badgeModal" 
-                                    data-badge='@json($badge)'>
-                                @if($badge['obtained'])
-                                    <i class="fas fa-eye me-1"></i>Détails
-                                @else
-                                    <i class="fas fa-target me-1"></i>Objectif
-                                @endif
-                            </button>
-                        </div>
+                        <button class="btn btn-sm {{ $badge['obtained'] ? 'btn-outline-success' : 'btn-outline-primary' }}" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#badgeModal" 
+                                data-badge='@json($badge)'
+                                style="border-radius: 20px; font-size: 12px; padding: 6px 16px;">
+                            @if($badge['obtained'])
+                                <i class="fas fa-eye me-1"></i>Voir détails
+                            @else
+                                <i class="fas fa-target me-1"></i>Objectif
+                            @endif
+                        </button>
                     </div>
                 </div>
-            @endforeach
-        </div>
+            </div>
+        @endforeach
     </div>
 
     <!-- Prochains objectifs -->
     @if(count($prochains_objectifs) > 0)
     <div class="row mt-5">
         <div class="col-12">
-            <div class="card border-0 shadow-lg">
-                <div class="card-header bg-gradient-primary text-white">
-                    <h5 class="mb-0">
-                        <i class="fas fa-target me-2"></i>
-                        Prochains Objectifs
-                        <span class="badge bg-light text-primary ms-2">{{ count($prochains_objectifs) }}</span>
-                    </h5>
-                </div>
-                <div class="card-body">
+            <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle d-inline-flex align-items-center justify-content-center me-3" 
+                             style="width: 40px; height: 40px; background-color: #0066FF;">
+                            <i class="fas fa-target text-white" style="font-size: 16px;"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1" style="color: #333; font-weight: 600;">Prochains Objectifs</h5>
+                            <p class="text-muted mb-0" style="font-size: 13px;">{{ count($prochains_objectifs) }} objectifs disponibles</p>
+                        </div>
+                    </div>
+                    
                     <div class="row">
                         @foreach($prochains_objectifs as $objectif)
                             <div class="col-md-6 col-lg-4 mb-3">
-                                <div class="objective-card">
-                                    <div class="d-flex align-items-center">
-                                        <div class="objective-icon me-3">
-                                            <i class="{{ $objectif['icon'] }} fa-2x text-{{ $objectif['color'] }}"></i>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <h6 class="mb-1">{{ $objectif['nom'] }}</h6>
-                                            <div class="progress mb-1" style="height: 6px;">
-                                                <div class="progress-bar bg-{{ $objectif['color'] }}" 
-                                                     style="width: {{ $objectif['progression'] }}%"></div>
+                                <div class="card border-0 shadow-sm h-100" style="border-radius: 8px; background-color: #f8f9fa;">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center me-3" 
+                                                 style="width: 35px; height: 35px; background-color: #fff; border: 2px solid #e0e0e0;">
+                                                <i class="{{ $objectif['icon'] }} text-muted" style="font-size: 14px;"></i>
                                             </div>
-                                            <small class="text-muted">
-                                                {{ number_format($objectif['progression'], 1) }}% complété
-                                            </small>
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-2" style="color: #333; font-weight: 600; font-size: 13px;">{{ $objectif['nom'] }}</h6>
+                                                <div class="progress mb-1" style="height: 4px; border-radius: 2px;">
+                                                    <div class="progress-bar" style="background-color: #0066FF; width: {{ $objectif['progression'] }}%;"></div>
+                                                </div>
+                                                <small class="text-muted" style="font-size: 11px;">
+                                                    {{ number_format($objectif['progression'], 1) }}% complété
+                                                </small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -336,13 +215,16 @@
 <!-- Modal détaillé pour les badges -->
 <div class="modal fade" id="badgeModal" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header border-0 bg-gradient-primary text-white">
-                <h5 class="modal-title">
-                    <i class="fas fa-trophy me-2"></i>
+        <div class="modal-content border-0 shadow-sm" style="border-radius: 12px;">
+            <div class="modal-header border-0 bg-white">
+                <h5 class="modal-title" style="color: #333; font-weight: 600;">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center me-2" 
+                         style="width: 30px; height: 30px; background-color: #0066FF;">
+                        <i class="fas fa-trophy text-white" style="font-size: 12px;"></i>
+                    </div>
                     <span id="modal-badge-title">Détails du Badge</span>
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
                 <div id="modal-badge-content">
@@ -356,17 +238,20 @@
 <!-- Modal de félicitations -->
 <div class="modal fade" id="congratulationsModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg">
+        <div class="modal-content border-0 shadow-sm" style="border-radius: 12px;">
             <div class="modal-body text-center p-5">
-                <div class="congratulations-animation mb-4">
-                    <i class="fas fa-trophy fa-4x text-warning"></i>
+                <div class="mb-4">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center" 
+                         style="width: 80px; height: 80px; background-color: #0066FF;">
+                        <i class="fas fa-trophy text-white" style="font-size: 32px;"></i>
+                    </div>
                 </div>
-                <h3 class="text-primary mb-3">🎉 Félicitations ! 🎉</h3>
-                <p class="lead mb-4">Vous avez obtenu un nouveau badge !</p>
-                <div id="new-badge-info">
+                <h4 class="mb-3" style="color: #333; font-weight: 600;">🎉 Félicitations ! 🎉</h4>
+                <p class="text-muted mb-4" style="font-size: 14px;">Vous avez obtenu un nouveau badge !</p>
+                <div id="new-badge-info" class="mb-4">
                     <!-- Informations du nouveau badge -->
                 </div>
-                <button type="button" class="btn btn-primary btn-lg" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="border-radius: 20px; padding: 8px 24px;">
                     <i class="fas fa-check me-2"></i>Continuer l'aventure
                 </button>
             </div>
@@ -377,1389 +262,24 @@
 
 @push('styles')
 <style>
-/* Styles pour la salle de trophées */
-.badges-container {
-    position: relative;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
-    border-radius: 30px;
-    padding: 3rem;
-    margin: 1.5rem 0;
-    box-shadow: 0 25px 50px rgba(102, 126, 234, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    position: relative;
-    overflow: hidden;
+/* Styles épurés pour les badges */
+.card {
+    transition: all 0.2s ease;
 }
 
-.badges-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%);
-    animation: container-shimmer 8s infinite;
-    pointer-events: none;
-}
-
-@keyframes container-shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-.trophy-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 0;
-    height: 100%;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: 
-        0 20px 40px rgba(102, 126, 234, 0.1),
-        0 8px 16px rgba(0, 0, 0, 0.05),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-.trophy-card .card-header {
-    padding: 1.5rem 1rem 1rem;
-    background: transparent !important;
-    border: none !important;
-}
-
-.trophy-card .card-body {
-    padding: 0 1.5rem 1rem;
-    flex-grow: 1;
-}
-
-.trophy-card .card-footer {
-    padding: 1rem 1.5rem 1.5rem;
-    background: transparent !important;
-    border: none !important;
-}
-
-.trophy-card:hover {
-    transform: translateY(-20px) scale(1.05);
-    box-shadow: 
-        0 35px 70px rgba(102, 126, 234, 0.25),
-        0 15px 30px rgba(0, 0, 0, 0.1),
-        0 0 40px rgba(102, 126, 234, 0.15);
-    border-color: rgba(102, 126, 234, 0.4);
-    background: rgba(255, 255, 255, 1);
-}
-
-.trophy-obtained {
-    border-color: rgba(52, 211, 153, 0.4);
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(236, 253, 245, 0.9) 50%, rgba(209, 250, 229, 0.8) 100%);
-    box-shadow: 
-        0 20px 40px rgba(52, 211, 153, 0.2),
-        0 8px 16px rgba(0, 0, 0, 0.05),
-        0 0 30px rgba(52, 211, 153, 0.1);
-    position: relative;
-    backdrop-filter: blur(25px);
-}
-
-.trophy-obtained::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
-    border-radius: 25px;
-    animation: shimmer 3s infinite;
-}
-
-@keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-.trophy-locked {
-    border-color: rgba(156, 163, 175, 0.3);
-    background: linear-gradient(145deg, rgba(248, 250, 252, 0.9) 0%, rgba(241, 245, 249, 0.8) 50%, rgba(226, 232, 240, 0.7) 100%);
-    opacity: 0.8;
-    filter: grayscale(0.2) blur(0.5px);
-    backdrop-filter: blur(15px);
-}
-
-.trophy-obtained:hover {
-    border-color: #20c997;
-    box-shadow: 0 30px 70px rgba(40, 167, 69, 0.4), 0 0 40px rgba(40, 167, 69, 0.2);
-    transform: translateY(-15px) scale(1.05) rotateX(8deg);
-}
-
-/* Effet de brillance amélioré */
-.shine-effect {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, 
-        transparent 20%, 
-        rgba(255,255,255,0.1) 40%, 
-        rgba(255,255,255,0.6) 50%, 
-        rgba(255,255,255,0.1) 60%, 
-        transparent 80%);
-    transform: rotate(45deg);
-    animation: shine 6s infinite;
-    z-index: 2;
-    opacity: 0.8;
-}
-
-@keyframes shine {
-    0% { 
-        transform: translateX(-150%) translateY(-150%) rotate(45deg);
-        opacity: 0;
-    }
-    50% { 
-        transform: translateX(0%) translateY(0%) rotate(45deg);
-        opacity: 1;
-    }
-    100% { 
-        transform: translateX(150%) translateY(150%) rotate(45deg);
-        opacity: 0;
-    }
-}
-
-/* Effet de particules flottantes */
-.trophy-obtained::after {
-    content: '';
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 6px;
-    height: 6px;
-    background: #ffd700;
-    border-radius: 50%;
-    box-shadow: 
-        15px 10px 0 #ffd700,
-        -10px 20px 0 #ff6b6b,
-        20px -5px 0 #4ecdc4,
-        -15px -10px 0 #45b7d1;
-    animation: float-particles 6s infinite;
-}
-
-@keyframes float-particles {
-    0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
-    25% { transform: translateY(-10px) rotate(90deg); opacity: 1; }
-    50% { transform: translateY(-5px) rotate(180deg); opacity: 0.8; }
-    75% { transform: translateY(-15px) rotate(270deg); opacity: 1; }
-}
-
-
-
-/* Overlay de verrouillage */
-.lock-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #6c757d;
-    opacity: 0.4;
-    z-index: 1;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px);
-}
-
-/* Icône de trophée améliorée */
-.trophy-icon {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    position: relative;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 3px solid transparent;
-}
-
-.trophy-icon.obtained {
-    background: linear-gradient(145deg, #10b981 0%, #059669 50%, #047857 100%);
-    color: white;
-    box-shadow: 
-        0 15px 35px rgba(16, 185, 129, 0.4),
-        0 5px 15px rgba(0, 0, 0, 0.1),
-        inset 0 2px 0 rgba(255,255,255,0.4),
-        inset 0 -2px 0 rgba(0,0,0,0.1);
-    animation: trophy-pulse 4s infinite;
-    border-color: rgba(255,255,255,0.4);
-    position: relative;
-    overflow: hidden;
-}
-
-.trophy-icon.obtained::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
-    animation: icon-shine 3s infinite;
-    pointer-events: none;
-}
-
-@keyframes icon-shine {
-    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-}
-
-.trophy-icon.obtained::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
-    border-radius: 50%;
-    z-index: -1;
-    animation: rotate-border 4s linear infinite;
-    opacity: 0.7;
-}
-
-@keyframes rotate-border {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.trophy-icon.locked {
-    background: linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%);
-    color: #94a3b8;
-    box-shadow: 
-        inset 0 2px 4px rgba(0,0,0,0.1),
-        0 4px 8px rgba(0,0,0,0.05);
-    backdrop-filter: blur(10px);
-}
-
-@keyframes trophy-pulse {
-    0%, 100% { 
-        box-shadow: 
-            0 15px 35px rgba(16, 185, 129, 0.4),
-            0 5px 15px rgba(0, 0, 0, 0.1),
-            inset 0 2px 0 rgba(255,255,255,0.4),
-            inset 0 -2px 0 rgba(0,0,0,0.1);
-        transform: scale(1);
-    }
-    50% { 
-        box-shadow: 
-            0 20px 45px rgba(16, 185, 129, 0.6),
-            0 8px 20px rgba(0, 0, 0, 0.15),
-            inset 0 2px 0 rgba(255,255,255,0.5),
-            inset 0 -2px 0 rgba(0,0,0,0.1);
-        transform: scale(1.08);
-    }
-}
-
-/* Date d'obtention */
-.trophy-date {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(0,0,0,0.8);
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 500;
-}
-
-/* Contenu du trophée */
-.trophy-title {
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 0.5rem;
-    font-size: 1.1rem;
-}
-
-.trophy-description {
-    color: #6c757d;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-    line-height: 1.4;
-}
-
-.trophy-message {
-    background: #f8f9fa;
-    border-left: 4px solid #28a745;
-    padding: 0.75rem;
-    margin: 1rem 0;
-    border-radius: 0 8px 8px 0;
-    font-style: italic;
-    color: #495057;
-}
-
-/* Récompenses */
-.trophy-rewards {
-    display: flex;
-    justify-content: space-around;
-    margin: 1rem 0;
-    padding: 0.75rem;
-    background: #f8f9fa;
-    border-radius: 10px;
-}
-
-.reward-item {
-    text-align: center;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.reward-item i {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-size: 1.2rem;
-}
-
-/* Section de progression */
-.progress-section {
-    margin: 1rem 0;
-}
-
-.unlock-hint {
-    background: #e3f2fd;
-    border: 1px solid #bbdefb;
-    border-radius: 8px;
-    padding: 0.5rem;
-    font-size: 0.8rem;
-    color: #1976d2;
-    margin-top: 0.5rem;
-}
-
-/* Action du trophée */
-.trophy-action {
-    text-align: center;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #e9ecef;
-}
-
-/* Statistiques rapides */
-.stat-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
-    padding: 2rem;
-    text-align: center;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-}
-
-.stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-}
-
-.stat-card:hover::before {
-    opacity: 1;
-    animation: stat-shine 1.5s ease-out;
-}
-
-@keyframes stat-shine {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-.stat-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-}
-
-.stat-card.obtained {
-    border-color: rgba(16, 185, 129, 0.3);
-    background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
-    color: white;
-    box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
-}
-
-.stat-card.progress {
-    border-color: rgba(59, 130, 246, 0.3);
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
-    color: white;
-    box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
-}
-
-.stat-card.points {
-    border-color: rgba(245, 158, 11, 0.3);
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
-    color: white;
-    box-shadow: 0 15px 30px rgba(245, 158, 11, 0.3);
-}
-
-.stat-card.level {
-    border-color: rgba(139, 92, 246, 0.3);
-    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
-    color: white;
-    box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3);
-}
-
-.stat-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    opacity: 0.9;
-}
-
-.stat-content h3 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-}
-
-.stat-content p {
-    margin: 0;
-    opacity: 0.9;
-    font-weight: 500;
-}
-
-/* Filtres améliorés */
-.filter-tabs {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-.filter-tab {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 30px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(15px);
-    color: #64748b;
-    text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    font-weight: 500;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    position: relative;
-    overflow: hidden;
-}
-
-.filter-tab::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(102, 126, 234, 0.1) 50%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-}
-
-.filter-tab:hover {
-    border-color: rgba(102, 126, 234, 0.4);
-    color: #667eea;
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
-}
-
-.filter-tab:hover::before {
-    opacity: 1;
-    animation: filter-shine 1s ease-out;
-}
-
-@keyframes filter-shine {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-.btn-check:checked + .filter-tab {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-color: rgba(102, 126, 234, 0.5);
-    color: white;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+.card:hover {
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
 }
 
-.status-filters {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.status-filter {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.2rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 25px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(15px);
-    color: #64748b;
-    text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    font-size: 0.9rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    position: relative;
-    overflow: hidden;
-}
-
-.status-filter.obtained:hover {
-    border-color: #28a745;
-    color: #28a745;
-}
-
-.status-filter.all:hover {
-    border-color: #6c757d;
-    color: #6c757d;
-}
-
-.btn-check:checked + .status-filter.obtained {
-    background: #28a745;
-    border-color: #28a745;
-    color: white;
-}
-
-.btn-check:checked + .status-filter.all {
-    background: #6c757d;
-    border-color: #6c757d;
-    color: white;
-}
-
-/* Niveau badge */
-.niveau-badge {
-    text-align: center;
-}
-
-.niveau-circle {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #f6cd45, #ffd700);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    color: #14224F;
-    box-shadow: 0 8px 20px rgba(246, 205, 69, 0.4);
-    animation: level-glow 3s infinite;
-}
-
-@keyframes level-glow {
-    0%, 100% { box-shadow: 0 8px 20px rgba(246, 205, 69, 0.4); }
-    50% { box-shadow: 0 8px 30px rgba(246, 205, 69, 0.6); }
-}
-
-.niveau-text {
-    text-align: center;
-    margin-top: 0.25rem;
-}
-
-.niveau-text strong {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 700;
-}
-
-.niveau-text small {
-    font-size: 0.7rem;
-    opacity: 0.8;
-}
-
-/* Objectifs */
-.objective-card {
-    background: white;
-    border: 1px solid #e9ecef;
-    border-radius: 12px;
-    padding: 1rem;
-    transition: all 0.3s ease;
-}
-
-.objective-card:hover {
-    border-color: #14224F;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transform: translateY(-2px);
-}
-
-.objective-icon {
-    width: 60px;
-    text-align: center;
-}
-
-/* Animation de félicitations */
-.congratulations-animation {
-    animation: bounce-celebration 1s infinite;
-}
-
-@keyframes bounce-celebration {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-15px);
-    }
-    60% {
-        transform: translateY(-8px);
-    }
-}
-
-/* Masquer les badges filtrés */
-.badge-item.hidden {
-    display: none;
-}
-
-/* Effets d'entrée en scène */
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInScale {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.trophy-card {
-    animation: fadeInUp 0.6s ease-out;
-}
-
-.trophy-card:nth-child(1) { animation-delay: 0.1s; }
-.trophy-card:nth-child(2) { animation-delay: 0.2s; }
-.trophy-card:nth-child(3) { animation-delay: 0.3s; }
-.trophy-card:nth-child(4) { animation-delay: 0.4s; }
-.trophy-card:nth-child(5) { animation-delay: 0.5s; }
-.trophy-card:nth-child(6) { animation-delay: 0.6s; }
-
-.stats-card {
-    animation: fadeInScale 0.8s ease-out;
-}
-
-.welcome-message {
-    animation: fadeInUp 0.8s ease-out;
-}
-
-.global-progress {
-    animation: fadeInUp 1s ease-out 0.3s both;
-}
-
-/* Effet de survol global */
-.badges-container:hover .trophy-card:not(:hover) {
-    opacity: 0.7;
-    transform: scale(0.95);
-}
-
-/* Responsive amélioré */
-@media (max-width: 768px) {
-    .trophy-card {
-        margin-bottom: 1.5rem;
-        padding: 1.5rem;
-        border-radius: 20px;
-    }
-    
-    .trophy-icon {
-        width: 70px;
-        height: 70px;
-    }
-    
-    .trophy-icon i {
-        font-size: 1.5rem !important;
-    }
-    
-    .stats-number {
-        font-size: 2.5rem;
-    }
-    
-    .filter-btn {
-        padding: 0.6rem 1.5rem;
-        font-size: 0.8rem;
-        margin: 0.3rem;
-    }
-    
-    .filter-tabs {
-        justify-content: center;
-    }
-    
-    .status-filters {
-        justify-content: center;
-        margin-top: 1rem;
-    }
-    
-    .welcome-message {
-        padding: 2rem;
-        margin-bottom: 2rem;
-    }
-    
-    .main-trophy-title {
-        font-size: 2rem;
-    }
-    
-    .main-trophy-title::before,
-    .main-trophy-title::after {
-        display: none;
-    }
-    
-    .global-progress {
-        height: 20px;
-        margin: 1rem 0;
-    }
-    
-    .stats-card {
-        padding: 1.5rem;
-    }
-    
-    .niveau-circle {
-        width: 80px;
-        height: 80px;
-    }
-}
-
-@media (max-width: 576px) {
-    .badges-container {
-        padding: 1rem;
-        margin: 0.5rem 0;
-    }
-    
-    .trophy-card {
-        padding: 1rem;
-    }
-    
-    .welcome-message {
-        padding: 1.5rem;
-    }
-    
-    .main-trophy-title {
-        font-size: 1.8rem;
-        margin-bottom: 2rem;
-    }
-}
-
-/* Barre de progression globale améliorée */
-.global-progress {
-    background: linear-gradient(145deg, #e9ecef 0%, #dee2e6 100%);
-    border-radius: 50px;
-    height: 25px;
-    overflow: hidden;
-    position: relative;
-    margin: 1.5rem 0;
-    box-shadow: 
-        inset 0 3px 6px rgba(0,0,0,0.15),
-        0 2px 8px rgba(0,0,0,0.1);
-    border: 2px solid rgba(255,255,255,0.8);
-}
-
-.global-progress-bar {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 25%, #17a2b8 50%, #6f42c1 75%, #e83e8c 100%);
-    height: 100%;
-    border-radius: 50px;
-    transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 
-        0 0 20px rgba(40, 167, 69, 0.4),
-        inset 0 2px 0 rgba(255,255,255,0.3);
-}
-
-.global-progress-bar::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: linear-gradient(90deg, 
-        transparent 0%, 
-        rgba(255,255,255,0.2) 25%, 
-        rgba(255,255,255,0.4) 50%, 
-        rgba(255,255,255,0.2) 75%, 
-        transparent 100%);
-    animation: progress-shine 3s infinite;
-}
-
-.global-progress-bar::after {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    right: 2px;
-    height: 4px;
-    background: linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.2));
-    border-radius: 50px;
-}
-
-@keyframes progress-shine {
-    0% { transform: translateX(-150%); }
-    100% { transform: translateX(150%); }
-}
-
-/* Titre principal amélioré */
-.main-trophy-title {
-    background: linear-gradient(135deg, #14224f 0%, #1a2b63 50%, #2c3e50 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-weight: 900;
-    text-align: center;
-    margin-bottom: 3rem;
-    position: relative;
-    font-size: 2.5rem;
-    text-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    animation: title-glow 4s infinite alternate;
-}
-
-@keyframes title-glow {
-    0% { filter: drop-shadow(0 0 5px rgba(20, 34, 79, 0.3)); }
-    100% { filter: drop-shadow(0 0 15px rgba(20, 34, 79, 0.6)); }
-}
-
-.main-trophy-title::before {
-    content: '🏆';
-    position: absolute;
-    left: -60px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2rem;
-    animation: trophy-bounce 2s infinite;
-}
-
-.main-trophy-title::after {
-    content: '🏆';
-    position: absolute;
-    right: -60px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2rem;
-    animation: trophy-bounce 2s infinite 0.5s;
-}
-
-@keyframes trophy-bounce {
-    0%, 100% { transform: translateY(-50%) scale(1); }
-    50% { transform: translateY(-60%) scale(1.1); }
-}
-
-/* Message d'accueil amélioré */
-.welcome-message {
-    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 50%, #e3f2fd 100%);
-    border: 3px solid transparent;
-    background-clip: padding-box;
-    border-radius: 25px;
-    padding: 2.5rem;
-    margin-bottom: 3rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 
-        0 15px 35px rgba(0,0,0,0.1),
-        inset 0 2px 0 rgba(255,255,255,0.8);
-    backdrop-filter: blur(10px);
-}
-
-.welcome-message::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, #28a745, #20c997, #17a2b8, #6f42c1, #e83e8c, #28a745);
-    border-radius: 25px;
-    z-index: -1;
-    animation: border-rotate 6s linear infinite;
-}
-
-@keyframes border-rotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.welcome-message::after {
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, 
-        transparent 0%, 
-        rgba(255,255,255,0.2) 25%, 
-        rgba(255,255,255,0.4) 50%, 
-        rgba(255,255,255,0.2) 75%, 
-        transparent 100%);
-    animation: welcome-shine 4s infinite;
-    z-index: 1;
-}
-
-@keyframes welcome-shine {
-    0% { left: -100%; }
-    100% { left: 100%; }
-}
-
-.welcome-message h4 {
-    position: relative;
-    z-index: 2;
-    background: linear-gradient(135deg, #14224f 0%, #1a2b63 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.welcome-message p {
-    position: relative;
-    z-index: 2;
-    color: #495057;
-    font-weight: 500;
-}
-
-/* Statistiques améliorées */
-.stats-card {
-    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-    border-radius: 20px;
-    padding: 2rem;
-    text-align: center;
-    border: 3px solid transparent;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 
-        0 10px 30px rgba(0,0,0,0.1),
-        inset 0 1px 0 rgba(255,255,255,0.6);
-}
-
-.stats-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, #28a745, #20c997, #17a2b8, #6f42c1);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    border-radius: 20px;
-    z-index: -1;
-}
-
-.stats-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 
-        0 20px 50px rgba(0,0,0,0.15),
-        0 0 30px rgba(40, 167, 69, 0.2);
-    border-color: rgba(40, 167, 69, 0.3);
-}
 
-.stats-card:hover::before {
-    opacity: 0.1;
-}
-
-.stats-number {
-    font-size: 3rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, #28a745 0%, #20c997 50%, #17a2b8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 0.8rem;
-    position: relative;
-    animation: number-pulse 3s infinite;
-}
-
-@keyframes number-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
-.stats-label {
-    color: #495057;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.85rem;
-    position: relative;
-}
-
-.stats-label::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #28a745, #20c997);
-    transition: width 0.4s ease;
-}
-
-.stats-card:hover .stats-label::after {
-    width: 60px;
-}
-
-/* Section de filtres */
-.filter-section {
-    margin-bottom: 1.5rem;
-}
-
-.filter-section-title {
-    color: #495057;
-    font-weight: 700;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.filter-indicator {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    color: white;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: none;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
-    animation: indicator-pulse 2s infinite;
-}
-
-@keyframes indicator-pulse {
-    0%, 100% { box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3); }
-    50% { box-shadow: 0 4px 15px rgba(40, 167, 69, 0.5); }
-}
-
-/* Filtres de catégories */
-.filter-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    align-items: center;
-}
-
-.filter-tab {
-    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-    border: 3px solid #e9ecef;
-    border-radius: 25px;
-    padding: 0.8rem 1.5rem;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 600;
-    position: relative;
-    overflow: hidden;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-width: 120px;
-    justify-content: center;
-}
-
-.filter-tab i {
-    font-size: 1rem;
-    transition: transform 0.3s ease;
-}
-
-.filter-tab .filter-text {
-    flex: 1;
-    text-align: center;
-}
-
-.filter-count {
-    background: #6c757d;
-    color: white;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 700;
-    transition: all 0.3s ease;
-}
-
-.filter-tab::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(40, 167, 69, 0.1), transparent);
-    transition: left 0.4s ease;
-}
-
-.filter-tab:hover::before {
-    left: 100%;
-}
-
-.filter-tab:hover {
-    border-color: #28a745;
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.2);
-}
-
-.filter-tab:hover i {
-    transform: scale(1.1) rotate(5deg);
-}
-
-.filter-tab:hover .filter-count {
-    background: #28a745;
-    transform: scale(1.1);
-}
-
-.btn-check:checked + .filter-tab {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    border-color: #20c997;
-    color: white;
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 
-        0 10px 30px rgba(40, 167, 69, 0.4),
-        0 0 20px rgba(40, 167, 69, 0.2);
-    animation: active-filter 2s infinite;
-}
-
-.btn-check:checked + .filter-tab .filter-count {
-    background: rgba(255, 255, 255, 0.9);
-    color: #28a745;
-    font-weight: 800;
-}
-
-@keyframes active-filter {
-    0%, 100% { box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4), 0 0 20px rgba(40, 167, 69, 0.2); }
-    50% { box-shadow: 0 15px 40px rgba(40, 167, 69, 0.6), 0 0 30px rgba(40, 167, 69, 0.4); }
-}
-
-/* Filtres de statut */
-.status-filters {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-}
 
-.status-filter {
-    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-    border: 3px solid #e9ecef;
-    border-radius: 20px;
-    padding: 0.8rem 1.2rem;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 600;
-    position: relative;
-    overflow: hidden;
-    font-size: 0.85rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    justify-content: space-between;
-}
-
-.status-filter i {
-    font-size: 1.1rem;
-    transition: transform 0.3s ease;
-}
-
-.status-filter .filter-text {
-    flex: 1;
-}
-
-.status-filter .filter-count {
-    background: #6c757d;
-    color: white;
-    border-radius: 15px;
-    padding: 0.2rem 0.6rem;
-    font-size: 0.7rem;
-    font-weight: 700;
-    min-width: 30px;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.status-filter:hover {
-    border-color: #28a745;
-    transform: translateX(5px) scale(1.02);
-    box-shadow: 0 5px 20px rgba(40, 167, 69, 0.2);
-}
-
-.status-filter:hover i {
-    transform: scale(1.1);
-}
-
-.status-filter:hover .filter-count {
-    background: #28a745;
-    transform: scale(1.05);
-}
-
-.btn-check:checked + .status-filter {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    border-color: #20c997;
-    color: white;
-    transform: translateX(8px) scale(1.05);
-    box-shadow: 
-        0 8px 25px rgba(40, 167, 69, 0.4),
-        0 0 15px rgba(40, 167, 69, 0.2);
-}
-
-.btn-check:checked + .status-filter .filter-count {
-    background: rgba(255, 255, 255, 0.9);
-    color: #28a745;
-    font-weight: 800;
-}
-
-/* Styles spécifiques pour les différents statuts */
-.status-filter.obtained:hover {
-    border-color: #28a745;
-}
-
-.btn-check:checked + .status-filter.obtained {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-}
-
-.status-filter.locked:hover {
-    border-color: #dc3545;
-}
 
-.btn-check:checked + .status-filter.locked {
-    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-    border-color: #c82333;
-}
-
-.btn-check:checked + .status-filter.locked .filter-count {
-    color: #dc3545;
-}
-
-.status-filter.all:hover {
-    border-color: #17a2b8;
-}
-
-.btn-check:checked + .status-filter.all {
-    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
-    border-color: #138496;
-}
-
-.btn-check:checked + .status-filter.all .filter-count {
-    color: #17a2b8;
-}
-
-/* Modal amélioré */
-.modal-content {
-    border-radius: 25px;
-    border: none;
-    box-shadow: 
-        0 25px 80px rgba(0,0,0,0.3),
-        0 0 50px rgba(20, 34, 79, 0.1);
-    backdrop-filter: blur(10px);
-    overflow: hidden;
-}
-
-.modal-header {
-    border-bottom: 3px solid transparent;
-    border-radius: 25px 25px 0 0;
-    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 50%, #e3f2fd 100%);
-    position: relative;
-    padding: 2rem;
-}
-
-.modal-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #28a745, #20c997, #17a2b8);
-}
-
-.modal-body {
-    padding: 2.5rem;
-    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-    position: relative;
-}
-
-.modal-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23000" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
-    pointer-events: none;
-}
 
-.modal-footer {
-    border-top: 3px solid transparent;
-    border-radius: 0 0 25px 25px;
-    background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
-    position: relative;
-    padding: 2rem;
-}
 
-.modal-footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #28a745, #20c997, #17a2b8);
-}
 
-.modal-title {
-    background: linear-gradient(135deg, #14224f 0%, #1a2b63 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-weight: 700;
-    font-size: 1.5rem;
-}
 
-/* Gradients personnalisés */
-.bg-gradient-primary {
-    background: linear-gradient(135deg, #0d6efd, #14224F) !important;
-}
 
-.bg-gradient-warning {
-    background: linear-gradient(135deg, #ffc107, #fd7e14) !important;
-}
 </style>
 @endpush
 

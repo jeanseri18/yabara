@@ -9,7 +9,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h2 class="mb-1"><i class="fas fa-tasks me-2" style="color: #14224F;"></i>Suivi des Candidatures</h2>
+                    <h2 class="mb-1"><i class="fas fa-tasks me-2" style="color: #0066FF;"></i>Suivi des Candidatures</h2>
                     @if($offreSelectionnee)
                         <p class="text-muted mb-0">{{ $offreSelectionnee->titre }} - {{ $offreSelectionnee->reference_offre }}</p>
                     @else
@@ -26,7 +26,7 @@
                             <i class="fas fa-arrow-left me-2"></i>Retour au dashboard
                         </a>
                     @endif
-                    <button class="btn text-white" style="background-color: #14224F;" data-bs-toggle="modal" data-bs-target="#filtersModal">
+                    <button class="btn text-white" style="background-color: #0066FF;" data-bs-toggle="modal" data-bs-target="#filtersModal">
                         <i class="fas fa-filter me-2"></i>Filtres
                     </button>
                 </div>
@@ -37,7 +37,7 @@
     <!-- Statistiques rapides -->
     <!-- <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card border-0 text-white" style="background-color: #14224F;">
+            <div class="card border-0 text-white" style="background-color: #0066FF;">
                 <div class="card-body text-center">
                     <i class="fas fa-inbox fa-2x mb-2"></i>
                     <h4 class="mb-0" id="stat-recues">{{ $stats['candidatures_recues'] ?? 0 }}</h4>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0" style="background-color: #f6cd45; color: #14224F;">
+            <div class="card border-0" style="background-color: #f6cd45; color: #0066FF;">
                 <div class="card-body text-center">
                     <i class="fas fa-star fa-2x mb-2"></i>
                     <h4 class="mb-0" id="stat-preselections">{{ $stats['preselections'] ?? 0 }}</h4>
@@ -55,7 +55,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0 text-white" style="background-color: #14224F;">
+            <div class="card border-0 text-white" style="background-color: #0066FF;">
                 <div class="card-body text-center">
                     <i class="fas fa-comments fa-2x mb-2"></i>
                     <h4 class="mb-0" id="stat-entretiens">{{ $stats['entretiens'] ?? 0 }}</h4>
@@ -81,7 +81,7 @@
             <div class="col">
                 <div class="kanban-column card py-4 px-3" data-status="candidature_recue">
                 <br>
-                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #14224F;">Candidatures reçues (<span id="count-candidature_recue">0</span>)</h5>
+                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #0066FF;">Candidatures reçues (<span id="count-candidature_recue">0</span>)</h5>
                         <br>
                     <div class="kanban-body " id="column-candidature_recue">
                         <div class="kanban-loading text-center py-4">
@@ -96,7 +96,7 @@
             <div class="col">
                 <div class="kanban-column card py-4 px-3" data-status="preselctionnee">
                 <br>
-                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #14224F;">Présélectionnées (<span id="count-preselctionnee">0</span>)</h5>
+                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #0066FF;">Présélectionnées (<span id="count-preselctionnee">0</span>)</h5>
                         <br>
                     <div class="kanban-body " id="column-preselctionnee">
                         <div class="kanban-loading text-center py-4">
@@ -111,7 +111,7 @@
             <div class="col">
                 <div class="kanban-column card py-4 px-3" data-status="entretien">
                 <br>
-                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #14224F;">En entretiens (<span id="count-entretien">0</span>)</h5>
+                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #0066FF;">En entretiens (<span id="count-entretien">0</span>)</h5>
                         <br>
                     <div class="kanban-body " id="column-entretien">
                         <div class="kanban-loading text-center py-4">
@@ -126,7 +126,7 @@
             <div class="col">
                 <div class="kanban-column card py-4 px-3" data-status="retenue">
                 <br>
-                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #14224F;">Recrutés (<span id="count-retenue">0</span>)</h5>
+                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #0066FF;">Recrutés (<span id="count-retenue">0</span>)</h5>
                         <br>
                     <div class="kanban-body " id="column-retenue">
                         <div class="kanban-loading text-center py-4">
@@ -141,7 +141,7 @@
             <div class="col">
                 <div class="kanban-column card py-4 px-3" data-status="refusee">
                 <br>
-                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #14224F;">Refusées (<span id="count-refusee">0</span>)</h5>
+                        <h5 class="text-white px-3 py-2 rounded" style="background-color: #0066FF;">Refusées (<span id="count-refusee">0</span>)</h5>
                         <br>
                     <div class="kanban-body " id="column-refusee">
                         <div class="kanban-loading text-center py-4">
@@ -308,7 +308,7 @@
 .candidate-info h6 {
     margin-bottom: 0.25rem;
     font-weight: 600;
-    color: #14224F;
+    color: #0066FF;
     font-size: 14px;
 }
 
@@ -342,7 +342,7 @@
 .kanban-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    border-left-color: #14224F;
+    border-left-color: #0066FF;
 }
 
 .status-badge {
@@ -552,7 +552,7 @@ $(document).ready(function() {
         const domaine = candidature.talent.famille_metier ? candidature.talent.famille_metier.nom : 'Ressources Humaines';
         
         return `
-            <div class="kanban-card mb-3" data-candidature-id="${candidature.id}" onclick="showCandidatureDetails(${candidature.id})" style="background:#14224F;  color: white; border-radius: 15px; padding: 20px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.2s ease, box-shadow 0.2s ease;">
+            <div class="kanban-card mb-3" data-candidature-id="${candidature.id}" onclick="showCandidatureDetails(${candidature.id})" style="background:#0066FF;  color: white; border-radius: 15px; padding: 20px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.2s ease, box-shadow 0.2s ease;">
                 <!-- Titre du poste -->
                 <h5 class="fw-bold mb-2" style="font-size: 16px; line-height: 1.3;">${candidature.offre_emploi.titre}</h5>
                 
