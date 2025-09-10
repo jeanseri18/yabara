@@ -11,7 +11,7 @@
             <i class="bi bi-arrow-left"></i>
         </a>
         <div>
-            <h2 class="mb-0" style="color: #ff6b35; font-weight: 600;">Publier une offre d'emploi</h2>
+            <h2 class="mb-0" style="color: #0066FF; font-weight: 600;">Publier une offre d'emploi</h2>
             <p class="text-muted mb-0">Créez votre offre en 3 étapes simples</p>
         </div>
     </div>
@@ -37,7 +37,7 @@
             <div class="card shadow-sm border-0" style="border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;">
                 <div class="card-header bg-white border-0 py-4" style="border-radius: 15px 15px 0 0;">
                     <div class="text-center">
-                        <div class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 50%;">
+                        <div class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #0066FF, #004bb5); border-radius: 50%;">
                             <i class="bi bi-briefcase text-white" style="font-size: 24px;"></i>
                         </div>
                         <h4 class="mb-2" style="color: #2c3e50; font-weight: 600;">Étape 1 : Informations générales</h4>
@@ -85,6 +85,19 @@
                                         <div class="card contract-card h-100" data-value="{{ $type->id }}" 
                                              style="cursor: pointer; transition: all 0.3s ease; {{ old('type_contrat_id', $offre->type_contrat_id ?? '') == $type->id ? 'border-color: #0066FF; background-color: #f8f9ff;' : 'border-color: #dee2e6;' }}">
                                             <div class="card-body text-center p-3">
+                                                @php
+                                                    $imageMap = [
+                                                        'CDI' => 'cdi.png',
+                                                        'CDD' => 'cdd.png',
+                                                        'Stage' => 'stage.png',
+                                                        'Freelance' => 'freelance.png',
+                                                        'Temps partiel' => 'a-temps-partiel.png',
+                                                        'Intérim' => 'interim.png'
+                                                    ];
+                                                    $imageName = $imageMap[$type->nom] ?? 'cdi.png';
+                                                @endphp
+                                                <img src="{{ asset('images/' . $imageName) }}" alt="{{ $type->nom }}" 
+                                                     style="width: 40px; height: 40px; margin-bottom: 10px; object-fit: contain;">
                                                 <h6 class="card-title mb-0" style="color: #0066FF;">{{ $type->nom }}</h6>
                                             </div>
                                         </div>
@@ -100,12 +113,40 @@
                                 🏢
                                 Pôle d'activité *
                             </label>
+                            @php
+                                $poleImages = [
+                                    'Développement Digital' => 'developpement-web.png',
+                                    'DÉVELOPPEMENT DIGITAL' => 'developpement-web.png',
+                                    'Ingénierie & Industrie' => 'ingenierie.png',
+                                    'INGÉNIERIE & INDUSTRIE' => 'ingenierie.png',
+                                    'Gestion & Finance' => 'gestion-de-projet.png',
+                                    'GESTION & FINANCE' => 'gestion-de-projet.png',
+                                    'Recherche & Innovation' => 'loupe.png',
+                                    'RECHERCHE & INNOVATION' => 'loupe.png',
+                                    'Informatique' => 'programmation.png',
+                                    'INFORMATIQUE' => 'programmation.png',
+                                    'Marketing' => 'digital-marketing.png',
+                                    'MARKETING' => 'digital-marketing.png',
+                                    'Ressources Humaines' => 'responsable-des-ressources-humaines.png',
+                                    'RESSOURCES HUMAINES' => 'responsable-des-ressources-humaines.png',
+                                    'TERTIAIRE' => 'groupe.png',
+                                    'SECONDAIRE' => 'genie-mecanique.png',
+                                    'NUMÉRIQUE' => 'programmation.png',
+                                    'COMMERCIAL & RELATION CLIENT' => 'digital-marketing.png',
+                                    'MÉTIERS PRATIQUES & ÉCONOMIE INFORMELLE' => 'se-soucier.png'
+                                ];
+                            @endphp
                             <div class="row g-3">
                                 @foreach($poles as $pole)
                                     <div class="col-md-6">
                                         <div class="card pole-card h-100" data-value="{{ $pole->id }}" 
                                              style="cursor: pointer; transition: all 0.3s ease; {{ old('pole_id', $offre->pole_id ?? '') == $pole->id ? 'border-color: #0066FF; background-color: #f8f9ff;' : 'border-color: #dee2e6;' }}">
                                             <div class="card-body text-center p-3">
+                                                @php
+                                                    $imageName = $poleImages[$pole->nom] ?? 'information.png';
+                                                @endphp
+                                                <img src="{{ asset('images/pole et famille/' . $imageName) }}" alt="{{ $pole->nom }}" 
+                                                     style="width: 40px; height: 40px; margin-bottom: 10px; object-fit: contain;">
                                                 <h6 class="card-title mb-0" style="color: #0066FF;">{{ $pole->nom }}</h6>
                                             </div>
                                         </div>
@@ -123,11 +164,60 @@
                             </label>
                             <div id="famille-metier-container">
                                 @if($offre && $offre->familleMetier)
+                                    @php
+                                        // Images utilisées par les pôles (à éviter pour les familles)
+                                        $poleUsedImages = [
+                                            'developpement-web.png', 'ingenierie.png', 'gestion-de-projet.png', 
+                                            'loupe.png', 'programmation.png', 'digital-marketing.png', 
+                                            'responsable-des-ressources-humaines.png', 'groupe.png', 
+                                            'genie-mecanique.png', 'se-soucier.png'
+                                        ];
+                                        
+                                        $familleImages = [
+                            // Pôle 1 - Développement Digital
+                            'Développement Web' => 'digital-content.png',
+                            'Développement Mobile' => 'strategie-digitale.png',
+                            'UX/UI Design' => 'digital-services.png',
+                            
+                            // Pôle 2 - Ingénierie & Industrie
+                            'Génie Civil' => 'ingenierie-sociale.png',
+                            'Mécanique' => 'securite.png',
+                            'Électronique' => 'ingenieur.png',
+                            
+                            // Pôle 3 - Gestion & Finance
+                            'Comptabilité' => 'gestion-de-donnees.png',
+                            'Contrôle de Gestion' => 'croissance.png',
+                            'Finance d\'Entreprise' => 'gestion-de-projet (1).png',
+                            
+                            // Pôle 4 - Recherche & Innovation
+                             'Biotechnologie' => 'information (1).png',
+                             'Pharmacie' => 'ingenierie (1).png',
+                             'IA & Data Science' => 'pirate.png',
+                             
+                             // Pôle 5 - Informatique (doublons avec pôle 1)
+                             // 'Développement Web' => déjà défini
+                             // 'Développement Mobile' => déjà défini
+                             'DevOps' => 'information.png',
+                            
+                            // Pôle 6 - Marketing
+                            'Marketing Digital' => 'marketing-video.png',
+                            'Communication' => 'social-media-marketing.png',
+                            'SEO/SEA' => 'ingenierie (1).png',
+                            
+                            // Pôle 7 - Ressources Humaines
+                            'Recrutement' => 'humain.png',
+                            'Formation' => 'information.png',
+                            'Paie' => 'gestion-de-projet (2).png'
+                        ];
+                                        $familleImageName = $familleImages[$offre->familleMetier->nom] ?? 'information.png';
+                                    @endphp
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <div class="card famille-card h-100" data-value="{{ $offre->famille_metier_id }}" 
                                                  style="cursor: pointer; transition: all 0.3s ease; border-color: #0066FF; background-color: #f8f9ff;">
                                                 <div class="card-body text-center p-3">
+                                                    <img src="{{ asset('images/pole et famille/' . $familleImageName) }}" alt="{{ $offre->familleMetier->nom }}" 
+                                                         style="width: 40px; height: 40px; margin-bottom: 10px; object-fit: contain;">
                                                     <h6 class="card-title mb-0" style="color: #0066FF;">{{ $offre->familleMetier->nom }}</h6>
                                                 </div>
                                             </div>
@@ -292,11 +382,14 @@
                     
                     if (familles.length > 0) {
                         familles.forEach(function(famille) {
+                            const imageSrc = famille.image ? `/images/pole et famille/${famille.image}` : '/images/pole et famille/information.png';
                             html += `
                                 <div class="col-md-6">
                                     <div class="card famille-card h-100" data-value="${famille.id}" 
                                          style="cursor: pointer; transition: all 0.3s ease; border-color: #dee2e6;">
                                         <div class="card-body text-center p-3">
+                                            <img src="${imageSrc}" alt="${famille.nom}" 
+                                                 style="width: 40px; height: 40px; margin-bottom: 10px; object-fit: contain;">
                                             <h6 class="card-title mb-0" style="color: #0066FF;">${famille.nom}</h6>
                                         </div>
                                     </div>

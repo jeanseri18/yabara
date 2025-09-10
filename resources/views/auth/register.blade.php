@@ -26,12 +26,13 @@
 
         .left-panel {
             flex: 1;
-            background: url('/images/undraw_team-page_q5am 1.png') no-repeat center center / contain;
+            background: url('/images/undraw_finance-guy-avatar_vhop 1.png') no-repeat center center ;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
+            /* padding: 40px; */
         }
 
         .left-panel::before {
@@ -168,7 +169,13 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Navbar -->
+    <nav style="background: white; padding: 1rem 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-size: 1.5rem; font-weight: bold; color: #0066FF;">YABARA</div>
+        <a href="{{ route('welcome') }}" style="background: #0066FF; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-weight: 500; transition: all 0.3s ease;" onmouseover="this.style.background='#0052CC'" onmouseout="this.style.background='#0066FF'">Retourner sur l'accueil</a>
+    </nav>
+    
+    <div class="container" style="margin-top: 80px;">
         <div class="left-panel">
         </div>
         

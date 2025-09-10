@@ -37,6 +37,28 @@
                             <label class="form-label fw-semibold mb-3">
                                 <i class="bi bi-diagram-3 me-1"></i>Pôle
                             </label>
+                            @php
+                                $poleImages = [
+                                    'Développement Digital' => 'developpement-web.png',
+                                    'DÉVELOPPEMENT DIGITAL' => 'developpement-web.png',
+                                    'Ingénierie & Industrie' => 'ingenierie.png',
+                                    'Gestion & Finance' => 'gestion-de-projet.png',
+                                    'GESTION & FINANCE' => 'gestion-de-projet.png',
+                                    'Recherche & Innovation' => 'loupe.png',
+                                    'RECHERCHE & INNOVATION' => 'loupe.png',
+                                    'Informatique' => 'programmation.png',
+                                    'INFORMATIQUE' => 'programmation.png',
+                                    'Marketing' => 'digital-marketing.png',
+                                    'MARKETING' => 'digital-marketing.png',
+                                    'Ressources Humaines' => 'responsable-des-ressources-humaines.png',
+                                    'RESSOURCES HUMAINES' => 'responsable-des-ressources-humaines.png',
+                                    'TERTIAIRE' => 'groupe.png',
+                                    'SECONDAIRE' => 'genie-mecanique.png',
+                                    'NUMÉRIQUE' => 'programmation.png',
+                                    'COMMERCIAL & RELATION CLIENT' => 'digital-marketing.png',
+                                    'MÉTIERS PRATIQUES & ÉCONOMIE INFORMELLE' => 'se-soucier.png'
+                                ];
+                            @endphp
                             <div class="row g-3" id="polesContainer">
                                 <!-- Option "Tous les pôles" -->
                                 <div class="col-md-6 col-lg-2">
@@ -46,8 +68,9 @@
                                                 <span class="pole-number">TOUS</span>
                                             </div>
                                             <div class="pole-title">TOUS LES PÔLES</div>
-                                         
-                                           
+                                            <div class="pole-icon">
+                                                <img src="{{ asset('images/pole et famille/groupe.png') }}" alt="Tous les pôles" style="width: 40px; height: 40px; object-fit: contain;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -71,15 +94,10 @@
                                                 @endif
                                             </div>
                                             <div class="pole-icon">
-                                                @if($pole->nom == 'TERTIAIRE')
-                                                    <i class="fas fa-users"></i>
-                                                @elseif($pole->nom == 'SECONDAIRE')
-                                                    <i class="fas fa-industry"></i>
-                                                @elseif($pole->nom == 'COMMERCIAL & RELATION CLIENT')
-                                                    <i class="fas fa-shield-alt"></i>
-                                                @elseif($pole->nom == 'MÉTIERS PRATIQUES & ÉCONOMIE INFORMELLE')
-                                                    <i class="fas fa-tools"></i>
-                                                @endif
+                                                @php
+                                                    $poleImageName = $poleImages[$pole->nom] ?? 'groupe.png';
+                                                @endphp
+                                                <img src="{{ asset('images/pole et famille/' . $poleImageName) }}" alt="{{ $pole->nom }}" style="width: 40px; height: 40px; object-fit: contain;">
                                             </div>
                                         </div>
                                     </div>
@@ -284,20 +302,63 @@ $(document).ready(function() {
     
     // Fonction pour charger les familles de métiers
     function loadFamillesMetiers(poleId) {
+        // Mapping des images des familles de métiers (identique à step1.blade.php)
+        const familleImages = {
+            // Pôle 1 - Développement Digital
+            'Développement Web': 'digital-content.png',
+            'Développement Mobile': 'strategie-digitale.png',
+            'UX/UI Design': 'digital-services.png',
+            
+            // Pôle 2 - Ingénierie & Industrie
+            'Génie Civil': 'ingenierie-sociale.png',
+            'Mécanique': 'securite.png',
+            'Électronique': 'ingenieur.png',
+            
+            // Pôle 3 - Gestion & Finance
+            'Comptabilité': 'gestion-de-donnees.png',
+            'Contrôle de Gestion': 'croissance.png',
+            'Finance d\'Entreprise': 'gestion-de-projet (1).png',
+            
+            // Pôle 4 - Recherche & Innovation
+            'Biotechnologie': 'information (1).png',
+            'Pharmacie': 'ingenierie (1).png',
+            'IA & Data Science': 'pirate.png',
+            
+            // Pôle 5 - Informatique (doublons avec pôle 1)
+            'DevOps': 'information.png',
+            
+            // Pôle 6 - Marketing
+            'Marketing Digital': 'marketing-video.png',
+            'Communication': 'social-media-marketing.png',
+            'SEO/SEA': 'ingenierie (1).png',
+            
+            // Pôle 7 - Ressources Humaines
+            'Recrutement': 'humain.png',
+            'Formation': 'information.png',
+            'Paie': 'gestion-de-projet (2).png'
+        };
+        
         if (poleId) {
             $.get(`/api/entreprise/familles-metiers/${poleId}`, function(data) {
                 let html = `
                     <div class="col-auto">
                         <button type="button" class="btn-famille selected" data-value="">
-                            Toutes les familles
+                            <div class="famille-content">
+                                <img src="{{ asset('images/pole et famille/groupe.png') }}" alt="Toutes" style="width: 30px; height: 30px; margin-bottom: 8px; object-fit: contain;">
+                                <div>Toutes les familles</div>
+                            </div>
                         </button>
                     </div>
                 `;
                 data.forEach(function(famille) {
+                    const imageName = familleImages[famille.nom] || 'information.png';
                     html += `
                         <div class="col-auto">
                             <button type="button" class="btn-famille" data-value="${famille.id}">
-                                ${famille.nom}
+                                <div class="famille-content">
+                                    <img src="{{ asset('images/pole et famille/') }}/${imageName}" alt="${famille.nom}" style="width: 30px; height: 30px; margin-bottom: 8px; object-fit: contain;">
+                                    <div>${famille.nom}</div>
+                                </div>
                             </button>
                         </div>
                     `;
@@ -319,7 +380,10 @@ $(document).ready(function() {
             let html = `
                 <div class="col-auto">
                     <button type="button" class="btn-famille selected" data-value="">
-                        Toutes les familles
+                        <div class="famille-content">
+                            <img src="{{ asset('images/pole et famille/groupe.png') }}" alt="Toutes" style="width: 30px; height: 30px; margin-bottom: 8px; object-fit: contain;">
+                            <div>Toutes les familles</div>
+                        </div>
                     </button>
                 </div>
             `;
@@ -717,45 +781,65 @@ function showErrorMessage(message) {
     background: white;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
-    padding: 20px;
-    color: #333;
+    padding: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-height: 120px;
+    height: 180px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    text-align: center;
+    justify-content: center;
 }
 
 .pole-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+    background: #e2e8f0;
+    border-color: #94a3b8;
 }
 
 .pole-card.selected {
+    background: white;
     border-color: #0066FF;
-    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
-    transform: translateY(-3px);
 }
 
-.pole-card h5 {
-    font-size: 14px;
-    font-weight: 600;
+.pole-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+}
+
+.pole-header {
     margin-bottom: 8px;
-    color: 0066FF;
 }
 
-.pole-card p {
+.pole-number {
+    font-size: 10px;
+    font-weight: 600;
+    color: #666;
+    letter-spacing: 0.5px;
+}
+
+.pole-title {
     font-size: 12px;
-    margin: 0;
-    opacity: 0.9;
+    font-weight: 700;
+    color: #0066FF;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.pole-subtitle {
+    font-size: 10px;
+    color: #666;
+    margin-bottom: 10px;
+    line-height: 1.3;
 }
 
 .pole-icon {
+    margin-top: 8px;
     font-size: 24px;
-    margin-bottom: 10px;
+    color: #0066FF;
 }
 
 /* Styles pour les boutons d'expérience */
@@ -786,13 +870,14 @@ function showErrorMessage(message) {
     background: white;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
-    padding: 20px;
+    padding: 12px;
     color: #333;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 14px;
+    font-size: 12px;
     margin: 4px;
-    min-height: 120px;
+    height: 120px;
+    min-width: 130px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -806,8 +891,34 @@ function showErrorMessage(message) {
 
 .btn-famille.selected {
     background: white;
-                border-color: #0066FF;
+    border-color: #0066FF;
     color: black;
+}
+
+.famille-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.famille-content img {
+    margin-bottom: 8px !important;
+    flex-shrink: 0;
+}
+
+.famille-content div {
+    font-weight: 500;
+    line-height: 1.2;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
 }
 
 /* Styles pour le slider de diplôme */

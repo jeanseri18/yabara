@@ -11,7 +11,7 @@
             <i class="bi bi-arrow-left"></i>
         </a>
         <div>
-            <h2 class="mb-0" style="color: #ff6b35; font-weight: 600;">Publier une offre d'emploi</h2>
+            <h2 class="mb-0" style="color: #0066FF; font-weight: 600;">Publier une offre d'emploi</h2>
             <p class="text-muted mb-0">Étape 2 sur 3 - Critères et exigences</p>
         </div>
     </div>
@@ -37,7 +37,7 @@
             <div class="card shadow-sm border-0" style="border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;">
                 <div class="card-header bg-white border-0 py-4" style="border-radius: 15px 15px 0 0;">
                     <div class="text-center">
-                        <div class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 50%;">
+                        <div class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #0066FF, #004bb5); border-radius: 50%;">
                             <i class="bi bi-list-check text-white" style="font-size: 24px;"></i>
                         </div>
                         <h4 class="mb-2" style="color: #2c3e50; font-weight: 600;">Étape 2 : Critères et exigences</h4>
@@ -443,18 +443,18 @@ $(document).ready(function() {
     }
 
     .step.active .step-title {
-        color: #ff6b35;
+        color: #0066FF;
         font-weight: 600;
     }
 
     .form-check-input:checked {
-        background-color: #ff6b35;
-        border-color: #ff6b35;
+        background-color: #0066FF;
+        border-color: #0066FF;
     }
 
     .form-check-input:focus {
-        border-color: #ff6b35;
-        box-shadow: 0 0 0 0.25rem rgba(255, 107, 53, 0.25);
+        border-color: #0066FF;
+        box-shadow: 0 0 0 0.25rem rgba(0, 102, 255, 0.25);
     }
 
     @media (max-width: 768px) {

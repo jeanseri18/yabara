@@ -11,7 +11,7 @@
             <i class="bi bi-arrow-left"></i>
         </a>
         <div>
-            <h2 class="mb-0" style="color: #ff6b35; font-weight: 600;">Publier une offre d'emploi</h2>
+            <h2 class="mb-0" style="color: #0066FF; font-weight: 600;">Publier une offre d'emploi</h2>
             <p class="text-muted mb-0">Étape 3 sur 3 - Validation et publication</p>
         </div>
     </div>
@@ -37,7 +37,7 @@
             <div class="card shadow-sm border-0" style="border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;">
                 <div class="card-header bg-white border-0 py-4" style="border-radius: 15px 15px 0 0;">
                     <div class="text-center">
-                        <div class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 50%;">
+                        <div class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #0066FF, #004bb5); border-radius: 50%;">
                             <i class="bi bi-eye text-white" style="font-size: 24px;"></i>
                         </div>
                         <h4 class="mb-2" style="color: #2c3e50; font-weight: 600;">Étape 3 : Validation et publication</h4>
@@ -469,12 +469,12 @@ $(document).ready(function() {
     }
 
     .step.active .step-title {
-        color: #ff6b35;
+        color: #0066FF;
         font-weight: 600;
     }
 
     .bg-primary {
-        background-color: #ff6b35 !important;
+        background-color: #0066FF !important;
     }
 
     .text-success {

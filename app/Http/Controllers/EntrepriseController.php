@@ -1643,6 +1643,58 @@ class EntrepriseController extends Controller
                                      ->orderBy('nom')
                                      ->get(['id', 'nom', 'description']);
 
+            // Mapping des images pour les familles de métiers
+            // Images utilisées par les pôles (à éviter pour les familles)
+        $poleUsedImages = [
+            'developpement-web.png', 'ingenierie.png', 'gestion-de-projet.png', 
+            'loupe.png', 'programmation.png', 'digital-marketing.png', 
+            'responsable-des-ressources-humaines.png', 'groupe.png', 
+            'genie-mecanique.png', 'se-soucier.png'
+        ];
+        
+        $familleImages = [
+            // Pôle 1 - Développement Digital
+            'Développement Web' => 'digital-content.png',
+            'Développement Mobile' => 'strategie-digitale.png',
+            'UX/UI Design' => 'digital-services.png',
+            
+            // Pôle 2 - Ingénierie & Industrie
+            'Génie Civil' => 'ingenierie-sociale.png',
+            'Mécanique' => 'securite.png',
+            'Électronique' => 'ingenieur.png',
+            
+            // Pôle 3 - Gestion & Finance
+            'Comptabilité' => 'gestion-de-donnees.png',
+            'Contrôle de Gestion' => 'croissance.png',
+            'Finance d\'Entreprise' => 'gestion-de-projet (1).png',
+            
+            // Pôle 4 - Recherche & Innovation
+            'Biotechnologie' => 'information (1).png',
+            'Pharmacie' => 'ingenierie (1).png',
+            'IA & Data Science' => 'pirate.png',
+            
+            // Pôle 5 - Informatique (doublons avec pôle 1)
+            // 'Développement Web' => déjà défini
+            // 'Développement Mobile' => déjà défini
+            'DevOps' => 'information.png',
+            
+            // Pôle 6 - Marketing
+            'Marketing Digital' => 'marketing-video.png',
+            'Communication' => 'social-media-marketing.png',
+            'SEO/SEA' => 'ingenierie (1).png',
+            
+            // Pôle 7 - Ressources Humaines
+            'Recrutement' => 'humain.png',
+            'Formation' => 'information.png',
+            'Paie' => 'gestion-de-projet (2).png'
+        ];
+
+            // Ajouter les images aux familles
+            $familles = $familles->map(function($famille) use ($familleImages) {
+                $famille->image = $familleImages[$famille->nom] ?? 'information.png';
+                return $famille;
+            });
+
             // Log pour debug
             \Log::info('Familles métiers récupérées', [
                 'pole_id' => $poleId,

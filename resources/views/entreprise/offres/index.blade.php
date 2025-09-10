@@ -45,9 +45,7 @@
             <div class="card bg-white shadow-sm border-0 h-100">
                 <div class="card-body d-flex align-items-center p-3">
                     <div class="icon-container me-3">
-                        <div class="emoji-wrapper" style="font-size: 48px; height: 48px; line-height: 48px; text-align: center; color: #0066FF;">
-                            📋
-                        </div>
+                        <img src="{{ asset('images/dashboard.png') }}" alt="Total offres" style="width: 48px; height: 48px; object-fit: contain;">
                     </div>
                     <div>
                         <div class="fw-bold">Total offres</div>
@@ -60,9 +58,7 @@
             <div class="card bg-white shadow-sm border-0 h-100">
                 <div class="card-body d-flex align-items-center p-3">
                     <div class="icon-container me-3">
-                        <div class="emoji-wrapper" style="font-size: 48px; height: 48px; line-height: 48px; text-align: center; color: #28a745;">
-                            ✅
-                        </div>
+                        <img src="{{ asset('images/vues.png') }}" alt="Offres actives" style="width: 48px; height: 48px; object-fit: contain;">
                     </div>
                     <div>
                         <div class="fw-bold">Offres actives</div>
@@ -75,9 +71,7 @@
             <div class="card bg-white shadow-sm border-0 h-100">
                 <div class="card-body d-flex align-items-center p-3">
                     <div class="icon-container me-3">
-                        <div class="emoji-wrapper" style="font-size: 48px; height: 48px; line-height: 48px; text-align: center; color: #17a2b8;">
-                            👥
-                        </div>
+                        <img src="{{ asset('images/candidatures.png') }}" alt="Candidatures reçues" style="width: 48px; height: 48px; object-fit: contain;">
                     </div>
                     <div>
                         <div class="fw-bold">Candidatures reçues</div>
@@ -90,9 +84,7 @@
             <div class="card bg-white shadow-sm border-0 h-100">
                 <div class="card-body d-flex align-items-center p-3">
                     <div class="icon-container me-3">
-                        <div class="emoji-wrapper" style="font-size: 48px; height: 48px; line-height: 48px; text-align: center; color: #ffc107;">
-                            🤝
-                        </div>
+                        <img src="{{ asset('images/recrutes.png') }}" alt="Recrutements finalisés" style="width: 48px; height: 48px; object-fit: contain;">
                     </div>
                     <div>
                         <div class="fw-bold">Recrutements finalisés</div>
@@ -165,10 +157,10 @@
                                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 10px rgba(0,0,0,0.1)'">
                                         
                                         <!-- Corps de la carte -->
-                                        <div class="card-body d-flex justify-content-between align-items-center" style="padding: 20px;">
-                                            <div class="flex-grow-1">
-                                                <h5 class="card-title mb-2 fw-bold text-dark">{{ $offre->titre }}</h5>
-                                                <div class="mb-2">
+                                        <div class="card-body d-flex justify-content-between align-items-center h-100" style="padding: 15px;">
+                                            <div class="flex-grow-1 d-flex flex-column justify-content-center">
+                                                <h6 class="card-title mb-1 fw-bold text-dark text-truncate">{{ $offre->titre }}</h6>
+                                                <div class="mb-1">
                                                     @switch($offre->statut)
                                                         @case('brouillon')
                                                             <span class="badge bg-secondary">Brouillon</span>
@@ -187,19 +179,17 @@
                                                             @break
                                                     @endswitch
                                                 </div>
-                                                <small class="text-muted d-block">
+                                                <small class="text-muted d-block text-truncate">
                                                     <i class="fas fa-map-marker-alt me-1"></i>{{ $offre->lieu_poste }}
                                                 </small>
                                             </div>
                                             
-                                            <div class="text-end">
-                                                <div class="mb-2">
-                                                    <small class="text-muted">Candidatures</small>
-                                                    <div class="h5 mb-0">{{ $offre->nb_candidatures }}</div>
-                                                    @if($offre->nb_candidatures_nouvelles > 0)
-                                                        <span class="badge bg-primary rounded-pill">{{ $offre->nb_candidatures_nouvelles }} nouvelles</span>
-                                                    @endif
-                                                </div>
+                                            <div class="text-end d-flex flex-column justify-content-center">
+                                                <small class="text-muted">Candidatures</small>
+                                                <div class="h6 mb-0">{{ $offre->nb_candidatures }}</div>
+                                                @if($offre->nb_candidatures_nouvelles > 0)
+                                                    <span class="badge bg-primary rounded-pill" style="font-size: 0.7rem;">{{ $offre->nb_candidatures_nouvelles }} nouvelles</span>
+                                                @endif
                                             </div>
                                         </div>
                                      </div>

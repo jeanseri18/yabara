@@ -20,7 +20,7 @@
         <div class="col-xl-3 col-md-6 col-sm-6 mb-3">
             <div class="card bg-white shadow-sm border-0 text-center py-4">
                 <div class="card-body">
-                    <h6 class="text-muted mb-2 fw-normal">Offres publiées</h6>
+                    <h6 class="text-muted mb-2 fw-normal">Offres publiées</h6><br>
                     <h2 class="display-4 mb-0 fw-bold text-dark">{{ $stats['offres_publiees'] }}</h2>
                 </div>
             </div>

@@ -35,8 +35,8 @@
                     <div class="card bg-white shadow-sm border-0 h-100">
                         <div class="card-body d-flex align-items-center p-3">
                             <div class="icon-container me-3">
-                                <div class="emoji-wrapper" style="font-size: 48px; height: 48px; line-height: 48px; text-align: center; filter: hue-rotate(240deg);">
-                                    👥
+                                <div class="icon-wrapper" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="{{ asset('images/portfolio_16805985.png') }}" alt="Candidatures" style="width: 40px; height: 40px; object-fit: contain;">
                                 </div>
                             </div>
                             <div>
@@ -52,8 +52,8 @@
                     <div class="card bg-white shadow-sm border-0 h-100">
                         <div class="card-body d-flex align-items-center p-3">
                             <div class="icon-container me-3">
-                                <div class="emoji-wrapper" style="font-size: 48px; height: 48px; line-height: 48px; text-align: center; filter: hue-rotate(240deg);">
-                                    👁️
+                                <div class="icon-wrapper" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="{{ asset('images/vues.png') }}" alt="Vues" style="width: 40px; height: 40px; object-fit: contain;">
                                 </div>
                             </div>
                             <div>
@@ -69,8 +69,8 @@
                     <div class="card bg-white shadow-sm border-0 h-100">
                         <div class="card-body d-flex align-items-center p-3">
                             <div class="icon-container me-3">
-                                <div class="emoji-wrapper" style="font-size: 48px; height: 48px; line-height: 48px; text-align: center; filter: hue-rotate(240deg);">
-                                    👤
+                                <div class="icon-wrapper" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="{{ asset('images/profils.png') }}" alt="Profils" style="width: 40px; height: 40px; object-fit: contain;">
                                 </div>
                             </div>
                             <div>
@@ -86,8 +86,8 @@
                     <div class="card bg-white shadow-sm border-0 h-100">
                         <div class="card-body d-flex align-items-center p-3">
                             <div class="icon-container me-3">
-                                <div class="emoji-wrapper" style="font-size: 48px; height: 48px; line-height: 48px; text-align: center; filter: hue-rotate(240deg);">
-                                    ⭐
+                                <div class="icon-wrapper" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="{{ asset('images/talents.png') }}" alt="Talents" style="width: 40px; height: 40px; object-fit: contain;">
                                 </div>
                             </div>
                             <div>
@@ -103,8 +103,8 @@
                     <div class="card bg-white shadow-sm border-0 h-100">
                         <div class="card-body d-flex align-items-center p-3">
                             <div class="icon-container me-3">
-                                <div class="emoji-wrapper" style="font-size: 48px; height: 48px; line-height: 48px; text-align: center; filter: hue-rotate(240deg);">
-                                    📅
+                                <div class="icon-wrapper" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="{{ asset('images/messages.png') }}" alt="Entretiens" style="width: 40px; height: 40px; object-fit: contain;">
                                 </div>
                             </div>
                             <div>
@@ -120,8 +120,8 @@
                     <div class="card bg-white shadow-sm border-0 h-100">
                         <div class="card-body d-flex align-items-center p-3">
                             <div class="icon-container me-3">
-                                <div class="emoji-wrapper" style="font-size: 48px; height: 48px; line-height: 48px; text-align: center; filter: hue-rotate(240deg);">
-                                    ✅
+                                <div class="icon-wrapper" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="{{ asset('images/candidatures.png') }}" alt="Recrutés" style="width: 40px; height: 40px; object-fit: contain;">
                                 </div>
                             </div>
                             <div>
@@ -187,8 +187,8 @@
                     <h6 class="fw-bold text-dark mb-3">Candidats recrutés</h6>
                     <div class="d-flex align-items-center">
                         <div class="icon-container me-3">
-                            <div class="icon-wrapper bg-info bg-opacity-10 rounded-3 p-2 position-relative">
-                                <i class="fas fa-comment text-info fa-lg"></i>
+                            <div class="icon-wrapper bg-info bg-opacity-10 rounded-3 p-2 position-relative" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                                <img src="{{ asset('images/messages.png') }}" alt="Messages" style="width: 32px; height: 32px; object-fit: contain;">
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6em;">1</span>
                             </div>
                         </div>

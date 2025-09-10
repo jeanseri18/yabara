@@ -85,6 +85,7 @@
             background: url('/images/undraw_online-resume_z4sp 1.png') no-repeat center center / contain;
             position: relative;
             overflow: hidden;
+            padding: 40px;
         }
         
         .bg-pattern::before {
@@ -107,7 +108,13 @@
     </style>
 </head>
 <body class="yabara-font bg-gray-50 min-h-screen">
-    <div class="min-h-screen flex">
+    <!-- Navbar -->
+    <nav style="background: white; padding: 1rem 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-size: 1.5rem; font-weight: bold; color: #0066FF;">YABARA</div>
+        <a href="{{ route('welcome') }}" style="background: #0066FF; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-weight: 500; transition: all 0.3s ease;" onmouseover="this.style.background='#0052CC'" onmouseout="this.style.background='#0066FF'">Retourner sur l'accueil</a>
+    </nav>
+    
+    <div class="min-h-screen flex" style="margin-top: 80px;">
         <!-- Partie gauche avec le logo et le design -->
         <div class="hidden lg:flex lg:w-1/2 bg-pattern items-center justify-center relative">
          

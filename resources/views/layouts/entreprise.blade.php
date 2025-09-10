@@ -540,7 +540,11 @@
         <!-- User Info -->
         <div class="sidebar-user">
             <div class="user-avatar">
-                <i class="fas fa-building text-white"></i>
+                @if(Auth::user()->entreprise && Auth::user()->entreprise->logo_url)
+                    <img src="{{ Auth::user()->entreprise->logo_url }}" alt="Logo {{ Auth::user()->entreprise->nom_entreprise }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                @else
+                    <i class="fas fa-building text-white"></i>
+                @endif
             </div>
             <div class="user-details">
                 <span class="user-name">{{ Auth::user()->entreprise->nom_entreprise ?? 'Mon Entreprise' }}</span>
