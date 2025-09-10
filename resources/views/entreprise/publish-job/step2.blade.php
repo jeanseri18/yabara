@@ -105,7 +105,7 @@
                                     <div class="input-group input-group-lg">
                             <input type="number" class="form-control" id="remuneration" name="remuneration" 
                                    placeholder="Ex: 35000" min="0" step="1000" value="{{ old('remuneration', $offre->remuneration) }}">
-                            <span class="input-group-text">€ / an</span>
+                            <span class="input-group-text">CFA / an</span>
                         </div>
                                     <div class="form-text">Salaire brut annuel (optionnel mais recommandé)</div>
                                 </div>

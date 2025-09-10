@@ -56,7 +56,7 @@
                                     @if($offre->remuneration)
                                         <p class="text-success fw-bold mb-2">
                                             💰
-                                            {{ number_format($offre->remuneration, 0, ',', ' ') }} € / an
+                                            {{ number_format($offre->remuneration, 0, ',', ' ') }} CFA / an
                                         </p>
                                     @endif
                                 </div>

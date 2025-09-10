@@ -24,6 +24,7 @@ class OffreEmploi extends Model
         'lieu_poste',
         'teletravail',
         'mobilite_requise',
+        'competences_recherchees',
         'statut',
         'date_publication',
         'reference_offre',

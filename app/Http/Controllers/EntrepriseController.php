@@ -104,11 +104,12 @@ class EntrepriseController extends Controller
     {
         $request->validate([
             'niveau_diplome_requis' => 'required|exists:niveaux_diplomes,id',
-            'experience_minimum' => 'required|integer|min:0',
-            'remuneration' => 'nullable|numeric',
+            'experience_minimum' => 'required|string|in:0-2,3-5,6-10,10+',
+            'remuneration' => 'nullable|numeric|min:0',
             'lieu_poste' => 'required|string|max:255',
             'teletravail' => 'boolean',
-            'mobilite_requise' => 'boolean'
+            'mobilite_requise' => 'boolean',
+            'competences_recherchees' => 'nullable|string|max:2000'
         ]);
 
         $offre = OffreEmploi::findOrFail($offreId);
