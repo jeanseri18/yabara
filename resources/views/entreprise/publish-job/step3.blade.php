@@ -4,7 +4,18 @@
 @section('page-title', 'Publier une offre d\'emploi')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid px-4">
+    <!-- Header avec bouton retour -->
+    <div class="d-flex align-items-center mb-4">
+        <a href="{{ route('entreprise.offres.publier.step2', $offre->id) }}" class="btn btn-outline-secondary me-3" style="border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+        <div>
+            <h2 class="mb-0" style="color: #ff6b35; font-weight: 600;">Publier une offre d'emploi</h2>
+            <p class="text-muted mb-0">Étape 3 sur 3 - Validation et publication</p>
+        </div>
+    </div>
+
     <!-- Progress Steps -->
     <div class="progress-steps mb-5">
         <div class="step completed">
@@ -23,13 +34,15 @@
 
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-white border-0 py-4">
-                    <h4 class="mb-0 text-center" style="color: #0066FF;">
-                        <i class="bi bi-eye me-2"></i>
-                        Étape 3 : Validation et publication
-                    </h4>
-                    <p class="text-muted text-center mb-0 mt-2">Vérifiez les informations et publiez votre offre d'emploi</p>
+            <div class="card shadow-sm border-0" style="border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;">
+                <div class="card-header bg-white border-0 py-4" style="border-radius: 15px 15px 0 0;">
+                    <div class="text-center">
+                        <div class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 50%;">
+                            <i class="bi bi-eye text-white" style="font-size: 24px;"></i>
+                        </div>
+                        <h4 class="mb-2" style="color: #2c3e50; font-weight: 600;">Étape 3 : Validation et publication</h4>
+                        <p class="text-muted mb-0">Vérifiez les informations et publiez votre offre d'emploi</p>
+                    </div>
                 </div>
                 <div class="card-body p-5">
                     <!-- Aperçu de l'offre -->
@@ -378,3 +391,118 @@ $(document).ready(function() {
 });
 </script>
 @endpush
+
+@section('styles')
+<style>
+    .form-control:focus, .form-select:focus {
+        border-color: #ff6b35;
+        box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+    }
+    
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
+        transition: all 0.2s ease;
+    }
+    
+    .card {
+        transition: box-shadow 0.2s ease;
+    }
+    
+    .card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .badge {
+        transition: all 0.2s ease;
+    }
+
+    .badge:hover {
+        transform: translateY(-1px);
+    }
+
+    .progress-steps {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    .step-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        background-color: #e9ecef;
+        color: #6c757d;
+        transition: all 0.3s ease;
+    }
+
+    .step.active .step-number {
+        background: linear-gradient(135deg, #ff6b35, #f7931e);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+    }
+
+    .step.completed .step-number {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .step-title {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #6c757d;
+        text-align: center;
+    }
+
+    .step.active .step-title {
+        color: #ff6b35;
+        font-weight: 600;
+    }
+
+    .bg-primary {
+        background-color: #ff6b35 !important;
+    }
+
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    @media (max-width: 768px) {
+        .container-fluid {
+            padding-left: 15px !important;
+            padding-right: 15px !important;
+        }
+        
+        .card-body {
+            padding: 20px !important;
+        }
+        
+        .progress-steps {
+            gap: 1rem;
+        }
+        
+        .step-title {
+            font-size: 0.75rem;
+        }
+        
+        .row > .col-lg-8,
+        .row > .col-lg-4 {
+            margin-bottom: 20px;
+        }
+    }
+</style>
+@endsection
