@@ -65,19 +65,22 @@
                                 🎓
                                 Niveau de diplôme requis *
                             </label>
-                            <div class="row g-3">
-                                @foreach($niveauxDiplome as $niveau)
-                                    <div class="col-md-6">
-                                        <div class="card diplome-card h-100" data-value="{{ $niveau->id }}" 
-                                             style="cursor: pointer; transition: all 0.3s ease; {{ old('niveau_diplome_requis', $offre->niveau_diplome_requis) == $niveau->id ? 'border-color: #0066FF; background-color: #f8f9ff;' : 'border-color: #dee2e6;' }}">
-                                            <div class="card-body text-center p-3">
-                                                <h6 class="card-title mb-0" style="color: #0066FF;">{{ $niveau->nom }}</h6>
-                                            </div>
-                                        </div>
+                            <div class="text-center">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    @foreach($niveauxDiplome as $niveau)
+                                        <span>{{ $niveau->nom }}</span>
+                                    @endforeach
+                                </div>
+                                <div class="position-relative">
+                                    <input type="range" class="form-range w-100" id="niveau_diplome_requis" name="niveau_diplome_requis" min="1" max="{{ $niveauxDiplome->count() }}" step="1" value="{{ old('niveau_diplome_requis', $offre->niveau_diplome_requis) ?? 1 }}" required>
+                                    <div class="position-absolute w-100 d-flex justify-content-between text-muted" style="top: -1.5rem; font-size: 0.875rem;">
+                                        @foreach($niveauxDiplome as $niveau)
+                                            <span></span>
+                                        @endforeach
                                     </div>
-                                @endforeach
+                                </div>
                             </div>
-                            <input type="hidden" id="niveau_diplome_requis" name="niveau_diplome_requis" value="{{ old('niveau_diplome_requis', $offre->niveau_diplome_requis) }}" required>
+                            <input type="hidden" id="niveau_diplome_requis_value" name="niveau_diplome_requis_value" value="{{ old('niveau_diplome_requis', $offre->niveau_diplome_requis) ?? $niveauxDiplome->first()->id }}" required>
                         </div>
 
                         <!-- Expérience minimum -->
@@ -213,7 +216,6 @@
         </div>
     </div>
 </div>
-
 @endsection
 
 @push('styles')
@@ -262,25 +264,156 @@
 .card-body h6 {
     font-weight: 600;
 }
+
+#niveau_diplome_requis {
+    height: 10px;
+    background: linear-gradient(to right, #0066FF, #0066FF);
+    border-radius: 5px;
+    --thumb-size: 20px;
+}
+
+#niveau_diplome_requis::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    background: #0066FF;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#niveau_diplome_requis::-moz-range-thumb {
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    background: #0066FF;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#niveau_diplome_requis::-ms-thumb {
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    background: #0066FF;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #ff6b35;
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
+    transition: all 0.2s ease;
+}
+
+.card {
+    transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.diplome-card:hover, .experience-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.15) !important;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    background-color: #e9ecef;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.step.completed .step-number {
+    background-color: #28a745;
+    color: white;
+}
+
+.step-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6c757d;
+    text-align: center;
+}
+
+.step.active .step-title {
+    color: #0066FF;
+    font-weight: 600;
+}
+
+.form-check-input:checked {
+    background-color: #0066FF;
+    border-color: #0066FF;
+}
+
+.form-check-input:focus {
+    border-color: #0066FF;
+    box-shadow: 0 0 0 0.25rem rgba(0, 102, 255, 0.25);
+}
+
+@media (max-width: 768px) {
+    .container-fluid {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+    
+    .card-body {
+        padding: 20px !important;
+    }
+    
+    .progress-steps {
+        gap: 1rem;
+    }
+    
+    .step-title {
+        font-size: 0.75rem;
+    }
+}
 </style>
 @endpush
 
 @push('scripts')
 <script>
 $(document).ready(function() {
-    // Gestion des cartes sélectionnables pour le niveau de diplôme
-    $('.diplome-card').click(function() {
-        $('.diplome-card').css({
-            'border-color': '#dee2e6',
-            'background-color': 'white'
-        });
-        $(this).css({
-            'border-color': '#0066FF',
-            'background-color': '#f8f9ff'
-        });
-        $('#niveau_diplome_requis').val($(this).data('value'));
-    });
-
     // Gestion des cartes sélectionnables pour l'expérience minimum
     $('.experience-card').click(function() {
         $('.experience-card').css({
@@ -365,115 +498,16 @@ $(document).ready(function() {
             $(this).val('');
         }
     });
+
+    // Update hidden input value based on slider position
+    $('#niveau_diplome_requis').on('input', function() {
+        const value = parseInt($(this).val());
+        const niveauxDiplome = @json($niveauxDiplome->pluck('id')->toArray());
+        $('#niveau_diplome_requis_value').val(niveauxDiplome[value - 1]);
+    });
+
+    // Initial value set
+    $('#niveau_diplome_requis').trigger('input');
 });
 </script>
 @endpush
-
-@section('styles')
-<style>
-    .form-control:focus, .form-select:focus {
-        border-color: #ff6b35;
-        box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
-    }
-    
-    .btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
-        transition: all 0.2s ease;
-    }
-    
-    .card {
-        transition: box-shadow 0.2s ease;
-    }
-    
-    .card:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .diplome-card:hover, .experience-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(255, 107, 53, 0.15) !important;
-    }
-
-    .progress-steps {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
-        margin-bottom: 2rem;
-    }
-
-    .step {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-    }
-
-    .step-number {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        background-color: #e9ecef;
-        color: #6c757d;
-        transition: all 0.3s ease;
-    }
-
-    .step.active .step-number {
-        background: linear-gradient(135deg, #ff6b35, #f7931e);
-        color: white;
-        box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-    }
-
-    .step.completed .step-number {
-        background-color: #28a745;
-        color: white;
-    }
-
-    .step-title {
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #6c757d;
-        text-align: center;
-    }
-
-    .step.active .step-title {
-        color: #0066FF;
-        font-weight: 600;
-    }
-
-    .form-check-input:checked {
-        background-color: #0066FF;
-        border-color: #0066FF;
-    }
-
-    .form-check-input:focus {
-        border-color: #0066FF;
-        box-shadow: 0 0 0 0.25rem rgba(0, 102, 255, 0.25);
-    }
-
-    @media (max-width: 768px) {
-        .container-fluid {
-            padding-left: 15px !important;
-            padding-right: 15px !important;
-        }
-        
-        .card-body {
-            padding: 20px !important;
-        }
-        
-        .progress-steps {
-            gap: 1rem;
-        }
-        
-        .step-title {
-            font-size: 0.75rem;
-        }
-    }
-</style>
-@endsection
