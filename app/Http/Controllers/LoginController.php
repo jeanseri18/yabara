@@ -61,22 +61,20 @@ class LoginController extends Controller
      */
     private function redirectToDashboard(User $user)
     {
-        // Vérifier si l'utilisateur est un admin
-        if ($user->admin) {
-            return redirect()->route('admin.dashboard');
+        // Vérifier le type d'utilisateur selon le champ user_type
+        switch ($user->user_type) {
+            case 'admin':
+                return redirect()->route('admin.dashboard');
+            
+            case 'talent':
+                return redirect()->route('talent.dashboard');
+            
+            case 'entreprise':
+                return redirect()->route('entreprise.dashboard');
+            
+            default:
+                // Par défaut, rediriger vers la page d'accueil si aucun type n'est défini
+                return redirect()->route('welcome')->with('warning', 'Type d\'utilisateur non défini.');
         }
-        
-        // Vérifier si l'utilisateur a un profil talent
-        if ($user->talent) {
-            return redirect()->route('talent.dashboard');
-        }
-        
-        // Vérifier si l'utilisateur a un profil entreprise
-        if ($user->entreprise) {
-            return redirect()->route('entreprise.dashboard');
-        }
-        
-        // Par défaut, rediriger vers la page d'accueil si aucun profil n'est trouvé
-        return redirect()->route('welcome')->with('warning', 'Aucun profil associé à ce compte.');
     }
 }

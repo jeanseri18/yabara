@@ -46,10 +46,10 @@
                             <img src="{{ asset('storage/avatars/'.$talent->avatar_type) }}" 
                                  alt="Photo de profil" 
                                  class="rounded-circle border border-3" 
-                                 style="width: 120px; height: 120px; object-fit: cover; border-color: #ff6b35 !important;">
+                                 style="width: 120px; height: 120px; object-fit: cover; border-color: #0066FF !important;">
                         @else
                             <div class="rounded-circle border border-3 d-flex align-items-center justify-content-center" 
-                                 style="width: 120px; height: 120px; background-color: #f8f9fa; border-color: #ff6b35 !important;">
+                                 style="width: 120px; height: 120px; background-color: #f8f9fa; border-color: #0066FF !important;">
                                 <i class="fas fa-user text-muted" style="font-size: 50px;"></i>
                             </div>
                         @endif
@@ -65,7 +65,7 @@
                 
                 <!-- Informations personnelles -->
                 <div class="col-md-4 mb-3">
-                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-user me-2" style="color: #ff6b35;"></i>Informations personnelles</h6>
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-user me-2" style="color: #0066FF;"></i>Informations personnelles</h6>
                     <div class="mb-2">
                         <small class="text-muted d-block" style="font-size: 12px;">Email</small>
                         <span style="font-size: 14px; color: #333;">{{ $talent->user->email ?? 'Non renseigné' }}</span>
@@ -86,7 +86,7 @@
                 
                 <!-- Informations de contact et localisation -->
                 <div class="col-md-5 mb-3">
-                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-map-marker-alt me-2" style="color: #ff6b35;"></i>Localisation & Contact</h6>
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-map-marker-alt me-2" style="color: #0066FF;"></i>Localisation & Contact</h6>
                     <div class="mb-2">
                         <small class="text-muted d-block" style="font-size: 12px;">Adresse</small>
                         <span style="font-size: 14px; color: #333;">{{ $talent->adresse ?? 'Non renseignée' }}</span>
@@ -111,7 +111,7 @@
     <!-- Profil professionnel -->
     <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px;">
         <div class="card-body p-4">
-            <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-briefcase me-2" style="color: #ff6b35;"></i>Profil professionnel</h6>
+            <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-briefcase me-2" style="color: #0066FF;"></i>Profil professionnel</h6>
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-2">
@@ -159,7 +159,7 @@
             @if($talent->experiencesProfessionnelles && $talent->experiencesProfessionnelles->count() > 0)
             <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px;">
                 <div class="card-body p-4">
-                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-building me-2" style="color: #ff6b35;"></i>Expériences professionnelles</h6>
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-building me-2" style="color: #0066FF;"></i>Expériences professionnelles</h6>
                     @foreach($talent->experiencesProfessionnelles as $experience)
                     <div class="border-bottom pb-3 mb-3">
                         <h6 style="color: #333; font-weight: 600; font-size: 15px;">{{ $experience->poste }}</h6>
@@ -181,7 +181,7 @@
             @if($talent->formations && $talent->formations->count() > 0)
             <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px;">
                 <div class="card-body p-4">
-                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-graduation-cap me-2" style="color: #ff6b35;"></i>Formations</h6>
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-graduation-cap me-2" style="color: #0066FF;"></i>Formations</h6>
                     @foreach($talent->formations as $formation)
                     <div class="border-bottom pb-3 mb-3">
                         <h6 style="color: #333; font-weight: 600; font-size: 15px;">{{ $formation->diplome }}</h6>
@@ -202,10 +202,10 @@
             <!-- Statistiques -->
             <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px;">
                 <div class="card-body p-4">
-                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-chart-line me-2" style="color: #ff6b35;"></i>Statistiques</h6>
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-chart-line me-2" style="color: #0066FF;"></i>Statistiques</h6>
                     <div class="row text-center">
                         <div class="col-6">
-                            <div class="fw-bold h4" style="color: #ff6b35;">{{ $talent->candidatures->count() }}</div>
+                            <div class="fw-bold h4" style="color: #0066FF;">{{ $talent->candidatures->count() }}</div>
                             <small class="text-muted">Candidatures</small>
                         </div>
                         <div class="col-6">
@@ -220,7 +220,7 @@
             @if($talent->competences && $talent->competences->count() > 0)
             <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px;">
                 <div class="card-body p-4">
-                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-cog me-2" style="color: #ff6b35;"></i>Compétences</h6>
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-cog me-2" style="color: #0066FF;"></i>Compétences</h6>
                     <div class="d-flex flex-wrap">
                         @foreach($talent->competences as $competence)
                         <span class="badge me-2 mb-2" style="background-color: #f8f9fa; color: #333; border: 1px solid #e0e0e0; font-size: 12px; padding: 6px 12px; border-radius: 20px;">{{ $competence->nom }}</span>
@@ -234,11 +234,11 @@
             @if($talent->langues && $talent->langues->count() > 0)
             <div class="card border-0 shadow-sm mb-3" style="border-radius: 12px;">
                 <div class="card-body p-4">
-                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-language me-2" style="color: #ff6b35;"></i>Langues</h6>
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-language me-2" style="color: #0066FF;"></i>Langues</h6>
                     @foreach($talent->langues as $langue)
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <span style="font-size: 14px; color: #333;">{{ $langue->nom }}</span>
-                        <span class="badge" style="background-color: #ff6b35; font-size: 11px;">{{ $langue->niveau }}</span>
+                        <span class="badge" style="background-color: #0066FF; font-size: 11px;">{{ $langue->niveau }}</span>
                     </div>
                     @endforeach
                 </div>
@@ -248,7 +248,7 @@
             <!-- Actions -->
             <div class="card border-0 shadow-sm" style="border-radius: 12px;">
                 <div class="card-body p-4">
-                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-bolt me-2" style="color: #ff6b35;"></i>Actions</h6>
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-bolt me-2" style="color: #0066FF;"></i>Actions</h6>
                     <div class="d-grid">
                         <button class="btn px-4 py-3 mb-2" onclick="linkToOffer({{ $talent->id }})" 
                                 style="background-color: #007bff; color: white; border-radius: 25px; font-weight: 500; font-size: 14px; border: none;">

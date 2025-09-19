@@ -20,6 +20,8 @@ class Talent extends Model
         'famille_metier_id',
         'niveau_diplome_id',
         'cv_reference',
+        'cv_original_path',
+        'cv_original_name',
         'profile_completion_percentage',
         'parrain_cv_reference',
         'avatar_type',
@@ -83,6 +85,27 @@ class Talent extends Model
     public function langues()
     {
         return $this->hasMany(Langue::class);
+    }
+
+    // Relations pour les CV anonymes
+    public function cvExperiences()
+    {
+        return $this->hasMany(CvExperience::class);
+    }
+
+    public function cvFormations()
+    {
+        return $this->hasMany(CvFormation::class);
+    }
+
+    public function cvCompetences()
+    {
+        return $this->hasMany(CvCompetence::class);
+    }
+
+    public function cvLangues()
+    {
+        return $this->hasMany(CvLangue::class);
     }
 
     public function candidatures()

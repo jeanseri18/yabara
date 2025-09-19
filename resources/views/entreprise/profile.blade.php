@@ -32,7 +32,7 @@
                     <div class="col-md-6 mb-3">
                         <label for="nom_entreprise" class="form-label" style="color: #666; font-size: 14px; font-weight: 500;">Nom complet</label>
                         <div class="input-group">
-                            <span class="input-group-text" style="background: #f8f9fa; border: 1px solid #e0e0e0; color: #ff6b35;">
+                            <span class="input-group-text" style="background: #f8f9fa; border: 1px solid #e0e0e0; color: #0066FF;">
                                 <i class="fas fa-building"></i>
                             </span>
                             <input type="text" class="form-control" id="nom_entreprise" name="nom_entreprise" 

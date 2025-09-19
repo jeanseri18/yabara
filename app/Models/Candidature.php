@@ -17,9 +17,15 @@ class Candidature extends Model
         'type',
         'statut_entreprise',
         'statut_talent',
+        'lettre_motivation',
+        'cv_url',
+        'notes_entreprise',
+        'date_entretien',
+        'feedback_entretien',
+        'salaire_propose',
+        'date_prise_poste',
         'date_candidature',
         'date_derniere_modification',
-        'notes_entreprise',
         'score_matching'
     ];
 

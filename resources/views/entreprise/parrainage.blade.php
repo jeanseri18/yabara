@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card border-0 shadow-sm" style="background-color: #ff6b35; color: white; border-radius: 12px;">
+            <div class="card border-0 shadow-sm" style="background-color: #0066FF; color: white; border-radius: 12px;">
                 <div class="card-body text-center p-4">
                     <i class="fas fa-chart-line mb-3" style="font-size: 2rem;"></i>
                     <div class="fw-bold h4 mb-1">{{ $stats['entreprises_actives'] }}</div>
@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card border-0 shadow-sm" style="background-color: #ff6b35; color: white; border-radius: 12px;">
+            <div class="card border-0 shadow-sm" style="background-color: #0066FF; color: white; border-radius: 12px;">
                 <div class="card-body text-center p-4">
                     <i class="fas fa-gift mb-3" style="font-size: 2rem;"></i>
                     <div class="fw-bold h4 mb-1">{{ $stats['recompenses_gagnees'] }}</div>
@@ -64,7 +64,7 @@
         <div class="col-lg-6 mb-3">
             <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
                 <div class="card-body p-4">
-                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-plus-circle me-2" style="color: #ff6b35;"></i>Inviter une entreprise</h6>
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-plus-circle me-2" style="color: #0066FF;"></i>Inviter une entreprise</h6>
                     <form id="invitationForm">
                         @csrf
                         <div class="mb-4">
@@ -117,7 +117,7 @@
         <div class="col-lg-6 mb-3">
             <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
                 <div class="card-body p-4">
-                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-trophy me-2" style="color: #ff6b35;"></i>Programme de récompenses</h6>
+                    <h6 class="mb-3" style="color: #333; font-weight: 600;"><i class="fas fa-trophy me-2" style="color: #0066FF;"></i>Programme de récompenses</h6>
                     <div class="reward-levels">
                         <div class="mb-3 p-3 {{ $stats['inscriptions_reussies'] >= 1 ? 'bg-light border-success' : 'bg-light' }}" style="border: 1px solid #e9ecef; border-radius: 12px;">
                             <div class="d-flex align-items-center mb-3">
@@ -199,7 +199,7 @@
             <div class="card border-0 shadow-sm" style="border-radius: 12px;">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h6 class="mb-0" style="color: #333; font-weight: 600;"><i class="fas fa-history me-2" style="color: #ff6b35;"></i>Historique des parrainages</h6>
+                        <h6 class="mb-0" style="color: #333; font-weight: 600;"><i class="fas fa-history me-2" style="color: #0066FF;"></i>Historique des parrainages</h6>
                         <div class="btn-group" role="group">
                             <input type="radio" class="btn-check" name="status-filter" id="all-status" value="all" checked>
                             <label class="btn btn-outline-secondary btn-sm" for="all-status" style="border-radius: 6px 0 0 6px;">Tous</label>

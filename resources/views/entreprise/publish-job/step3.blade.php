@@ -395,7 +395,7 @@ $(document).ready(function() {
 @section('styles')
 <style>
     .form-control:focus, .form-select:focus {
-        border-color: #ff6b35;
+        border-color: #0066FF;
         box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
     }
     
@@ -451,7 +451,7 @@ $(document).ready(function() {
     }
 
     .step.active .step-number {
-        background: linear-gradient(135deg, #ff6b35, #f7931e);
+        background: linear-gradient(135deg, #0066FF, #0066FF);
         color: white;
         box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
     }

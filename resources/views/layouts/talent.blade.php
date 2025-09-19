@@ -19,35 +19,35 @@
     <!-- Sidebar -->
     <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg sidebar" id="sidebar">
         <div class="flex items-center justify-between p-4 border-b border-gray-200">
-            <h2 class="text-xl font-bold text-[#152747]">YABARA</h2>
+            <h2 class="text-xl font-bold text-[#0066FF]">YABARA</h2>
             <button onclick="toggleSidebar()" class="lg:hidden">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>
         <nav class="mt-8">
-            <a href="{{ route('talent.dashboard') }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-[#f6cd45]/10 hover:text-[#152747] border-r-2 border-transparent hover:border-[#f6cd45]">
+            <a href="{{ route('talent.dashboard') }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-[#f6cd45]/10 hover:text-[#0066FF] border-r-2 border-transparent hover:border-[#f6cd45]">
                 <i class="bi bi-speedometer2 mr-3"></i>
                 Tableau de bord
             </a>
-            <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-[#f6cd45]/10 hover:text-[#152747] border-r-2 border-transparent hover:border-[#f6cd45]">
+            <a href="{{ route('talent.profile') }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-[#f6cd45]/10 hover:text-[#0066FF] border-r-2 border-transparent hover:border-[#f6cd45]">
                 <i class="bi bi-person mr-3"></i>
                 Mon profil
             </a>
-            <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-[#f6cd45]/10 hover:text-[#152747] border-r-2 border-transparent hover:border-[#f6cd45]">
+            <a href="{{ route('talent.cv.import') }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-[#f6cd45]/10 hover:text-[#0066FF] border-r-2 border-transparent hover:border-[#f6cd45]">
                 <i class="bi bi-file-earmark-text mr-3"></i>
                 Mon CV
             </a>
-            <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-[#f6cd45]/10 hover:text-[#152747] border-r-2 border-transparent hover:border-[#f6cd45]">
+            <a href="{{ route('talent.offres') }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-[#f6cd45]/10 hover:text-[#0066FF] border-r-2 border-transparent hover:border-[#f6cd45]">
                 <i class="bi bi-briefcase mr-3"></i>
                 Offres d'emploi
             </a>
-            <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-[#f6cd45]/10 hover:text-[#152747] border-r-2 border-transparent hover:border-[#f6cd45]">
+            <a href="{{ route('talent.candidatures') }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-[#f6cd45]/10 hover:text-[#0066FF] border-r-2 border-transparent hover:border-[#f6cd45]">
                 <i class="bi bi-send mr-3"></i>
                 Mes candidatures
             </a>
-            <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-[#f6cd45]/10 hover:text-[#152747] border-r-2 border-transparent hover:border-[#f6cd45]">
-                <i class="bi bi-chat-dots mr-3"></i>
-                Messages
+            <a href="{{ route('talent.parrainage') }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-[#f6cd45]/10 hover:text-[#0066FF] border-r-2 border-transparent hover:border-[#f6cd45]">
+                <i class="bi bi-people mr-3"></i>
+                Parrainage
             </a>
         </nav>
     </div>
@@ -65,8 +65,12 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-2">
-                        <div class="w-8 h-8 bg-[#f6cd45] rounded-full flex items-center justify-center">
-                            <i class="bi bi-person text-[#152747]"></i>
+                        <div class="w-8 h-8 bg-[#f6cd45] rounded-full flex items-center justify-center overflow-hidden">
+                            @if(Auth::user()->talent && Auth::user()->talent->avatar_type)
+                                <img src="{{ asset('storage/avatars/' . Auth::user()->talent->avatar_type) }}" alt="Photo de profil" class="w-full h-full object-cover rounded-full">
+                            @else
+                                <i class="bi bi-person text-[#0066FF]"></i>
+                            @endif
                         </div>
                         <span class="text-gray-700">{{ Auth::user()->talent->first_name ?? 'Talent' }}</span>
                     </div>

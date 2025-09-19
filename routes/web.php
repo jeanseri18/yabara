@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\EntrepriseController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TalentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,15 +35,52 @@ Route::get('/registration/success', [RegistrationController::class, 'showRegistr
 
 // Dashboard routes
 Route::middleware(['auth'])->group(function () {
-    // Admin dashboard
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    // Admin routes
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        Route::get('/users/admins', [AdminController::class, 'listAdmins'])->name('users.admins');
+        Route::get('/users/admins/create', [AdminController::class, 'createAdmin'])->name('users.admins.create');
+        Route::post('/users/admins', [AdminController::class, 'storeAdmin'])->name('users.admins.store');
+        Route::get('/users/admins/{id}/edit', [AdminController::class, 'editAdmin'])->name('users.admins.edit');
+        Route::put('/users/admins/{id}', [AdminController::class, 'updateAdmin'])->name('users.admins.update');
+        Route::delete('/users/admins/{id}', [AdminController::class, 'deleteAdmin'])->name('users.admins.delete');
+        Route::get('/users/entreprises', [AdminController::class, 'listEntreprises'])->name('users.entreprises');
+        Route::get('/users/entreprises/create', [AdminController::class, 'createEntreprise'])->name('users.entreprises.create');
+        Route::post('/users/entreprises', [AdminController::class, 'storeEntreprise'])->name('users.entreprises.store');
+        Route::get('/users/entreprises/{id}/edit', [AdminController::class, 'editEntreprise'])->name('users.entreprises.edit');
+        Route::put('/users/entreprises/{id}', [AdminController::class, 'updateEntreprise'])->name('users.entreprises.update');
+        Route::delete('/users/entreprises/{id}', [AdminController::class, 'deleteEntreprise'])->name('users.entreprises.delete');
+        Route::get('/users/talents', [AdminController::class, 'listTalents'])->name('users.talents');
+        Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+        Route::put('/settings/profile', [AdminController::class, 'updateProfile'])->name('settings.profile.update');
+        Route::put('/settings/password', [AdminController::class, 'updatePassword'])->name('settings.password.update');
+        Route::put('/settings/preferences', [AdminController::class, 'updatePreferences'])->name('settings.preferences.update');
+        Route::post('/settings/logout-all', [AdminController::class, 'logoutAllDevices'])->name('settings.logout-all');
+    });
     
-    // Talent dashboard
-    Route::get('/talent/dashboard', function () {
-        return view('talent.dashboard');
-    })->name('talent.dashboard');
+    // Talent routes
+    Route::prefix('talent')->name('talent.')->group(function () {
+        Route::get('/dashboard', [TalentController::class, 'dashboard'])->name('dashboard');
+        Route::get('/cv/import', [TalentController::class, 'showCvImport'])->name('cv.import');
+        Route::get('/cv/upload', function() {
+            return redirect()->route('talent.cv.import');
+        });
+        Route::post('/cv/upload', [TalentController::class, 'uploadCv'])->name('cv.upload');
+        Route::get('/cv/view', [TalentController::class, 'viewCv'])->name('cv.view');
+        Route::post('/cv/save', [TalentController::class, 'saveCvData'])->name('cv.save');
+        Route::get('/cv/data', [TalentController::class, 'getCvData'])->name('cv.data');
+        Route::get('/profile', [TalentController::class, 'showProfile'])->name('profile');
+        Route::put('/profile', [TalentController::class, 'updateProfile'])->name('profile.update');
+        Route::get('/offres', [TalentController::class, 'showOffres'])->name('offres');
+        Route::get('/offres/{id}', [TalentController::class, 'showOffre'])->name('offres.show');
+        Route::post('/offres/{id}/postuler', [TalentController::class, 'postuler'])->name('offres.postuler');// Candidatures
+        Route::get('/candidatures', [TalentController::class, 'showCandidatures'])->name('candidatures');
+        Route::post('/candidatures/{id}/retirer', [TalentController::class, 'retirerCandidature'])->name('candidatures.retirer');
+        
+        // Parrainage
+        Route::get('/parrainage', [TalentController::class, 'showParrainage'])->name('parrainage');
+        Route::post('/parrainage/inviter', [TalentController::class, 'envoyerInvitation'])->name('parrainage.inviter');
+    });
     
     // Entreprise accueil
     Route::get('/entreprise/accueil', [EntrepriseController::class, 'accueil'])->name('entreprise.accueil');

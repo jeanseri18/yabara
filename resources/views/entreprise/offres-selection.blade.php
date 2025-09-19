@@ -97,11 +97,11 @@
                                 <div class="stat-label">Candidatures</div>
                             </div>
                             <div class="stat-item">
-                                <div class="stat-number">{{ $offre->candidatures->where('statut', 'preselctionnee')->count() ?? 0 }}</div>
+                                <div class="stat-number">{{ $offre->candidatures->where('statut_entreprise', 'preselctionnee')->count() ?? 0 }}</div>
                                 <div class="stat-label">Présélectionnées</div>
                             </div>
                             <div class="stat-item">
-                                <div class="stat-number">{{ $offre->candidatures->where('statut', 'retenue')->count() ?? 0 }}</div>
+                                <div class="stat-number">{{ $offre->candidatures->where('statut_entreprise', 'retenue')->count() ?? 0 }}</div>
                                 <div class="stat-label">Recrutées</div>
                             </div>
                         </div>
@@ -213,7 +213,7 @@
 .company-logo {
     width: 48px;
     height: 48px;
-    background: #FF6B35;
+    background: #0066FF;
     border-radius: 8px;
     display: flex;
     align-items: center;
