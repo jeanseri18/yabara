@@ -63,7 +63,7 @@
 
         /* Header Section */
         .header {
-    background: black;
+    background: #f2f7ff;
     color: var(--black);
     /* padding: 60px 0; */
     /* position: relative; */
@@ -104,23 +104,21 @@
         }
 
         .header-text {
-            max-width: 80%;
+            max-width: 50%;
         }
 
         .header-text h1 {
-            font-size: 55px;
+            font-size: 72px;
             margin-bottom: 24px;
             font-weight: 700;
             line-height: 1.2;
-            color: white;
         }
 
         .header-text p {
-            margin-bottom: 25px;
+            margin-bottom: 32px;
             line-height: 1.7;
             font-size: 18px;
             opacity: 0.95;
-            color: white;
         }
 
         .app-buttons {
@@ -179,7 +177,7 @@
 
         /* Tools Section */
         .tools-section {
-            background-color: #F2F2F2;
+            background-color: var(--white);
             padding: 80px 0;
         }
 
@@ -337,7 +335,7 @@
 
         /* Why Choose Section */
         .why-choose-section {
-            background-color: white;
+            background-color: #f2f7ff;
             color: var(--black);
             padding: 80px 0;
         }
@@ -370,7 +368,6 @@
             max-width: 33.333333%;
             padding: 0 15px;
             margin-bottom: 30px;
-         
         }
 
         .why-choose-section .col-md-4 > div {
@@ -668,8 +665,8 @@
 
         /* Footer */
         .footer {
-            background-color: #000000;
-            color: white;
+            background-color: #e5e7eb;
+            color: var(--dark-text);
             padding: 60px 0 0 0;
         }
 
@@ -684,7 +681,7 @@
             font-size: 32px;
             font-weight: bold;
             margin-bottom: 15px;
-            color: white;
+            color: #0066FF;
         }
 
         .footer-info {
@@ -694,12 +691,12 @@
         .footer-info p {
             line-height: 1.6;
             margin-bottom: 20px;
-            color: white;
+            color: var(--light-text);
         }
 
         .footer-follow p {
             margin-bottom: 10px;
-            color: white;
+            color: var(--dark-text);
         }
 
         .footer-links {
@@ -710,7 +707,7 @@
             font-size: 18px;
             margin-bottom: 20px;
             font-weight: 600;
-            color: white;
+            color: var(--dark-text);
         }
 
         .footer-links ul {
@@ -722,14 +719,14 @@
         }
 
         .footer-links a {
-            color: white;
+            color: var(--light-text);
             text-decoration: none;
             font-size: 14px;
             transition: color 0.3s ease;
         }
 
         .footer-links a:hover {
-            color: #2E4266;
+            color: var(--dark-text);
         }
 
         .footer-newsletter {
@@ -740,7 +737,7 @@
             font-size: 18px;
             margin-bottom: 20px;
             font-weight: 600;
-            color: white;
+            color: var(--dark-text);
         }
 
         .newsletter-form {
@@ -751,22 +748,20 @@
         .newsletter-input {
             flex: 1;
             padding: 12px 16px;
-            border: 1px solid #333333;
+            border: 1px solid #d1d5db;
             border-radius: 8px;
             font-size: 14px;
             outline: none;
-            background-color: #333333;
-            color: white;
         }
 
         .newsletter-input:focus {
-            border-color: #2E4266;
+            border-color: #0066FF;
         }
 
         .newsletter-btn {
             padding: 12px 24px;
-            background-color: #2E4266;
-            color: black;
+            background-color: #0066FF;
+            color: white;
             border: none;
             border-radius: 8px;
             font-weight: 600;
@@ -775,7 +770,7 @@
         }
 
         .newsletter-btn:hover {
-            background-color: #e6b83d;
+            background-color: #0052cc;
         }
 
         .social-icons {
@@ -796,113 +791,35 @@
         }
 
         .social-icon.facebook {
-            background-color: #2E4266;
-            color: black;
+            background-color: #1877f2;
+            color: white;
         }
 
         .social-icon.linkedin {
-            background-color: #2E4266;
-            color: black;
+            background-color: #0077b5;
+            color: white;
         }
 
         .social-icon.twitter {
-            background-color: #2E4266;
-            color: black;
+            background-color: #1da1f2;
+            color: white;
         }
 
         .social-icon:hover {
             transform: translateY(-2px);
-            background-color: #e6b83d;
         }
 
         .footer-bottom {
-            border-top: 1px solid #333333;
+            border-top: 1px solid #d1d5db;
             padding: 20px 0;
             text-align: center;
         }
 
         .footer-bottom p {
             margin: 0;
-            color: white;
+            color: var(--light-text);
             font-size: 14px;
         }
-
-        /* Step Cards Styles */
-        .step-card {
-          background-color: #EDE9E2 !important;
-            border: 2px solid #e9ecef;
-            border-radius: 15px;
-            padding: 30px 20px;
-            text-align: center;
-            position: relative;
-            transition: all 0.3s ease;
-            height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-      
-        .step-number {
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            background: white;
-            color: #6c757d;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-
-        .step-icon {
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .step-icon img {
-            width: 108px;
-            height: 78px;
-            object-fit: contain;
-            /* filter: grayscale(100%) brightness(0.6); */
-            transition: all 0.3s ease;
-        }
-
-        /* .step-card.highlighted .step-icon img {
-            filter: none;
-        } */
-
-        .step-card h4 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #495057;
-            margin: 0;
-            line-height: 1.3;
-        }
-
-        /* .step-card.highlighted h4 {
-            color: #1976d2;
-        } */
-
-        /* .step-size {
-            position: absolute;
-            bottom: 10px;
-            right: 15px;
-            background: #2196f3;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 500;
-        } */
 
         /* Responsive Styles */
         @media (max-width: 992px) {
@@ -1019,7 +936,7 @@
         }
         /* Navbar Styles */
         .navbar {
-            background-color: black;
+            background-color: var(--white);
             padding: 10px 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: fixed;
@@ -1042,7 +959,7 @@
         .navbar-logo {
             font-size: 28px;
             font-weight: bold;
-            color: white;
+            color: #0066FF;
             text-decoration: none;
         }
 
@@ -1057,7 +974,7 @@
         .nav-link {
             margin-left: 10px;
             margin-right: 10px;
-            color: white;
+            color: var(--dark-text);
             text-decoration: none;
             font-weight: 500;
             font-size: 16px;
@@ -1068,7 +985,7 @@
         }
 
         .nav-link:hover {
-            color: #2E4266;
+            color: #0066FF;
         }
 
         .nav-link::after {
@@ -1078,7 +995,7 @@
             height: 2px;
             bottom: -5px;
             left: 50%;
-            background-color: #2E4266;
+            background-color: #0066FF;
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
@@ -1101,20 +1018,20 @@
         }
 
         .auth-btn.login {
-            color: white;
-            border: 2px solid white;
+            color: #0066FF ;
+            border: 2px solid #0066FF ;
             background-color: transparent;
         }
 
         .auth-btn.login:hover {
-            background-color: white;
-            color: #2E4266;
+            background-color: var(--primary-blue);
+            color: var(--white);
         }
 
         .auth-btn.register {
-            background-color: white;
-            color: #2E4266;
-            border: 2px solid white;
+            background-color: #0066FF;
+            color: var(--white);
+            border: 2px solid #0066FF;
         }
 
         .auth-btn.register:hover {
@@ -1138,26 +1055,26 @@
         }
 
         .app-btn-primary {
-            background-color: #2E4266;
+            background-color: #007bff;
             color: white;
-            border: 2px solid #2E4266;
+            border: 2px solid #007bff;
         }
 
         .app-btn-primary:hover {
-            background-color:#2E4266;
-            border-color:#2E4266;
+            background-color: #0056b3;
+            border-color: #0056b3;
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(0, 123, 255, 0.3);
         }
 
         .app-btn-secondary {
             background-color: white;
-            color: #2E4266;
-            border: 2px solid #2E4266;
+            color: #0066FF;
+            border: 2px solid #0066FF;
         }
 
         .app-btn-secondary:hover {
-            background-color: #2E4266;
+            background-color: #0066FF;
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(0, 102, 255, 0.3);
@@ -1184,12 +1101,12 @@
         }
     </style>
 </head>
-<body >
+<body>
     <!-- Navigation Bar -->
  
     <!-- Header Section -->
     <header class="header">
-    <div class="video-container" style="background-image:  url('{{ asset('image 1 (1).png') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <div class="video-container" style="background-color: #f2f7ff;">
     </div>
         <div class="container-fluid">
              <nav class="navbar">
@@ -1216,11 +1133,13 @@
             
             <div class="header-text">
                 
-                <h1>Trouvez l’emploi qu’il vous faut<br>
-Recrutez le talent qu’il vous faut.</h1>
+                <h1>Votre passerelle 
+vers l’emploi et 
+les talents.</h1>
                 <p>
-Yabara, la plateforme ivoirienne qui connecte 
-les chercheurs d’emploi et les entreprises.             </p>
+Nous connectons les chercheurs d’emploi et les 
+recruteurs sur une même plateforme simple, 
+rapide et efficace.                </p>
                 <br>
     <br>
   
@@ -1233,15 +1152,65 @@ les chercheurs d’emploi et les entreprises.             </p>
                     </a>
                 </div>
             </div>
-            <!-- <div class="qr-code">
-            </div> -->
+            <div class="qr-code">
+                <img src="{{ asset('images/OD15EW.png') }}" alt="QR Code">
+            </div>
         </div>
     </header>
-  <!-- Partners Section -->
+
+    <!-- Tools Section -->
+    <section class="tools-section">
+        <div class="container">
+            <div class="tools-header">
+                <h2>Outils performants</h2>
+                <p>Accédez à des fonctionnalités avancées pour gérer vos collaborations et recrutements.</p>
+            </div>
+            <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard Analytics" class="tools-image" style="width: 100%; height: 100%; object-fit: contain; border-radius: 10px;">
+
+        
+        </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section class="why-choose-section">
+        <div class="container">
+            <div class="why-choose-header ">
+                <h2>Pourquoi choisir YABARA ?</h2>
+                <p>Mise en relation transparente. Trouvez l'association idéale des professionnels et des entreprises correspondant à vos besoins.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+              
+                    <div class=" ">
+                        <h3>Réseautage efficace</h3>
+                        <p>Rencontrez vos clients ou vos employeurs idéaux grâce à notre algorithme de mise en relation.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                  
+                    <div class=" ">
+                        <h3>Fiabilité et sécurité</h3>
+                        <p>Plateforme sécurisée pour gérer vos candidatures et assurer la protection des données.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+       
+                    <div class=" ">
+                        <h3>Outils performants</h3>
+                        <p>Accédez à des fonctionnalités avancées pour optimiser votre processus de recrutement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
     <section class="partners-section">
         <div class="container">
             <div class="partners-header">
-                <h2>Il nous ont fais confince</h2>
+                <h2>Entreprise partenaire</h2>
+                <p>Que vous soyez entrepreneur, artisan, consultant ou une entreprise en quête de nouveaux talents, YABARA est le portail idéal pour trouver les compétences dont vous avez besoin.</p>
+                <p class="mt-4">Nos partenaires incluent des entreprises de tous secteurs en Côte d'Ivoire, des startups innovantes aux grandes multinationales.</p>
             </div>
             <div class="partners-grid">
                 <div class="partners-scroll">
@@ -1416,454 +1385,48 @@ les chercheurs d’emploi et les entreprises.             </p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- Tools Section -->
-    <section class="tools-section">
-        <div class="container">
-            <div class="tools-header">
-              <h2>La première plateforme 
-ivoirienne de<span style="color: #A08D66;"> recrutement digital</span> tout-en-un</h2>
-            </div>
-            <img src="{{ asset('capture.png') }}" alt="Dashboard Analytics" class="tools-image" style="width: 100%; height: 100%; object-fit: contain; border-radius: 10px;">
-
-        
-        </div>
-    </section>
-
-    
-
-    <!-- Why Choose Section -->
-    <section class="why-choose-section">
-        <div class="container">
-            <div class="why-choose-header ">
-                <h2>Trouvez <span style="color: #A08D66;">l'emploie</span> qui vous correspond</h2>
-                <p>Créez votre profil, mettez à jour votre CV et postulez directement aux offres disponibles en Côte d’Ivoire. Avec Yabara, suivez chaque étape de votre candidature en toute transparence: </p>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="step-card">
-                        <div class="step-number">1</div>
-                        <div class="step-icon">
-                            <img src="{{ asset('validation 1.png') }}" alt="Validation profil"  height="100">
-                        </div>
-                        <h4>Validation de votre profil par les recruteurs</h4>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="step-card">
-                        <div class="step-number">2</div>
-                        <div class="step-icon">
-                            <img src="{{ asset('validation 1 (1).png') }}" alt="Programmation entretiens"  height="100">
-                        </div>
-                        <h4>Programmation d'entretiens</h4>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="step-card ">
-                        <div class="step-number">3</div>
-                        <div class="step-icon">
-                            <img src="{{ asset('validation 1 (2).png') }}" alt="Décision finale"  height="100">
-                        </div>
-                        <h4>Décision finale sur votre candidature</h4>
-                       
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-12 text-center">
-                    <button class="btn" style="background-color: #2E4266; color: white; padding: 12px 32px; border-radius: 8px; font-weight: 600; border: none; font-size: 16px;">Créer mon profil candidat</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section Offres d'emploi -->
-    <section class="job-offers-section" style="background-color: #D5D9E0; padding: 60px 0;">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 style="color: #333; font-size: 32px; font-weight: 700; margin-bottom: 40px;">Quelques offres d'emplois disponible</h2>
-            </div>
             
-            <div class="row">
-                <!-- Offre 1 -->
-                <div class="col-md-4 mb-4">
-                    <div class="job-card" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); height: 100%;">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="job-icon" style="width: 48px; height: 48px; background: #28a745; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 16px;">
-                                <i class="fas fa-user-tie" style="color: white; font-size: 20px;"></i>
-                            </div>
-                            <div>
-                                <h5 style="margin: 0; color: #333; font-size: 16px; font-weight: 600;color:#2E4266;">Assistant(e) Administratif(ve)</h5>
-                                <div class="d-flex align-items-center mt-1">
-                                    <span style="background: #e9ecef; color: #666; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-right: 8px;">CDI</span>
-                                </div>
-                            </div>
+            <!-- Commentaires des partenaires -->
+            <div class="partners-comments">
+                <div class="comments-grid">
+                    <div class="comment-card">
+                        <div class="comment-content">
+                            <p>"YABARA nous a permis de recruter des talents exceptionnels en un temps record. Une plateforme innovante et efficace."</p>
                         </div>
-                        <div class="d-flex align-items-center text-muted" style="font-size: 14px;">
-                            <i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i>
-                            <span>Abidjan - Cocody</span>
-                            <i class="fas fa-clock" style="margin-left: 16px; margin-right: 8px;"></i>
-                            <span>Il y a 6 heures</span>
+                        <div class="comment-author">
+                            <strong>Orange CI</strong>
+                            <span>Directeur RH</span>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Offre 2 -->
-                <div class="col-md-4 mb-4">
-                    <div class="job-card" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); height: 100%;">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="job-icon" style="width: 48px; height: 48px; background: #ffc107; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 16px;">
-                                <i class="fas fa-users" style="color: white; font-size: 20px;"></i>
-                            </div>
-                            <div>
-                                <h5 style="margin: 0; color: #333; font-size: 16px; font-weight: 600;color:#2E4266;">Community Manager Junior</h5>
-                                <div class="d-flex align-items-center mt-1">
-                                    <span style="background: #e9ecef; color: #666; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-right: 8px;">CDD</span>
-                                </div>
-                            </div>
+                    
+                    <div class="comment-card">
+                        <div class="comment-content">
+                            <p>"Grâce à YABARA, nous avons trouvé des profils qualifiés qui correspondent parfaitement à nos besoins. Excellent service !"</p>
                         </div>
-                        <div class="d-flex align-items-center text-muted" style="font-size: 14px;">
-                            <i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i>
-                            <span>Abidjan - Marcory</span>
-                            <i class="fas fa-clock" style="margin-left: 16px; margin-right: 8px;"></i>
-                            <span>Il y a 12 heures</span>
+                        <div class="comment-author">
+                            <strong>MTN Côte d'Ivoire</strong>
+                            <span>Responsable Recrutement</span>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Offre 3 -->
-                <div class="col-md-4 mb-4">
-                    <div class="job-card" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); height: 100%;">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="job-icon" style="width: 48px; height: 48px; background: #dc3545; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 16px;">
-                                <i class="fas fa-cog" style="color: white; font-size: 20px;"></i>
-                            </div>
-                            <div>
-                                <h5 style="margin: 0; color: #333; font-size: 16px; font-weight: 600;color:#2E4266;">Assistant(e) Administratif(ve)</h5>
-                                <div class="d-flex align-items-center mt-1">
-                                    <span style="background: #e9ecef; color: #666; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-right: 8px;">CDI</span>
-                                </div>
-                            </div>
+                    
+                    <div class="comment-card">
+                        <div class="comment-content">
+                            <p>"Une plateforme qui révolutionne le recrutement en Côte d'Ivoire. Interface intuitive et résultats concrets."</p>
                         </div>
-                        <div class="d-flex align-items-center text-muted" style="font-size: 14px;">
-                            <i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i>
-                            <span>Yamoussoukro - Zone</span>
-                            <i class="fas fa-clock" style="margin-left: 16px; margin-right: 8px;"></i>
-                            <span>Il y a 10 heures</span>
+                        <div class="comment-author">
+                            <strong>BICICI</strong>
+                            <span>Chef de Projet RH</span>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="text-center mt-4">
-                <p style="color: #666; font-size: 16px; margin-bottom: 20px;">De nouvelles offres chaque jour sur Yabara</p>
-                <button class="btn" style="background-color: #2E4266; color: white; padding: 12px 32px; border-radius: 8px; font-weight: 600; border: none; font-size: 16px;">Voir toutes les offres disponibles</button>
+            <div class="partners-cta">
+                <a href="{{ route('login') }}" class="btn btn-black">Voir plus</a>
             </div>
         </div>
     </section>
 
-
-    
-    <!-- Why Choose Section -->
-    <section class="why-choose-section">
-        <div class="container">
-            <div class="why-choose-header ">
-                <h2>Recrutez plus facilement  <span style="color: #A08D66;">les bons profils</span></h2>
-                <p>Publiez vos offres d’emploi, recevez des candidatures qualifiées et gérez tout
-le processus de recrutement depuis un seul espace. Yabara vous aide à gagner du temps et à attirer les meilleurs talents du marché ivoirien.</p>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="step-card" style="background-color: #F5F5F5 !important;">
-                        <!-- <div class="step-number">1</div> -->
-                        <div class="step-icon">
-                            <img src="{{ asset('image 9.png') }}" alt="Validation profil"  height="100">
-                        </div>
-                        <h4>Interface simple et intuitive</h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="step-card" style="background-color: #F5F5F5 !important;">
-                        <!-- <div class="step-number">2</div> -->
-                        <div class="step-icon">
-                            <img src="{{ asset('image 10.png') }}" alt="Programmation entretiens"  height="100">
-                        </div>
-                        <h4>Gestion centralisée des candidatures</h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="step-card " style="background-color: #F5F5F5 !important;">
-                        <!-- <div class="step-number">3</div> -->
-                        <div class="step-icon">
-                            <img src="{{ asset('image 11.png') }}" alt="Décision finale"  height="100">
-                        </div>
-                        <h4>Communication directe avec les candidats</h4>
-                       
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="step-card " style="background-color: #F5F5F5 !important;">
-                        <!-- <div class="step-number">3</div> -->
-                        <div class="step-icon">
-                            <img src="{{ asset('image 12 (1).png') }}" alt="Décision finale"  height="100">
-                        </div>
-                        <h4>Outil conçu pour les besoins RH des entreprises locales</h4>
-                       
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-12 text-center">
-                    <button class="btn" style="background-color: #2E4266; color: white; padding: 12px 32px; border-radius: 8px; font-weight: 600; border: none; font-size: 16px;">Créer un compte entreprise</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-  
-    <!-- Section Entreprises -->
-
-    <!-- Section Entreprises -->
-     <center>
-    <section class="container enterprise-section" style="background-color: #f8f9fa; padding: 60px 0; border: 2px solid #dee2e6; margin: 40px 20px; border-radius: 12px;">
-        <div class="container">
-            <div class="text-center">
-                <h2 style="color: #333; font-size: 36px; font-weight: 700; margin-bottom: 16px;">Entreprises, Simplifiez vos recrutements, valorisez vos équipes</h2>
-                <p style="color: #666; font-size: 18px; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">Avec Yabara, trouvez des profils qualifiés et suivez vos recrutements du début à la fin.</p>
-                
-                <div class="d-flex justify-content-center gap-3">
-                    <button class="btn" style="background-color: #2E4266; color: white; padding: 12px 32px; border-radius: 8px; font-weight: 600; border: none; font-size: 16px;">Commencer à recruter</button>
-                    <button class="btn" style="background-color: transparent; color: #2E4266; padding: 12px 32px; border-radius: 8px; font-weight: 600; border: 2px solid #2E4266; font-size: 16px;">Commencer à recruter</button>
-                </div>
-            </div>
-        </div>
-    </section></center>
-    <!-- Section Plateforme Côte d'Ivoire -->
-    <section class="platform-section" style="background-color: #f8f9fa; padding: 80px 0;">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 style="color: #333; font-size: 36px; font-weight: 700; margin-bottom: 16px;">
-                    Une plateforme pensée pour <span style="color: #B8860B;">la Côte d'Ivoire</span>
-                </h2>
-                <p style="color: #666; font-size: 18px; margin-bottom: 60px; max-width: 700px; margin-left: auto; margin-right: auto;">
-                    Yabara simplifie la recherche d'emploi et le recrutement en s'adaptant aux réalités du marché ivoirien.
-                </p>
-            </div>
-            
-            <div class="row g-4">
-                <!-- Transparence -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="platform-card" style="background: white; border-radius: 12px; padding: 32px 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); height: 100%; text-align: left;">
-                        <div class="platform-icon" style="width: 80px; height: 80px; background: #1E88E5; border-radius: 12px; margin: 0 0 24px 0; display: flex; align-items: center; justify-content: center; position: relative;">
-                            <div style="position: absolute; top: -8px; right: -8px; width: 40px; height: 40px; background: #1E88E5; border-radius: 0 12px 0 12px;"></div>
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
-                                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                            </svg>
-                        </div>
-                        <h4 style="color: #1E88E5; font-size: 20px; font-weight: 600; margin-bottom: 16px; text-align: left;">Transparence</h4>
-                        <p style="color: #666; font-size: 16px; line-height: 1.6; margin: 0; text-align: left;">suivez vos candidatures en temps réel</p>
-                    </div>
-                </div>
-
-                <!-- Efficacité -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="platform-card" style="background: white; border-radius: 12px; padding: 32px 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); height: 100%; text-align: left;">
-                        <div class="platform-icon" style="width: 80px; height: 80px; background: #FF9800; border-radius: 12px; margin: 0 0 24px 0; display: flex; align-items: center; justify-content: center; position: relative;">
-                            <div style="position: absolute; top: -8px; right: -8px; width: 40px; height: 40px; background: #FF9800; border-radius: 0 12px 0 12px;"></div>
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                            </svg>
-                        </div>
-                        <h4 style="color: #FF9800; font-size: 20px; font-weight: 600; margin-bottom: 16px; text-align: left;">Efficacité</h4>
-                        <p style="color: #666; font-size: 16px; line-height: 1.6; margin: 0; text-align: left;">matching intelligent entre offres et profils</p>
-                    </div>
-                </div>
-
-                <!-- Proximité -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="platform-card" style="background: white; border-radius: 12px; padding: 32px 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); height: 100%; text-align: left;">
-                        <div class="platform-icon" style="width: 80px; height: 80px; background: #4CAF50; border-radius: 12px; margin: 0 0 24px 0; display: flex; align-items: center; justify-content: center; position: relative;">
-                            <div style="position: absolute; top: -8px; right: -8px; width: 40px; height: 40px; background: #4CAF50; border-radius: 0 12px 0 12px;"></div>
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
-                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                            </svg>
-                        </div>
-                        <h4 style="color: #4CAF50; font-size: 20px; font-weight: 600; margin-bottom: 16px; text-align: left;">Proximité</h4>
-                        <p style="color: #666; font-size: 16px; line-height: 1.6; margin: 0; text-align: left;">un service 100 % local, conçu pour les talents et entreprises ivoiriens</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-  <!-- Section Témoignages -->
-    <section class="testimonials-section" style="background-color: #fff; padding: 80px 0;">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 style="color: #333;font-size :50px; font-weight: 700; margin-bottom: 60px;">
-                    <span style="color: #A08D66;">Candidats et entreprises</span> partagent<br>
-                    leur expérience avec Yabara.
-                </h2>
-            </div>
-            
-            <div class="row g-4">
-                <!-- Témoignage 1 -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="testimonial-card" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); height: 100%;">
-                        <div class="testimonial-image" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #4A90E2, #357ABD); margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
-                            <div style="width: 70px; height: 70px; border-radius: 50%; background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCA3MCA3MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzUiIGN5PSIzNSIgcj0iMzUiIGZpbGw9IiM0QTkwRTIiLz4KPHN2ZyB4PSIxNSIgeT0iMTAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI1MCI+CjxjaXJjbGUgY3g9IjIwIiBjeT0iMTgiIHI9IjgiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0zNSA0NUMzNSAzOCAyOCAzNSAyMCAzNUMxMiAzNSA1IDM4IDUgNDVWNTBIMzVWNDVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+'); background-size: cover; background-position: center;"></div>
-                        </div>
-                        <h5 style="color: #333; font-size: 16px; font-weight: 600; margin-bottom: 8px;">Aissata Koné</h5>
-                        <p style="color: #A08D66; font-size: 12px; font-weight: 500; margin-bottom: 16px;">Assistante RH à Abidjan</p>
-                        <p style="color: #666; font-size: 14px; line-height: 1.5; margin: 0;">"J'ai créé mon profil sur Yabara et en moins de deux semaines, j'ai été contactée par trois entreprises. Simple, rapide et efficace !"</p>
-                    </div>
-                </div>
-
-                <!-- Témoignage 2 -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="testimonial-card" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); height: 100%;">
-                        <div class="testimonial-image" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #4A90E2, #357ABD); margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
-                            <div style="width: 70px; height: 70px; border-radius: 50%; background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCA3MCA3MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzUiIGN5PSIzNSIgcj0iMzUiIGZpbGw9IiM0QTkwRTIiLz4KPHN2ZyB4PSIxNSIgeT0iMTAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI1MCI+CjxjaXJjbGUgY3g9IjIwIiBjeT0iMTgiIHI9IjgiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0zNSA0NUMzNSAzOCAyOCAzNSAyMCAzNUMxMiAzNSA1IDM4IDUgNDVWNTBIMzVWNDVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+'); background-size: cover; background-position: center;"></div>
-                        </div>
-                        <h5 style="color: #333; font-size: 16px; font-weight: 600; margin-bottom: 8px;">Kouadio N'Guessan</h5>
-                        <p style="color: #A08D66; font-size: 12px; font-weight: 500; margin-bottom: 16px;">Directeur RH, IVOIRE TECH SOLUTIONS</p>
-                        <p style="color: #666; font-size: 14px; line-height: 1.5; margin: 0;">"Avant Yabara, nous recevions trop de candidatures non ciblées et le suivi était difficile. Nos outils de recrutement ont été révolutionnés !"</p>
-                    </div>
-                </div>
-
-                <!-- Témoignage 3 -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="testimonial-card" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); height: 100%;">
-                        <div class="testimonial-image" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #4A90E2, #357ABD); margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
-                            <div style="width: 70px; height: 70px; border-radius: 50%; background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCA3MCA3MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzUiIGN5PSIzNSIgcj0iMzUiIGZpbGw9IiM0QTkwRTIiLz4KPHN2ZyB4PSIxNSIgeT0iMTAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI1MCI+CjxjaXJjbGUgY3g9IjIwIiBjeT0iMTgiIHI9IjgiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0zNSA0NUMzNSAzOCAyOCAzNSAyMCAzNUMxMiAzNSA1IDM4IDUgNDVWNTBIMzVWNDVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+'); background-size: cover; background-position: center;"></div>
-                        </div>
-                        <h5 style="color: #333; font-size: 16px; font-weight: 600; margin-bottom: 8px;">Marie Coulibaly</h5>
-                        <p style="color: #A08D66; font-size: 12px; font-weight: 500; margin-bottom: 16px;">Chargée de communication</p>
-                        <p style="color: #666; font-size: 14px; line-height: 1.5; margin: 0;">"Après plusieurs mois de recherche, Yabara m'a permis de trouver le poste idéal. J'ai pu suivre ma candidature et recevoir un retour clair du recruteur. Très rassurant !"</p>
-                    </div>
-                </div>
-
-                <!-- Témoignage 4 -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="testimonial-card" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); height: 100%;">
-                        <div class="testimonial-image" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #4A90E2, #357ABD); margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
-                            <div style="width: 70px; height: 70px; border-radius: 50%; background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCA3MCA3MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzUiIGN5PSIzNSIgcj0iMzUiIGZpbGw9IiM0QTkwRTIiLz4KPHN2ZyB4PSIxNSIgeT0iMTAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI1MCI+CjxjaXJjbGUgY3g9IjIwIiBjeT0iMTgiIHI9IjgiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0zNSA0NUMzNSAzOCAyOCAzNSAyMCAzNUMxMiAzNSA1IDM4IDUgNDVWNTBIMzVWNDVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+'); background-size: cover; background-position: center;"></div>
-                        </div>
-                        <h5 style="color: #333; font-size: 16px; font-weight: 600; margin-bottom: 8px;">Abdoulaye Traoré</h5>
-                        <p style="color: #A08D66; font-size: 12px; font-weight: 500; margin-bottom: 16px;">Fondateur, LEGACY AFRIQUE CONSTRUCTION</p>
-                        <p style="color: #666; font-size: 14px; line-height: 1.5; margin: 0;">"Grâce à Yabara, j'ai permis de recruter facilement des profils qualifiés. La plateforme, adaptée au marché ivoirien, nous a fait gagner un temps précieux."</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- Section FAQ -->
-    <section class="faq-section" style="background-color: #f8f9fa; padding: 80px 0;">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 style="color: #333; font-size: 50px; font-weight: 700; margin-bottom: 60px;">Questions les plus fréquentes</h2>
-            </div>
-            
-            <div class="faq-container" style="max-width: 800px; margin: 0 auto;">
-                <!-- FAQ Item 1 -->
-                <div class="faq-item" style="border-bottom: 1px solid #dee2e6; padding: 20px 0;">
-                    <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                        <h4 style="color: #333; font-size: 18px; font-weight: 600; margin: 0;">Yabara, c'est quoi ?</h4>
-                        <span style="color: #666; font-size: 24px; font-weight: 300;">−</span>
-                    </div>
-                    <div class="faq-answer" style="margin-top: 15px;">
-                        <p style="color: #666; font-size: 16px; line-height: 1.5; margin: 0;">Une plateforme 100 % ivoirienne qui connecte les chercheurs d'emploi et les entreprises.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 2 -->
-                <div class="faq-item" style="border-bottom: 1px solid #dee2e6; padding: 20px 0;">
-                    <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                        <h4 style="color: #333; font-size: 18px; font-weight: 600; margin: 0;">Comment créer un compte ?</h4>
-                        <span style="color: #666; font-size: 24px; font-weight: 300;">−</span>
-                    </div>
-                    <div class="faq-answer" style="margin-top: 15px;">
-                        <p style="color: #666; font-size: 16px; line-height: 1.5; margin: 0;">Cliquez sur "Je cherche un emploi" ou "Je recrute", remplissez vos informations et accédez à votre tableau de bord.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 3 -->
-                <div class="faq-item" style="border-bottom: 1px solid #dee2e6; padding: 20px 0;">
-                    <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                        <h4 style="color: #333; font-size: 18px; font-weight: 600; margin: 0;">Est-ce gratuit ?</h4>
-                        <span style="color: #666; font-size: 24px; font-weight: 300;">−</span>
-                    </div>
-                    <div class="faq-answer" style="margin-top: 15px;">
-                        <p style="color: #666; font-size: 16px; line-height: 1.5; margin: 0;">Oui, l'inscription et la candidature aux offres sont gratuites pour les chercheurs d'emploi.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 4 -->
-                <div class="faq-item" style="border-bottom: 1px solid #dee2e6; padding: 20px 0;">
-                    <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                        <h4 style="color: #333; font-size: 18px; font-weight: 600; margin: 0;">Comment suivre ma candidature ?</h4>
-                        <span style="color: #666; font-size: 24px; font-weight: 300;">−</span>
-                    </div>
-                    <div class="faq-answer" style="margin-top: 15px;">
-                        <p style="color: #666; font-size: 16px; line-height: 1.5; margin: 0;">Depuis votre espace personnel, vous voyez chaque étape : validation du CV, entretien, décision finale.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 5 -->
-                <div class="faq-item" style="border-bottom: 1px solid #dee2e6; padding: 20px 0;">
-                    <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                        <h4 style="color: #333; font-size: 18px; font-weight: 600; margin: 0;">Comment publier une offre ?</h4>
-                        <span style="color: #666; font-size: 24px; font-weight: 300;">−</span>
-                    </div>
-                    <div class="faq-answer" style="margin-top: 15px;">
-                        <p style="color: #666; font-size: 16px; line-height: 1.5; margin: 0;">Les entreprises peuvent créer un compte, publier une offre et gérer toutes les candidatures reçues.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 6 -->
-                <div class="faq-item" style="border-bottom: 1px solid #dee2e6; padding: 20px 0;">
-                    <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                        <h4 style="color: #333; font-size: 18px; font-weight: 600; margin: 0;">Yabara est disponible où ?</h4>
-                        <span style="color: #666; font-size: 24px; font-weight: 300;">−</span>
-                    </div>
-                    <div class="faq-answer" style="margin-top: 15px;">
-                        <p style="color: #666; font-size: 16px; line-height: 1.5; margin: 0;">Exclusivement en Côte d'Ivoire pour le moment.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 7 -->
-                <div class="faq-item" style="padding: 20px 0;">
-                    <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                        <h4 style="color: #333; font-size: 18px; font-weight: 600; margin: 0;">Besoin d'aide ?</h4>
-                        <span style="color: #666; font-size: 24px; font-weight: 300;">−</span>
-                    </div>
-                    <div class="faq-answer" style="margin-top: 15px;">
-                        <p style="color: #666; font-size: 16px; line-height: 1.5; margin: 0;">Contactez-nous à <a href="mailto:support@yabara.ci" style="color: #007bff; text-decoration: none;">support@yabara.ci</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-      <center>
-    <section class="container enterprise-section" style="background-color: #f8f9fa; padding: 60px 0; border: 2px solid #dee2e6; margin: 40px 20px; border-radius: 12px;">
-        <div class="container">
-            <div class="text-center">
-                <h2 style="color: #333; font-size: 50px; font-weight: 700; margin-bottom: 16px;">Rejoignez la plateforme qui transforme le recrutement en Côte d’Ivoire</h2>
-                <p style="color: #666; font-size: 18px; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">Que vous soyez à la recherche d’un emploi ou du bon talent,
-Yabara vous accompagne à chaque étape.</p>
-                
-                <div class="d-flex justify-content-center gap-3">
-                    <button class="btn" style="background-color: #2E4266; color: white; padding: 12px 32px; border-radius: 8px; font-weight: 600; border: none; font-size: 16px;">Je m’inscris comme candidat</button>
-                    <button class="btn" style="background-color: transparent; color: #2E4266; padding: 12px 32px; border-radius: 8px; font-weight: 600; border: 2px solid #2E4266; font-size: 16px;">Je crée un compte entreprise</button>
-                </div>
-            </div>
-        </div>
-    </section></center>
 
     <!-- Footer -->
     <footer class="footer ">

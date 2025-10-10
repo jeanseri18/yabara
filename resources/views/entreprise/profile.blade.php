@@ -209,7 +209,7 @@
                            {{ $entreprise->notif_deplacement_kanban ? 'checked' : '' }}
                            style="transform: scale(1.2);">
                     <label class="form-check-label flex-grow-1" for="notif_deplacement_kanban" style="color: #333; font-size: 14px;">
-                        Recevoir les actualités de Yakoro
+                        Recevoir les actualités de Yabara
                     </label>
                 </div>
             </div>

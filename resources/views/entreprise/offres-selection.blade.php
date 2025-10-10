@@ -24,7 +24,7 @@
     <!-- Liste des offres -->
     <div class="row">
         @forelse($offres as $offre)
-            <div class="col-md-6 col-lg-4 mb-4">
+            <div class="col-md-12 col-lg-12 mb-4">
                 <div class="offre-card h-100" 
                      onclick="window.location.href='{{ route('entreprise.candidatures.kanban', ['offre' => $offre->id]) }}'">
                     
@@ -136,13 +136,13 @@
 
 <style>
 .offre-card {
-    background:  #0066FF;
+    background: white;
     border-radius: 20px;
     padding: 24px;
-    color: white;
+    color: #333;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    /* box-shadow: 0 4px 20px rgba(0,0,0,0.1); */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     position: relative;
     overflow: hidden;
 }
@@ -171,15 +171,15 @@
 .offre-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #F6CD45;
+    color: #0066FF;
     margin: 0;
     line-height: 1.2;
 }
 
 .btn-modifier {
-    background: rgba(255,255,255,0.2);
-    border: 1px solid rgba(255,255,255,0.3);
-    color: white;
+    background: rgba(0,102,255,0.1);
+    border: 1px solid rgba(0,102,255,0.3);
+    color: #0066FF;
     padding: 8px 16px;
     border-radius: 8px;
     font-size: 0.875rem;
@@ -189,13 +189,13 @@
 }
 
 .btn-modifier:hover {
-    background: rgba(255,255,255,0.3);
-    color: white;
+    background: rgba(0,102,255,0.2);
+    color: #0066FF;
     transform: translateY(-2px);
 }
 
 .badge-contrat {
-    background: #F6CD45;
+    background: rgba(0,102,255,0.1);
     color: #0066FF;
     padding: 6px 12px;
     border-radius: 20px;
@@ -225,18 +225,18 @@
 .company-name {
     font-size: 1.1rem;
     font-weight: 600;
-    color: white;
+    color: #333;
     margin-bottom: 2px;
 }
 
 .company-sector {
     font-size: 0.875rem;
-    color: rgba(255,255,255,0.7);
+    color: rgba(0,0,0,0.7);
 }
 
 .company-location {
     font-size: 0.875rem;
-    color: rgba(255,255,255,0.8);
+    color: rgba(0,0,0,0.8);
     margin-top: 8px;
 }
 
@@ -246,8 +246,8 @@
 }
 
 .info-badge {
-    background: rgba(255,255,255,0.15);
-    color: white;
+    background: rgba(0,102,255,0.1);
+    color: #0066FF;
     padding: 6px 12px;
     border-radius: 12px;
     font-size: 0.75rem;
@@ -255,7 +255,7 @@
     display: inline-flex;
     align-items: center;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(0,102,255,0.2);
 }
 
 .offre-description {
@@ -266,13 +266,13 @@
 .offre-description h4 {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #F6CD45;
+    color: #0066FF;
     margin-bottom: 12px;
 }
 
 .offre-description p {
     font-size: 0.875rem;
-    color: rgba(255,255,255,0.8);
+    color: rgba(0,0,0,0.8);
     line-height: 1.5;
     margin: 0;
 }
@@ -284,24 +284,24 @@
 
 .offre-reference {
     font-size: 0.875rem;
-    color: rgba(255,255,255,0.7);
+    color: rgba(0,0,0,0.7);
     display: flex;
     align-items: center;
 }
 
 .offre-date {
     font-size: 0.875rem;
-    color: rgba(255,255,255,0.7);
+    color: rgba(0,0,0,0.7);
 }
 
 .candidatures-stats {
     display: flex;
     justify-content: space-between;
-    background: rgba(255,255,255,0.1);
+    background: rgba(0,102,255,0.05);
     border-radius: 12px;
     padding: 16px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(0,102,255,0.2);
 }
 
 .stat-item {
@@ -312,13 +312,13 @@
 .stat-number {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #F6CD45;
+    color: #0066FF;
     margin-bottom: 4px;
 }
 
 .stat-label {
     font-size: 0.75rem;
-    color: rgba(255,255,255,0.7);
+    color: rgba(0,0,0,0.7);
     font-weight: 500;
 }
 

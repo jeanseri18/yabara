@@ -462,7 +462,7 @@ $(document).ready(function() {
         
         submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Envoi en cours...');
         
-        $.post('{{ route("entreprise.parrainage.invite") }}', $(this).serialize())
+        $.post('/entreprise/parrainage/invite', $(this).serialize())
             .done(function(response) {
                 if (response.success) {
                     showToast(response.message, 'success');
@@ -554,7 +554,7 @@ function copyToClipboard(text) {
 
 function resendInvitation(parrainageId) {
     if (confirm('Êtes-vous sûr de vouloir renvoyer cette invitation ?')) {
-        $.post(`{{ route('entreprise.parrainage.resend', ':id') }}`.replace(':id', parrainageId), {
+        $.post(`/entreprise/parrainage/resend/${parrainageId}`, {
             _token: '{{ csrf_token() }}'
         })
         .done(function(response) {
@@ -578,7 +578,7 @@ function viewDetails(parrainageId) {
     
     $('#detailsModal').modal('show');
     
-    $.get(`{{ route('entreprise.parrainage.details', ':id') }}`.replace(':id', parrainageId))
+    $.get(`/entreprise/parrainage/details/${parrainageId}`)
         .done(function(response) {
             $('#details-content').html(response.html);
         })

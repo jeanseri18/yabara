@@ -119,17 +119,34 @@
                             <!-- Ligne de progression -->
                             <div class="absolute top-6 left-0 w-full h-0.5 bg-gray-200"></div>
                             <div class="absolute top-6 left-0 h-0.5 bg-blue-500 transition-all duration-500" 
-                                 style="width: {{ $candidature->statut_entreprise == 'candidature_recue' ? '25%' : ($candidature->statut_entreprise == 'preselctionnee' ? '50%' : ($candidature->statut_entreprise == 'entretien' ? '75%' : ($candidature->statut_entreprise == 'retenue' ? '100%' : '0%'))) }}"></div>
+                                 style="width: {{ $candidature->statut_entreprise == 'candidature_recue' ? '20%' : ($candidature->statut_entreprise == 'preselctionnee' ? '40%' : ($candidature->statut_entreprise == 'entretien' ? '60%' : ($candidature->statut_entreprise == 'retenue' ? '100%' : '0%'))) }}"></div>
                             
                             <!-- Étapes -->
                             <div class="relative flex justify-between">
                                 <!-- Étape 1: Validation Yabara -->
-                                <div class="flex flex-col items-center text-center" style="width: 23%">
+                                <div class="flex flex-col items-center text-center" style="width: 20%">
                                     <div class="w-12 h-12 rounded-full flex items-center justify-center mb-2 {{ $candidature->statut_entreprise != 'refusee' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600' }}">
                                         @if($candidature->statut_entreprise == 'refusee')
                                             <i class="bi bi-x-lg"></i>
                                         @else
                                             <i class="bi bi-check-lg"></i>
+                                        @endif
+                                    </div>
+                                    <h4 class="font-medium text-sm mb-1">En attente de validation</h4>
+                                    <p class="text-xs text-gray-600 leading-tight">
+                                        Votre candidature est en attente de validation par notre équipe
+                                    </p>
+                                </div>
+
+                                <!-- Étape 2: Validation Yabara -->
+                                <div class="flex flex-col items-center text-center" style="width: 20%">
+                                    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-2 {{ in_array($candidature->statut_entreprise, ['preselctionnee', 'entretien', 'retenue']) ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-600' }}">
+                                        @if(in_array($candidature->statut_entreprise, ['preselctionnee', 'entretien', 'retenue']))
+                                            <i class="bi bi-check-lg"></i>
+                                        @elseif($candidature->statut_entreprise == 'refusee')
+                                            <i class="bi bi-x-lg"></i>
+                                        @else
+                                            <i class="bi bi-clock"></i>
                                         @endif
                                     </div>
                                     <h4 class="font-medium text-sm mb-1">Validée par Yabara ✅</h4>
@@ -138,11 +155,11 @@
                                     </p>
                                 </div>
 
-                                <!-- Étape 2: Validation entreprise -->
-                                <div class="flex flex-col items-center text-center" style="width: 23%">
-                                    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-2 {{ in_array($candidature->statut_entreprise, ['preselctionnee', 'entretien', 'retenue']) ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-600' }}">
-                                        @if(in_array($candidature->statut_entreprise, ['preselctionnee', 'entretien', 'retenue']))
-                                            <i class="bi bi-check-lg"></i>
+                                <!-- Étape 3: Validation entreprise -->
+                                <div class="flex flex-col items-center text-center" style="width: 20%">
+                                    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-2 {{ in_array($candidature->statut_entreprise, ['entretien', 'retenue']) ? 'bg-purple-500 text-white' : 'bg-gray-300 text-gray-600' }}">
+                                        @if(in_array($candidature->statut_entreprise, ['entretien', 'retenue']))
+                                            <i class="bi bi-chat-dots"></i>
                                         @elseif($candidature->statut_entreprise == 'refusee')
                                             <i class="bi bi-x-lg"></i>
                                         @else
@@ -155,11 +172,11 @@
                                     </p>
                                 </div>
 
-                                <!-- Étape 3: Entretien -->
-                                <div class="flex flex-col items-center text-center" style="width: 23%">
-                                    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-2 {{ in_array($candidature->statut_entreprise, ['entretien', 'retenue']) ? 'bg-purple-500 text-white' : 'bg-gray-300 text-gray-600' }}">
-                                        @if(in_array($candidature->statut_entreprise, ['entretien', 'retenue']))
-                                            <i class="bi bi-chat-dots"></i>
+                                <!-- Étape 4: Entretien -->
+                                <div class="flex flex-col items-center text-center" style="width: 20%">
+                                    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-2 {{ $candidature->statut_entreprise == 'retenue' ? 'bg-green-600 text-white' : 'bg-gray-300 text-gray-600' }}">
+                                        @if($candidature->statut_entreprise == 'retenue')
+                                            <i class="bi bi-trophy"></i>
                                         @elseif($candidature->statut_entreprise == 'refusee')
                                             <i class="bi bi-x-lg"></i>
                                         @else
@@ -171,19 +188,19 @@
                                         Vous êtes en processus de recrutement, un entretien est prévu ou en cours de planification 🗓️
                                     </p>
                                 </div>
-
-                                <!-- Étape 4: Candidature retenue -->
-                                <div class="flex flex-col items-center text-center" style="width: 23%">
-                                    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-2 {{ $candidature->statut_entreprise == 'retenue' ? 'bg-green-600 text-white' : 'bg-gray-300 text-gray-600' }}">
+                                
+                                <!-- Étape 5: Félicitations -->
+                                <div class="flex flex-col items-center text-center" style="width: 20%">
+                                    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-2 {{ $candidature->statut_entreprise == 'retenue' ? 'bg-yellow-500 text-white' : 'bg-gray-300 text-gray-600' }}">
                                         @if($candidature->statut_entreprise == 'retenue')
-                                            <i class="bi bi-trophy"></i>
+                                            <i class="bi bi-emoji-smile"></i>
                                         @elseif($candidature->statut_entreprise == 'refusee')
                                             <i class="bi bi-x-lg"></i>
                                         @else
                                             <i class="bi bi-clock"></i>
                                         @endif
                                     </div>
-                                    <h4 class="font-medium text-sm mb-1">Candidature retenue ✅</h4>
+                                    <h4 class="font-medium text-sm mb-1">Félicitations 🎉</h4>
                                     <p class="text-xs text-gray-600 leading-tight">
                                         🥳 Félicitations ! L'entreprise a décidé de vous retenir pour le poste, un membre de son équipe prendra contact avec vous très bientôt.
                                     </p>

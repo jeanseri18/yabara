@@ -84,7 +84,7 @@
                 <div class="col-md-6">
                     <div class="mb-2">
                         <small class="text-muted d-block" style="font-size: 12px;">Catégorie</small>
-                        <select class="form-select" style="border-radius: 20px; font-size: 14px;">
+                        <select class="form-select" name="category" style="border-radius: 20px; font-size: 14px;">
                             <option value="all">Toutes les catégories</option>
                             <option value="recrutement">Recrutement</option>
                             <option value="activite">Activité</option>
@@ -102,7 +102,7 @@
         @foreach($badges as $badge)
             <div class="col-lg-3 col-md-4 col-sm-6 mb-3" 
                  data-category="{{ $badge['category'] }}" 
-                 data-status="{{ $badge['obtained'] ? 'obtained' : 'available' }}">
+                 data-status="{{ $badge['obtained'] ? 'obtained' : 'locked' }}">
                 <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;" data-badge-id="{{ $badge['id'] }}">
                     <div class="card-body p-4 text-center">
                         <!-- Icône du badge -->
@@ -294,15 +294,15 @@ $(document).ready(function() {
     
     // Filtrage des badges
     function filterBadges() {
-        const selectedCategory = $('input[name="category"]:checked').val();
+        const selectedCategory = $('select[name="category"]').val();
         const selectedStatus = $('input[name="status"]:checked').val();
         
-        $('.badge-item').each(function() {
+        $('[data-category]').each(function() {
             const category = $(this).data('category');
             const status = $(this).data('status');
             
             let showCategory = selectedCategory === 'all' || category === selectedCategory;
-            let showStatus = selectedStatus === 'available' || status === selectedStatus;
+            let showStatus = selectedStatus === 'all' || status === selectedStatus;
             
             if (showCategory && showStatus) {
                 $(this).removeClass('hidden').fadeIn(400);
@@ -313,7 +313,7 @@ $(document).ready(function() {
         
         // Mettre à jour le compteur
         setTimeout(function() {
-            const visibleBadges = $('.badge-item:not(.hidden)').length;
+            const visibleBadges = $('[data-category]:not(.hidden)').length;
             updateBadgeCount(visibleBadges);
         }, 400);
     }
@@ -329,7 +329,7 @@ $(document).ready(function() {
     }
     
     // Événements de filtrage
-    $('input[name="category"], input[name="status"]').on('change', filterBadges);
+    $('input[name="status"], select[name="category"]').on('change', filterBadges);
     
     // Modal de détails des badges
     $('#badgeModal').on('show.bs.modal', function (event) {

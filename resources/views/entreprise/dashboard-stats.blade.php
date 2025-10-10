@@ -12,13 +12,27 @@
                     <!-- Dropdown Filter -->
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 150px;">
-                            <span>Ce mois ci</span>
+                            <span id="current-period">
+                                @switch(request('periode', 'mois'))
+                                    @case('semaine')
+                                        Cette semaine
+                                        @break
+                                    @case('trimestre')
+                                        Ce trimestre
+                                        @break
+                                    @case('annee')
+                                        Cette année
+                                        @break
+                                    @default
+                                        Ce mois ci
+                                @endswitch
+                            </span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-                            <li><a class="dropdown-item" href="#">Cette semaine</a></li>
-                            <li><a class="dropdown-item active" href="#">Ce mois ci</a></li>
-                            <li><a class="dropdown-item" href="#">Ce trimestre</a></li>
-                            <li><a class="dropdown-item" href="#">Cette année</a></li>
+                            <li><a class="dropdown-item {{ request('periode') == 'semaine' ? 'active' : '' }}" href="{{ route('entreprise.dashboard') }}?periode=semaine">Cette semaine</a></li>
+                            <li><a class="dropdown-item {{ request('periode', 'mois') == 'mois' ? 'active' : '' }}" href="{{ route('entreprise.dashboard') }}?periode=mois">Ce mois ci</a></li>
+                            <li><a class="dropdown-item {{ request('periode') == 'trimestre' ? 'active' : '' }}" href="{{ route('entreprise.dashboard') }}?periode=trimestre">Ce trimestre</a></li>
+                            <li><a class="dropdown-item {{ request('periode') == 'annee' ? 'active' : '' }}" href="{{ route('entreprise.dashboard') }}?periode=annee">Cette année</a></li>
                         </ul>
                     </div>
                 </div>

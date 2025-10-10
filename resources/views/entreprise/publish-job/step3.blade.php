@@ -60,7 +60,7 @@
                                     <div class="d-flex flex-wrap gap-2 mb-3">
                                         <span class="badge bg-primary px-3 py-2">{{ $offre->typeContrat->nom ?? 'Type non défini' }}</span>
                                         <span class="badge bg-secondary px-3 py-2">{{ $offre->pole->nom ?? 'Pôle non défini' }}</span>
-                                        <span class="badge bg-info px-3 py-2">{{ $offre->familleMetier->nom ?? 'Métier non défini' }}</span>
+                                        <span class="badge bg-secondary px-3 py-2">{{ $offre->familleMetier->nom ?? 'Métier non défini' }}</span>
                                     </div>
                                     <p class="text-muted mb-2">
                                         📍

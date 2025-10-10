@@ -141,11 +141,19 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="talent-profile-card me-3">
                                                         <div class="talent-avatar">
-                                                            <img src="https://via.placeholder.com/60x60/283C5A/ffffff?text={{ strtoupper(substr($candidature->talent->prenom, 0, 1)) }}" 
-                                                                 alt="{{ $candidature->talent->prenom }} {{ $candidature->talent->nom }}" 
-                                                                 class="rounded-circle" 
-                                                                 width="60" 
-                                                                 height="60">
+                                                            @if($candidature->talent->avatar_type)
+                                                                <img src="{{ asset('storage/avatars/'.$candidature->talent->avatar_type) }}" 
+                                                                     alt="{{ $candidature->talent->prenom }} {{ $candidature->talent->nom }}" 
+                                                                     class="rounded-circle" 
+                                                                     width="60" 
+                                                                     height="60"
+                                                                     style="object-fit: cover;">
+                                                            @else
+                                                                <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center" 
+                                                                     style="width: 60px; height: 60px;">
+                                                                    <i class="fas fa-user text-muted" style="font-size: 24px;"></i>
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                     <div class="talent-info">

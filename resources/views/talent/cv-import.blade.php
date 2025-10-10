@@ -4,6 +4,11 @@
 
 @section('page-title', 'Mon CV')
 
+@section('head')
+<!-- Bibliothèque html2pdf.js pour la génération de PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+@endsection
+
 @section('content')
 <div class="max-w-7xl mx-auto">
     <!-- Header avec score de complétion -->
@@ -29,7 +34,11 @@
     <div class="bg-white rounded-lg shadow-sm">
         <div class="border-b border-gray-200">
             <nav class="-mb-px flex">
-                <button class="tab-button active py-4 px-6 text-sm font-medium border-b-2 border-[#f6cd45] text-[#0066FF]" data-tab="upload">
+                <button class="tab-button active py-4 px-6 text-sm font-medium border-b-2 border-[#f6cd45] text-[#0066FF]" data-tab="ethics">
+                    <i class="bi bi-shield-check mr-2"></i>
+                    Explication pédagogique
+                </button>
+                <button class="tab-button py-4 px-6 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="upload">
                     <i class="bi bi-cloud-upload mr-2"></i>
                     Importer un CV
                 </button>
@@ -46,6 +55,74 @@
 
         <!-- Contenu des onglets -->
         <div class="p-6">
+            <!-- Onglet Explication pédagogique + engagement éthique -->
+            <div id="ethics-tab" class="tab-content">
+                <div class="max-w-3xl mx-auto space-y-8">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-[#0066FF] mb-4">Notre engagement pour un recrutement éthique</h3>
+                        <p class="text-gray-600">Chez YABARA, nous croyons en un recrutement fondé uniquement sur les compétences et l'expérience.</p>
+                    </div>
+                    
+                    <!-- Première infobox -->
+                    <div class="bg-blue-50 border-l-4 border-[#0066FF] p-6 rounded-lg shadow-sm">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mr-4">
+                                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <i class="bi bi-eye-slash text-2xl text-[#0066FF]"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">Pourquoi certaines informations sont grisées</h4>
+                                <p class="text-gray-700">
+                                    « Chez YABARA, nous croyons en un recrutement fondé sur les compétences. Vos informations personnelles sont masquées pour garantir un traitement équitable par tous les recruteurs. »
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Deuxième infobox -->
+                    <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-lg shadow-sm">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mr-4">
+                                <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+                                    <i class="bi bi-shield-lock text-2xl text-green-600"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">Confidentialité garantie</h4>
+                                <p class="text-gray-700">
+                                    « Vos informations personnelles (nom, email, téléphone) sont automatiquement masquées pour prévenir toute forme de biais ou de discrimination, seules vos compétences et expériences parlent pour vous. »
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Troisième infobox -->
+                    <div class="bg-yellow-50 border-l-4 border-[#f6cd45] p-6 rounded-lg shadow-sm">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mr-4">
+                                <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center">
+                                    <i class="bi bi-stars text-2xl text-yellow-600"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">Impact positif pour l'équité</h4>
+                                <p class="text-gray-700">
+                                    « 💫 Chaque CV anonyme sur YABARA est un pas vers un recrutement sans préjugés, sans favoritisme, sans barrières. Merci d'y participer ! »
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-8">
+                        <button type="button" onclick="document.querySelector('[data-tab=upload]').click()" class="bg-[#0066FF] text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="bi bi-arrow-right mr-2"></i>
+                            Continuer vers l'import de CV
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Onglet Upload -->
             <div id="upload-tab" class="tab-content">
                 <div class="max-w-2xl mx-auto">
@@ -307,8 +384,19 @@
 
             <!-- Onglet Prévisualisation -->
             <div id="preview-tab" class="tab-content hidden">
+
                 <div class="max-w-4xl mx-auto">
-                    <div class="bg-white border rounded-lg p-8" id="cv-preview">
+                    <!-- Message éthique en haut -->                
+                    <div class="bg-gray-100 border border-gray-200 rounded-lg p-3 mb-4 text-sm text-gray-600 text-center">
+                        <p>Ce CV respecte notre charte d'anonymisation. Les informations sensibles ne sont jamais visibles par les recruteurs.</p>
+                    </div>
+                    
+                    <div class="bg-white border rounded-lg p-8 cv-preview-container" id="cv-preview">
+                        <!-- Titre et sous-texte du CV anonyme -->
+                        <div class="text-center mb-6">
+                            <h1 class="text-2xl font-bold text-[#0066FF]">Mon CV Anonyme YABARA</h1>
+                            <p class="text-gray-600 mt-2">Ce CV est visible par les recruteurs. Seules vos compétences et votre expérience parlent pour vous.</p>
+                        </div>
                         <div class="text-center mb-8">
                             <h2 class="text-2xl font-bold text-gray-900">{{ Auth::user()->talent->first_name ?? 'Prénom' }} {{ Auth::user()->talent->last_name ?? 'Nom' }}</h2>
                             <p class="text-gray-600">{{ Auth::user()->email }}</p>
@@ -339,10 +427,18 @@
                         </div>
                     </div>
 
-                    <div class="mt-6 text-center">
+                    <div class="mt-6 text-center flex justify-center gap-4">
                         <button onclick="window.print()" class="bg-[#0066FF] text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
                             <i class="bi bi-printer mr-2"></i>
                             Imprimer le CV
+                        </button>
+                        <button onclick="downloadPDF()" class="bg-[#0066FF] text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="bi bi-download mr-2"></i>
+                            Télécharger PDF
+                        </button>
+                        <button onclick="shareCV()" class="bg-[#0066FF] text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="bi bi-share mr-2"></i>
+                            Partager
                         </button>
                     </div>
                 </div>
@@ -397,16 +493,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');
 
+    // Masquer tous les onglets sauf l'onglet "Explication pédagogique" par défaut
+    tabContents.forEach(content => {
+        if (content.id !== 'ethics-tab') {
+            content.classList.add('hidden');
+        }
+    });
+
+    // Vérifier si l'URL contient un paramètre d'onglet
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeTab = urlParams.get('tab');
+    
+    // Si un onglet est spécifié dans l'URL, l'activer
+    if (activeTab) {
+        const tabButton = document.querySelector(`[data-tab="${activeTab}"]`);
+        if (tabButton) {
+            // Simuler un clic sur l'onglet
+            tabButton.click();
+        }
+    }
+
     tabButtons.forEach(button => {
         button.addEventListener('click', function() {
             const tabName = this.dataset.tab;
             
             // Désactiver tous les onglets
-            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-gray-500');
+                btn.classList.remove('text-[#0066FF]');
+                btn.classList.add('border-transparent');
+                btn.classList.remove('border-[#f6cd45]');
+            });
             tabContents.forEach(content => content.classList.add('hidden'));
             
             // Activer l'onglet sélectionné
             this.classList.add('active');
+            this.classList.remove('text-gray-500');
+            this.classList.add('text-[#0066FF]');
+            this.classList.remove('border-transparent');
+            this.classList.add('border-[#f6cd45]');
             document.getElementById(tabName + '-tab').classList.remove('hidden');
             
             // Mettre à jour la prévisualisation si nécessaire
@@ -415,6 +541,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
 
     // Initialiser le score de complétion
     updateCompletionScore();
@@ -776,7 +903,10 @@ function updateCompletionScore(score = null) {
 // Fonction pour prévisualiser le CV
 function previewCv() {
     // Basculer vers l'onglet prévisualisation
-    document.querySelector('[data-tab="preview"]').click();
+    const previewButton = document.querySelector('[data-tab="preview"]');
+    if (previewButton) {
+        previewButton.click();
+    }
 }
 
 // Fonction pour mettre à jour la prévisualisation
@@ -906,7 +1036,71 @@ function deleteCv() {
         alert('Fonctionnalité à implémenter');
     }
 }
-</script>
+
+// Fonction pour télécharger le CV en PDF
+function downloadPDF() {
+    // Vérifier si html2pdf est défini
+    if (typeof html2pdf === 'undefined') {
+        alert('La bibliothèque html2pdf n\'est pas chargée. Veuillez rafraîchir la page.');
+        return;
+    }
+
+    // Récupérer le contenu du CV
+    const cvElement = document.getElementById('cv-preview');
+    if (!cvElement) {
+        alert('Impossible de trouver le contenu du CV.');
+        return;
+    }
+
+    // Créer une copie du CV pour ne pas modifier l'original
+    const cvContent = cvElement.cloneNode(true);
+    
+    // Masquer les boutons dans la version PDF
+    const buttonsContainer = cvContent.querySelector('.mt-6');
+    if (buttonsContainer) {
+        buttonsContainer.style.display = 'none';
+    }
+    
+    // Configuration des options pour html2pdf
+    const options = {
+        margin: 10,
+        filename: 'cv-yabara.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    
+    // Générer et télécharger le PDF
+    html2pdf()
+        .from(cvContent)
+        .set(options)
+        .save()
+        .catch(err => {
+            console.error('Erreur lors de la génération du PDF:', err);
+            alert('Une erreur est survenue lors de la génération du PDF. Veuillez réessayer.');
+        });
+}
+
+
+
+// Fonction pour partager le CV
+function shareCV() {
+    // Vérifier si l'API Web Share est disponible
+    if (navigator.share) {
+        // Créer un objet avec les données à partager
+        navigator.share({
+            title: 'Mon CV Yabara',
+            text: 'Voici mon CV créé sur la plateforme Yabara',
+            url: window.location.href
+        })
+        .then(() => console.log('Partage réussi'))
+        .catch((error) => console.log('Erreur lors du partage:', error));
+    } else {
+        // Fallback si l'API Web Share n'est pas disponible
+        const url = window.location.href;
+        prompt('L\'API de partage n\'est pas disponible sur votre navigateur. Copiez ce lien pour partager votre CV:', url);
+    }
+}</script>
 
 <!-- Meta tag pour CSRF -->
 <meta name="csrf-token" content="{{ csrf_token() }}">

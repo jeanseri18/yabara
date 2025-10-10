@@ -81,6 +81,10 @@ class RegistrationController extends Controller
             ]);
 
             DB::commit();
+            
+            // Connecter automatiquement l'utilisateur après l'inscription
+            \Illuminate\Support\Facades\Auth::login($user);
+            
             return redirect()->route('registration.success', ['type' => 'talent', 'user' => $user->id]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -155,6 +159,10 @@ class RegistrationController extends Controller
             ]);
 
             DB::commit();
+            
+            // Connecter automatiquement l'utilisateur après l'inscription
+            \Illuminate\Support\Facades\Auth::login($user);
+            
             return redirect()->route('registration.success', ['type' => 'entreprise', 'user' => $user->id]);
         } catch (\Exception $e) {
             DB::rollback();

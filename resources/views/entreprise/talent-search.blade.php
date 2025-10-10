@@ -498,8 +498,8 @@ $(document).ready(function() {
                                 <div class="avatar-circle">
                                     ${talent.user && talent.avatar_type ? 
                                         `<img src="${talent.avatar_type}" alt="Photo de profil" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">` : 
-                                        `<div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-weight: bold; font-size: 1.2rem;">
-                                            ${talent.user && talent.user.name ? talent.user.name.split(' ').map(n => n.charAt(0)).join('').substring(0, 2).toUpperCase() : 'TL'}
+                                        `<div class="bg-light border rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                            <i class="fas fa-user text-muted" style="font-size: 24px;"></i>
                                         </div>`
                                     }
                                 </div>
@@ -526,12 +526,12 @@ $(document).ready(function() {
                             <div class="row text-center">
                                 <div class="col-6">
                                     <div class="border-end">
-                                        <div class="fw-bold text-warning">${talent.annees_experience || 0} ans</div>
+                                        <div class="fw-bold" style="color:#0066FF">${talent.annees_experience || 0} ans</div>
                                         <small class="text-muted">Expérience</small>
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="fw-bold text-info">${talent.niveau_diplome ? talent.niveau_diplome.nom : 'Non spécifié'}</div>
+                                    <div class="fw-bold" style="color:#0066FF">${talent.niveau_diplome ? talent.niveau_diplome.nom : 'Non spécifié'}</div>
                                     <small class="text-muted">Diplôme</small>
                                 </div>
                             </div>

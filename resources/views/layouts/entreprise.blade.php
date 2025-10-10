@@ -228,7 +228,7 @@
             padding: 16px 24px;
             border-top: 1px solid #e5e7eb;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
         }
         
@@ -644,18 +644,24 @@
         <!-- Sidebar Footer -->
         <div class="sidebar-footer">
             <!-- Notifications -->
-            <button class="btn-action position-relative">
-                <i class="bi bi-bell"></i>
-                <span class="notification-badge">2</span>
-            </button>
+            <div class="d-flex flex-column align-items-center me-3">
+                <button class="btn-action position-relative">
+                    <i class="bi bi-bell"></i>
+                    <span class="notification-badge">0</span>
+                </button>
+                <span class="small text-black mt-1">Notifications</span>
+            </div>
             
             <!-- Logout -->
-            <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                @csrf
-                <button type="submit" class="btn-action btn-logout" title="Déconnexion">
-                    <i class="bi bi-box-arrow-right"></i>
-                </button>
-            </form>
+            <div class="d-flex flex-column align-items-center">
+                <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn-action btn-logout" title="Déconnexion">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                </form>
+                <span class="small text-black mt-1">Déconnexion</span>
+            </div>
         </div>
     </div>
     

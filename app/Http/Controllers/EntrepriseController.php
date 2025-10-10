@@ -157,14 +157,44 @@ class EntrepriseController extends Controller
     }
 
     // Liste des offres d'emploi de l'entreprise
-    public function indexOffres()
+    public function indexOffres(Request $request)
     {
         $entreprise = Auth::user()->entreprise;
         
-        $offres = $entreprise->offresEmploi()
-            ->with(['typeContrat', 'pole', 'familleMetier', 'candidatures'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $query = $entreprise->offresEmploi()
+            ->with(['typeContrat', 'pole', 'familleMetier', 'candidatures']);
+            
+        // Filtrer par statut
+        if ($request->filled('statut')) {
+            $query->where('statut', $request->statut);
+        }
+        
+        // Filtrer par période
+        if ($request->filled('periode')) {
+            $periode = $request->periode;
+            switch ($periode) {
+                case '7j':
+                    $query->where('created_at', '>=', now()->subDays(7));
+                    break;
+                case '30j':
+                    $query->where('created_at', '>=', now()->subDays(30));
+                    break;
+                case '3m':
+                    $query->where('created_at', '>=', now()->subMonths(3));
+                    break;
+            }
+        }
+        
+        // Filtrer par recherche (titre, référence)
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('titre', 'like', '%' . $search . '%')
+                  ->orWhere('reference_offre', 'like', '%' . $search . '%');
+            });
+        }
+        
+        $offres = $query->orderBy('created_at', 'desc')->paginate(10)->appends($request->query());
             
         // Ajouter des statistiques pour chaque offre
         $offres->getCollection()->transform(function ($offre) {
@@ -235,7 +265,7 @@ class EntrepriseController extends Controller
                     $q->selectRaw('talent_id, SUM(TIMESTAMPDIFF(YEAR, date_debut, COALESCE(date_fin, NOW()))) as total_experience')
                       ->groupBy('talent_id')
                       ->havingRaw('total_experience <= 2');
-                }, '<=', 1); // Au moins une expérience qui respecte la condition
+                });
             } else {
                 // Pour les autres tranches, calculer l'expérience totale
                 $query->whereHas('experiencesProfessionnelles', function($q) use ($experienceMin) {
@@ -889,10 +919,10 @@ class EntrepriseController extends Controller
             ->when($request->periode, function($q) use ($request) {
                 $dateDebut = $this->getDateDebut($request->periode);
                 if ($dateDebut) {
-                    $q->where('created_at', '>=', $dateDebut);
+                    $q->where('candidatures.created_at', '>=', $dateDebut);
                 }
             })
-            ->orderBy('created_at', 'desc')
+            ->orderBy('candidatures.created_at', 'desc')
             ->get();
             
         $stats = [
@@ -1572,45 +1602,57 @@ class EntrepriseController extends Controller
     // Méthode pour envoyer une invitation de parrainage
     public function sendInvitation(Request $request)
     {
-        $request->validate([
-            'email_entreprise' => 'required|email',
-            'nom_entreprise' => 'nullable|string|max:255',
-            'message_personnel' => 'nullable|string|max:500'
-        ]);
-        
-        $entreprise = Auth::user()->entreprise;
-        
-        // Vérifier si l'email n'est pas déjà invité
-        $existingParrainage = Parrainage::where('email_entreprise', $request->email_entreprise)
-            ->where('entreprise_parrain_id', $entreprise->id)
-            ->first();
+        try {
+            $request->validate([
+                'email_entreprise' => 'required|email',
+                'nom_entreprise' => 'nullable|string|max:255',
+                'message_personnel' => 'nullable|string|max:500'
+            ]);
             
-        if ($existingParrainage) {
+            $entreprise = Auth::user()->entreprise;
+            
+            // Vérifier si l'email n'est pas déjà invité
+            $existingParrainage = Parrainage::where('email_entreprise', $request->email_entreprise)
+                ->where('entreprise_parrain_id', $entreprise->id)
+                ->first();
+                
+            if ($existingParrainage) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Cette entreprise a déjà été invitée.'
+                ], 422);
+            }
+            
+            // Créer le parrainage
+            $parrainage = Parrainage::create([
+                'parrain_id' => Auth::user()->id,
+                'filleul_id' => null, // Sera rempli lors de l'inscription
+                'entreprise_parrain_id' => $entreprise->id,
+                'email_entreprise' => $request->email_entreprise,
+                'nom_entreprise' => $request->nom_entreprise,
+                'message_personnel' => $request->message_personnel,
+                'code_parrainage' => 'PAR-' . strtoupper(Str::random(8)),
+                'statut' => 'en_attente',
+                'date_invitation' => now(),
+                'date_parrainage' => now(),
+                'parrain_type' => 'entreprise'
+            ]);
+            
+            // Envoyer l'email d'invitation
+            $this->envoyerEmailInvitation($parrainage);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Invitation envoyée avec succès !',
+                'parrainage' => $parrainage
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Erreur lors de l\'envoi d\'invitation de parrainage: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Cette entreprise a déjà été invitée.'
-            ], 422);
+                'message' => 'Erreur lors de l\'envoi de l\'invitation. Veuillez réessayer.'
+            ], 500);
         }
-        
-        // Créer le parrainage
-        $parrainage = Parrainage::create([
-            'entreprise_parrain_id' => $entreprise->id,
-            'email_entreprise' => $request->email_entreprise,
-            'nom_entreprise' => $request->nom_entreprise,
-            'message_personnel' => $request->message_personnel,
-            'code_parrainage' => 'PAR-' . strtoupper(Str::random(8)),
-            'statut' => 'en_attente',
-            'date_invitation' => now()
-        ]);
-        
-        // Envoyer l'email d'invitation
-        $this->envoyerEmailInvitation($parrainage);
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Invitation envoyée avec succès !',
-            'parrainage' => $parrainage
-        ]);
     }
     
     // API pour récupérer les offres de l'entreprise
@@ -1842,7 +1884,7 @@ class EntrepriseController extends Controller
         // Construire la requête des candidatures avec filtres
         $candidaturesQuery = $offre->candidatures()
             ->with(['talent.user', 'talent.niveauDiplome', 'talent.experiences'])
-            ->orderBy('created_at', 'desc');
+            ->orderBy('candidatures.created_at', 'desc');
         
         // Filtrer par statut
         if ($request->filled('statut')) {
@@ -1851,12 +1893,12 @@ class EntrepriseController extends Controller
         
         // Filtrer par date de début
         if ($request->filled('date_debut')) {
-            $candidaturesQuery->whereDate('created_at', '>=', $request->date_debut);
+            $candidaturesQuery->whereDate('candidatures.created_at', '>=', $request->date_debut);
         }
         
         // Filtrer par date de fin
         if ($request->filled('date_fin')) {
-            $candidaturesQuery->whereDate('created_at', '<=', $request->date_fin);
+            $candidaturesQuery->whereDate('candidatures.created_at', '<=', $request->date_fin);
         }
         
         // Filtrer par recherche (nom, prénom, email)

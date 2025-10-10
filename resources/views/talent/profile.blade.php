@@ -42,7 +42,7 @@
                         <div class="flex flex-col items-center">
                             <div class="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden mb-4">
                                 @if($talent->avatar_type)
-                                    <img src="{{ asset('storage/' . $talent->avatar_type) }}" alt="Avatar" class="w-full h-full object-cover">
+                                    <img src="{{ asset('storage/avatars/' . $talent->avatar_type) }}" alt="Avatar" class="w-full h-full object-cover">
                                 @else
                                     <i class="bi bi-person text-4xl text-gray-400"></i>
                                 @endif

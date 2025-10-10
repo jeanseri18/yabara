@@ -13,7 +13,7 @@
     <!-- Filtres -->
     <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
         <form method="GET" action="{{ route('talent.offres') }}" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
                 <!-- Recherche -->
                 <div>
                     <label for="recherche" class="block text-sm font-medium text-gray-700 mb-1">Recherche</label>
@@ -30,6 +30,19 @@
                         @foreach($poles as $pole)
                             <option value="{{ $pole->id }}" {{ request('pole_id') == $pole->id ? 'selected' : '' }}>
                                 {{ $pole->nom }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                <!-- Famille de métier -->
+                <div>
+                    <label for="famille_metier_id" class="block text-sm font-medium text-gray-700 mb-1">Famille de métier</label>
+                    <select id="famille_metier_id" name="famille_metier_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Toutes les familles</option>
+                        @foreach($famillesMetiers as $famille)
+                            <option value="{{ $famille->id }}" {{ request('famille_metier_id') == $famille->id ? 'selected' : '' }}>
+                                {{ $famille->nom }}
                             </option>
                         @endforeach
                     </select>
@@ -169,5 +182,63 @@
     overflow: hidden;
 }
 </style>
+@endpush
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const poleSelect = document.getElementById('pole_id');
+        const familleSelect = document.getElementById('famille_metier_id');
+        const allFamilles = @json($famillesMetiers);
+        
+        // Fonction pour filtrer les familles de métier en fonction du pôle sélectionné
+        function filterFamillesByPole(poleId) {
+            // Sauvegarder la valeur sélectionnée actuelle
+            const currentValue = familleSelect.value;
+            
+            // Vider le select sauf la première option
+            while (familleSelect.options.length > 1) {
+                familleSelect.remove(1);
+            }
+            
+            // Si aucun pôle n'est sélectionné, afficher toutes les familles
+            if (!poleId) {
+                allFamilles.forEach(famille => {
+                    const option = document.createElement('option');
+                    option.value = famille.id;
+                    option.textContent = famille.nom;
+                    option.selected = (currentValue == famille.id);
+                    familleSelect.appendChild(option);
+                });
+                return;
+            }
+            
+            // Filtrer les familles par pôle
+            const filteredFamilles = allFamilles.filter(famille => famille.pole_id == poleId);
+            
+            // Ajouter les options filtrées
+            filteredFamilles.forEach(famille => {
+                const option = document.createElement('option');
+                option.value = famille.id;
+                option.textContent = famille.nom;
+                option.selected = (currentValue == famille.id);
+                familleSelect.appendChild(option);
+            });
+            
+            // Si la valeur précédemment sélectionnée n'est plus disponible, réinitialiser
+            if (filteredFamilles.length > 0 && !filteredFamilles.some(f => f.id == currentValue)) {
+                familleSelect.value = '';
+            }
+        }
+        
+        // Initialiser le filtre au chargement
+        filterFamillesByPole(poleSelect.value);
+        
+        // Mettre à jour le filtre quand le pôle change
+        poleSelect.addEventListener('change', function() {
+            filterFamillesByPole(this.value);
+        });
+    });
+</script>
 @endpush
 @endsection

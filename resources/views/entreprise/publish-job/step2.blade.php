@@ -91,20 +91,20 @@
                             </label>
                             <div class="d-flex">
                                 <div class="experience-card flex-fill text-center p-3" data-value="0-2" 
-                                     style="cursor: pointer; transition: all 0.3s ease; background-color: #0066FF; color: white; border-right: 2px solid rgba(255, 255, 255, 0.5); {{ old('experience_minimum', $offre->experience_minimum) == '0-2' ? 'opacity: 1;' : 'opacity: 0.85;' }}">
-                                    <h6 class="card-title mb-0" style="color: white;">0-2 ans</h6>
+                                     style="cursor: pointer; transition: all 0.3s ease; {{ old('experience_minimum', $offre->experience_minimum) == '0-2' ? 'background-color: #007bff; color: white;' : 'background-color: #FFFFFFFF; color: black;' }} border: 2px solid black; border-right: 2px solid black; opacity: 1;">
+                                    <h6 class="card-title mb-0" style="{{ old('experience_minimum', $offre->experience_minimum) == '0-2' ? 'color: white;' : 'color: black;' }}">0-2 ans</h6>
                                 </div>
                                 <div class="experience-card flex-fill text-center p-3" data-value="3-5" 
-                                     style="cursor: pointer; transition: all 0.3s ease; background-color: #0066FF; color: white; border-right: 2px solid rgba(255, 255, 255, 0.5); {{ old('experience_minimum', $offre->experience_minimum) == '3-5' ? 'opacity: 1;' : 'opacity: 0.85;' }}">
-                                    <h6 class="card-title mb-0" style="color: white;">3-5 ans</h6>
+                                     style="cursor: pointer; transition: all 0.3s ease; {{ old('experience_minimum', $offre->experience_minimum) == '3-5' ? 'background-color: #007bff; color: white;' : 'background-color: #FFFFFFFF; color: black;' }} border: 2px solid black; border-right: 2px solid black; opacity: 1;">
+                                    <h6 class="card-title mb-0" style="{{ old('experience_minimum', $offre->experience_minimum) == '3-5' ? 'color: white;' : 'color: black;' }}">3-5 ans</h6>
                                 </div>
                                 <div class="experience-card flex-fill text-center p-3" data-value="6-10" 
-                                     style="cursor: pointer; transition: all 0.3s ease; background-color: #0066FF; color: white; border-right: 2px solid rgba(255, 255, 255, 0.5); {{ old('experience_minimum', $offre->experience_minimum) == '6-10' ? 'opacity: 1;' : 'opacity: 0.85;' }}">
-                                    <h6 class="card-title mb-0" style="color: white;">6-10 ans</h6>
+                                     style="cursor: pointer; transition: all 0.3s ease; {{ old('experience_minimum', $offre->experience_minimum) == '6-10' ? 'background-color: #007bff; color: white;' : 'background-color: #FFFFFFFF; color: black;' }} border: 2px solid black; border-right: 2px solid black; opacity: 1;">
+                                    <h6 class="card-title mb-0" style="{{ old('experience_minimum', $offre->experience_minimum) == '6-10' ? 'color: white;' : 'color: black;' }}">6-10 ans</h6>
                                 </div>
                                 <div class="experience-card flex-fill text-center p-3" data-value="10+" 
-                                     style="cursor: pointer; transition: all 0.3s ease; background-color: #0066FF; color: white; {{ old('experience_minimum', $offre->experience_minimum) == '10+' ? 'opacity: 1;' : 'opacity: 0.85;' }}">
-                                    <h6 class="card-title mb-0" style="color: white;">+10 ans</h6>
+                                     style="cursor: pointer; transition: all 0.3s ease; {{ old('experience_minimum', $offre->experience_minimum) == '10+' ? 'background-color: #007bff; color: white;' : 'background-color: #FFFFFFFF; color: black;' }} border: 2px solid black; opacity: 1;">
+                                    <h6 class="card-title mb-0" style="{{ old('experience_minimum', $offre->experience_minimum) == '10+' ? 'color: white;' : 'color: black;' }}">+10 ans</h6>
                                 </div>
                             </div>
                             <input type="hidden" id="experience_minimum" name="experience_minimum" value="{{ old('experience_minimum', $offre->experience_minimum) }}" required>
@@ -243,7 +243,7 @@
     border-radius: 0;
     margin: 0;
     padding: 10px 15px;
-    border-right: 2px solid rgba(255, 255, 255, 0.5);
+    border-right: 2px solid black;
 }
 
 .experience-card:first-child {
@@ -416,12 +416,22 @@
 $(document).ready(function() {
     // Gestion des cartes sélectionnables pour l'expérience minimum
     $('.experience-card').click(function() {
+        // Réinitialiser toutes les cartes avec le style par défaut
         $('.experience-card').css({
-            'opacity': '0.85'
-        });
-        $(this).css({
+            'background-color': '#FFFFFFFF',
+            'color': 'black',
             'opacity': '1'
         });
+        $('.experience-card h6').css('color', 'black');
+        
+        // Appliquer le style sélectionné à la carte cliquée
+        $(this).css({
+            'background-color': '#007bff',
+            'color': 'white',
+            'opacity': '1'
+        });
+        $(this).find('h6').css('color', 'white');
+        
         $('#experience_minimum').val($(this).data('value'));
     });
 

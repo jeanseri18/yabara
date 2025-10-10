@@ -100,7 +100,7 @@
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <form method="GET" class="row g-3">
+                    <form method="GET" action="{{ route('entreprise.offres.index') }}" class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label fw-semibold">Statut</label>
                             <select name="statut" class="form-select" style="border-radius: 8px; border: 1px solid #dee2e6;">
@@ -125,14 +125,17 @@
                             <label class="form-label fw-semibold">Recherche</label>
                             <input type="text" name="search" class="form-control" placeholder="Titre, référence..." value="{{ request('search') }}" style="border-radius: 8px; border: 1px solid #dee2e6;">
                         </div>
-                        <!-- <div class="col-md-2">
+                        <div class="col-md-2">
                             <label class="form-label">&nbsp;</label>
-                            <div class="d-grid">
+                            <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-outline-primary">
                                     <i class="fas fa-search me-1"></i> Filtrer
                                 </button>
+                                <a href="{{ route('entreprise.offres.index') }}" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-times me-1"></i> Réinitialiser
+                                </a>
                             </div>
-                        </div> -->
+                        </div>
                     </form>
                 </div>
             </div>
@@ -148,53 +151,107 @@
                 </div>
                 <div class="card-body" style="padding:20px;">
                     @if($offres->count() > 0)
-                        <div class="row g-4">
+                        <div class="row">
                             @foreach($offres as $offre)
-                                <div class="col-12">
-                                    <div class="card border-0 shadow-sm" style="cursor: pointer; transition: all 0.3s ease; border-radius: 12px; height: 150px;"
-                                         onclick="window.location.href='{{ route('entreprise.candidatures.kanban', ['offre' => $offre->id]) }}'"
-                                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)'"
-                                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 10px rgba(0,0,0,0.1)'">
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card h-100 offre-card">
+                                        <!-- En-tête de la carte avec statut et date -->
+                                        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                                            <div>
+                                                @switch($offre->statut)
+                                                    @case('brouillon')
+                                                        <span class="badge bg-secondary">Brouillon</span>
+                                                        @break
+                                                    @case('publiee')
+                                                        <span class="badge bg-success">Publiée</span>
+                                                        @break
+                                                    @case('suspendue')
+                                                        <span class="badge bg-warning text-dark">Suspendue</span>
+                                                        @break
+                                                    @case('expiree')
+                                                        <span class="badge bg-warning">Expirée</span>
+                                                        @break
+                                                    @case('fermee')
+                                                        <span class="badge bg-danger">Fermée</span>
+                                                        @break
+                                                @endswitch
+                                            </div>
+                                            <small class="text-muted">{{ $offre->created_at->format('d/m/Y') }}</small>
+                                        </div>
                                         
                                         <!-- Corps de la carte -->
-                                        <div class="card-body d-flex justify-content-between align-items-center h-100" style="padding: 15px;">
-                                            <div class="flex-grow-1 d-flex flex-column justify-content-center">
-                                                <h6 class="card-title mb-1 fw-bold text-dark text-truncate">{{ $offre->titre }}</h6>
-                                                <div class="mb-1">
-                                                    @switch($offre->statut)
-                                                        @case('brouillon')
-                                                            <span class="badge bg-secondary">Brouillon</span>
-                                                            @break
-                                                        @case('publiee')
-                                                            <span class="badge bg-success">Publiée</span>
-                                                            @break
-                                                        @case('suspendue')
-                                                            <span class="badge bg-warning text-dark">Suspendue</span>
-                                                            @break
-                                                        @case('expiree')
-                                                            <span class="badge bg-warning">Expirée</span>
-                                                            @break
-                                                        @case('fermee')
-                                                            <span class="badge bg-danger">Fermée</span>
-                                                            @break
-                                                    @endswitch
-                                                </div>
-                                                <small class="text-muted d-block text-truncate">
-                                                    <i class="fas fa-map-marker-alt me-1"></i>{{ $offre->lieu_poste }}
-                                                </small>
-                                            </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold text-dark mb-2">{{ $offre->titre }}</h5>
+                                            <p class="card-text text-muted mb-3">
+                                                <i class="fas fa-map-marker-alt me-1"></i>{{ $offre->lieu_poste }}
+                                            </p>
                                             
-                                            <div class="text-end d-flex flex-column justify-content-center">
-                                                <small class="text-muted">Candidatures</small>
-                                                <div class="h6 mb-0">{{ $offre->nb_candidatures }}</div>
-                                                @if($offre->nb_candidatures_nouvelles > 0)
-                                                    <span class="badge bg-primary rounded-pill" style="font-size: 0.7rem;">{{ $offre->nb_candidatures_nouvelles }} nouvelles</span>
-                                                @endif
+                                            <!-- Statistiques -->
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="me-3">
+                                                        <span class="d-block fw-bold">{{ $offre->nb_candidatures }}</span>
+                                                        <small class="text-muted">Candidatures</small>
+                                                    </div>
+                                                    @if($offre->nb_candidatures_nouvelles > 0)
+                                                        <div>
+                                                            <span class="d-block fw-bold text-primary">{{ $offre->nb_candidatures_nouvelles }}</span>
+                                                            <small class="text-primary">Nouvelles</small>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted">Expire le:</small>
+                                                    <span class="d-block">
+                                                        @if($offre->date_expiration)
+                                                            {{ \Carbon\Carbon::parse($offre->date_expiration)->format('d/m/Y') }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                     </div>
-                                 </div>
-                             @endforeach
+                                        
+                                        <!-- Pied de carte avec actions -->
+                                        <div class="card-footer bg-white border-top-0 pt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <a href="{{ route('entreprise.candidatures.kanban', ['offre' => $offre->id]) }}" 
+                                                   class="btn btn-sm btn-outline-primary" 
+                                                   title="Voir les candidatures">
+                                                    <i class="fas fa-users me-1"></i> Candidatures
+                                                </a>
+                                                <div>
+                                                    <a href="{{ route('entreprise.offres.edit', $offre->id) }}" 
+                                                       class="btn btn-sm btn-outline-secondary me-1" 
+                                                       title="Modifier">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            @if($offre->statut == 'publiee')
+                                                                <li><a class="dropdown-item" href="#" onclick="toggleOffreStatus({{ $offre->id }}, 'suspend')"><i class="fas fa-pause me-2"></i>Suspendre</a></li>
+                                                            @elseif($offre->statut == 'suspendue')
+                                                                <li><a class="dropdown-item" href="#" onclick="toggleOffreStatus({{ $offre->id }}, 'activate')"><i class="fas fa-play me-2"></i>Activer</a></li>
+                                                            @endif
+                                                            <li><a class="dropdown-item text-danger" href="#" onclick="deleteOffre({{ $offre->id }})"><i class="fas fa-trash me-2"></i>Supprimer</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="d-flex justify-content-center mt-4">
+                            {{ $offres->links() }}
                         </div>
                     @else
                         <div class="text-center py-5">
@@ -211,12 +268,7 @@
                     @endif
                 </div>
                 
-                <!-- DataTables gérera la pagination automatiquement -->
-                <!-- <div class="card-footer bg-white border-top">
-                    <div class="text-center text-muted small">
-                        Pagination gérée par DataTables
-                    </div>
-                </div> -->
+
             </div>
         </div>
     </div>
@@ -224,10 +276,6 @@
 @endsection
 
 @push('styles')
-<!-- DataTables CSS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
 
 <style>
 body {
@@ -241,6 +289,25 @@ body {
     transition: all 0.2s ease;
 }
 
+.offre-card {
+    border: 1px solid rgba(0,0,0,.08);
+}
+
+.offre-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1)!important;
+}
+
+.card-header {
+    border-bottom: 1px solid rgba(0,0,0,.05);
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
+
+.card-footer {
+    background-color: transparent;
+}
+
 .card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
@@ -252,6 +319,11 @@ body {
 
 .btn-group-sm .btn {
     padding: 0.25rem 0.5rem;
+}
+
+.btn-sm {
+    padding: .25rem .5rem;
+    font-size: .875rem;
 }
 
 .btn-outline-secondary {
@@ -305,25 +377,7 @@ body {
     font-weight: 600 !important;
 }
 
-/* Styles DataTables personnalisés */
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter,
-.dataTables_wrapper .dataTables_info,
-.dataTables_wrapper .dataTables_paginate {
-    margin-bottom: 1rem;
-}
 
-.dataTables_wrapper .dataTables_filter input {
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
-    padding: 0.375rem 0.75rem;
-}
-
-.dataTables_wrapper .dataTables_length select {
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
-    padding: 0.375rem 0.75rem;
-}
 
 .page-link {
     border-radius: 8px !important;
@@ -336,13 +390,6 @@ body {
     border-color: #0066FF;
 }
 
-.table th {
-    font-weight: 600;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
 .badge {
     font-weight: 500;
     font-size: 0.75rem;
@@ -353,47 +400,6 @@ body {
 .btn-outline-primary:hover {
     background-color: #0066FF;
     border-color: #0066FF;
-}
-
-/* En-têtes personnalisés */
-#offres-datatable thead th {
-    background-color: #0066FF !important;
-    color: white !important;
-    border-color: #0066FF !important;
-    font-weight: 600;
-    text-align: center;
-    vertical-align: middle;
-}
-
-/* Lignes du tbody */
-#offres-datatable tbody tr {
-    background-color: white !important;
-}
-
-#offres-datatable tbody tr:hover {
-    background-color: rgba(20, 34, 74, 0.05) !important;
-}
-
-#offres-datatable tbody td {
-    vertical-align: middle;
-    padding: 1rem 0.75rem;
-}
-
-.table-fixed {
-    table-layout: fixed;
-    width: 100%;
-}
-
-.table-fixed th,
-.table-fixed td {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    vertical-align: middle;
-}
-
-.table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 /* Responsive improvements */
@@ -430,102 +436,20 @@ body {
 @endpush
 
 @push('scripts')
-<!-- DataTables JS -->
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
 
 <script>
-let dataTable;
-
 $(document).ready(function() {
-    // Initialisation de DataTables
-    dataTable = $('#offres-datatable').DataTable({
-        responsive: true,
-        pageLength: 10,
-        lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
-        language: {
-            url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/fr-FR.json'
-        },
-        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6">>' +
-             '<"row"<"col-sm-12"tr>>' +
-             '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        columnDefs: [
-            {
-                targets: [5], // Colonne Actions
-                orderable: false,
-                searchable: false
-            },
-            {
-                targets: [1], // Colonne Statut
-                orderable: true,
-                searchable: true
-            }
-        ],
-        order: [[2, 'desc']], // Trier par date de publication par défaut
-        drawCallback: function() {
-            // Réappliquer les événements après chaque redraw
-            attachEventHandlers();
-        }
-    });
-    
-    // Attacher les gestionnaires d'événements initiaux
-    attachEventHandlers();
-    
-    // Gestion des filtres personnalisés
-    initCustomFilters();
+    // Gestion des toasts
+    $('.toast').toast('show');
+
+    // Auto-refresh des statistiques toutes les 30 secondes
+    setInterval(function() {
+        $.get(window.location.href, function(data) {
+            var newStats = $(data).find('.stats-container').html();
+            $('.stats-container').html(newStats);
+        });
+    }, 30000);
 });
-
-// Fonction pour initialiser les filtres personnalisés
-function initCustomFilters() {
-    // Filtrage par statut
-    $('select[name="statut"]').on('change', function() {
-        const statut = $(this).val();
-        if (statut === '') {
-            dataTable.column(1).search('').draw();
-        } else {
-            dataTable.column(1).search(statut).draw();
-        }
-    });
-    
-    // Recherche personnalisée
-    $('input[name="search"]').on('keyup', function() {
-        dataTable.search($(this).val()).draw();
-    });
-    
-    // Bouton de filtrage
-    $('button[type="submit"]').on('click', function(e) {
-        e.preventDefault();
-        
-        const statut = $('select[name="statut"]').val();
-        const search = $('input[name="search"]').val();
-        
-        // Appliquer les filtres
-        if (statut === '') {
-            dataTable.column(1).search('').draw();
-        } else {
-            dataTable.column(1).search(statut).draw();
-        }
-        
-        dataTable.search(search).draw();
-    });
-}
-
-// Fonction pour attacher les gestionnaires d'événements
-function attachEventHandlers() {
-    // Gestion des dropdowns Bootstrap
-    $('.dropdown-toggle').dropdown();
-    
-    // Gestion des boutons statistiques
-    // $('.btn-outline-secondary[title="Statistiques détaillées"]').off('click').on('click', function(e) {
-    //     e.preventDefault();
-    //     // Logique pour afficher les statistiques détaillées
-    //     showToast('Fonctionnalité en développement', 'info');
-    // });
-}
 
 // Fonction pour supprimer une offre
 function deleteOffre(offreId) {
@@ -608,11 +532,5 @@ function showToast(message, type = 'info') {
         }
     }, 5000);
 }
-
-// Auto-refresh des statistiques toutes les 30 secondes
-setInterval(function() {
-    // Logique de rafraîchissement des données en temps réel
-    // Vous pouvez recharger les données via AJAX ici
-}, 30000);
 </script>
 @endpush

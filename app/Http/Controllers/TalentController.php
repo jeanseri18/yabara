@@ -37,6 +37,14 @@ class TalentController extends Controller
         // Charger les relations nécessaires pour éviter les requêtes N+1
         if ($talent) {
             $talent->load(['cvExperiences', 'cvCompetences', 'cvLangues', 'cvFormations']);
+            
+            // Calculer et mettre à jour le pourcentage de complétion du profil
+            $profil_completude = $this->calculerCompletudeProfil($talent);
+            
+            // Mettre à jour la valeur dans la base de données si elle a changé
+            if ($talent->profile_completion_percentage != $profil_completude) {
+                $talent->update(['profile_completion_percentage' => $profil_completude]);
+            }
         }
         
         // Phrases motivationnelles aléatoires
@@ -62,7 +70,7 @@ class TalentController extends Controller
             'parrainages_actifs' => Parrainage::where('talent_parrain_id', $talent->id ?? 0)
                                               ->where('statut', 'actif')
                                               ->count(),
-            'profil_completude' => $this->calculerCompletudeProfil($talent)
+            'profil_completude' => $profil_completude ?? $this->calculerCompletudeProfil($talent)
         ];
         
         // Badges disponibles
@@ -261,6 +269,10 @@ class TalentController extends Controller
                 'cv_original_path' => $path,
                 'cv_original_name' => $request->file('cv_file')->getClientOriginalName(),
             ]);
+            
+            // Recalculer et mettre à jour le pourcentage de complétion du profil
+            $profil_completude = $this->calculerCompletudeProfil($talent);
+            $talent->update(['profile_completion_percentage' => $profil_completude]);
 
             \Log::info('CV uploadé avec succès:', ['path' => $path, 'talent_id' => $talent->id]);
 
@@ -381,6 +393,10 @@ class TalentController extends Controller
                 }
             }
 
+            // Recalculer et mettre à jour le pourcentage de complétion du profil
+            $profil_completude = $this->calculerCompletudeProfil($talent);
+            $talent->update(['profile_completion_percentage' => $profil_completude]);
+            
             return response()->json([
                 'success' => true,
                 'message' => 'CV sauvegardé avec succès',
@@ -502,8 +518,14 @@ class TalentController extends Controller
             // Gérer l'upload de l'avatar si fourni
             if ($request->hasFile('avatar')) {
                 $avatarPath = $request->file('avatar')->store('avatars', 'public');
-                $talent->update(['avatar_type' => $avatarPath]);
+                // Extraire uniquement le nom du fichier sans le préfixe 'avatars/'
+                $fileName = str_replace('avatars/', '', $avatarPath);
+                $talent->update(['avatar_type' => $fileName]);
             }
+            
+            // Recalculer et mettre à jour le pourcentage de complétion du profil
+            $profil_completude = $this->calculerCompletudeProfil($talent);
+            $talent->update(['profile_completion_percentage' => $profil_completude]);
 
             return redirect()->back()->with('success', 'Profil mis à jour avec succès');
         } catch (\Exception $e) {
@@ -524,6 +546,10 @@ class TalentController extends Controller
         // Filtres
         if ($request->filled('pole_id')) {
             $query->where('pole_id', $request->pole_id);
+        }
+        
+        if ($request->filled('famille_metier_id')) {
+            $query->where('famille_metier_id', $request->famille_metier_id);
         }
 
         if ($request->filled('type_contrat_id')) {
@@ -550,8 +576,9 @@ class TalentController extends Controller
         // Données pour les filtres
         $poles = Pole::all();
         $typesContrat = TypeContrat::all();
+        $famillesMetiers = \App\Models\FamilleMetier::orderBy('ordre_affichage')->get();
 
-        return view('talent.offres', compact('offres', 'poles', 'typesContrat'));
+        return view('talent.offres', compact('offres', 'poles', 'typesContrat', 'famillesMetiers'));
     }
 
     /**

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('parrainages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('parrain_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('filleul_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('filleul_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamp('date_parrainage');
             $table->enum('statut', ['en_attente', 'accepte', 'refuse', 'termine'])->default('en_attente');
             $table->text('message_parrain')->nullable();

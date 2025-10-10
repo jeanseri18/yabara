@@ -9,7 +9,7 @@ use App\Http\Controllers\TalentController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 // Routes d'authentification
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');

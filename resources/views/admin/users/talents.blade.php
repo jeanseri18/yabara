@@ -781,7 +781,14 @@
                         <!-- En-tête du talent -->
                         <div class="talent-header">
                             <div class="talent-avatar">
-                                {{ strtoupper(substr($talent->name, 0, 2)) }}
+                                @if($talent->talent && $talent->talent->avatar_type)
+                                    <img src="{{ asset('storage/avatars/'.$talent->talent->avatar_type) }}" 
+                                         alt="{{ $talent->name }}" 
+                                         class="rounded-circle" 
+                                         style="width: 60px; height: 60px; object-fit: cover;">
+                                @else
+                                    <i class="fas fa-user" style="font-size: 24px;"></i>
+                                @endif
                             </div>
                             <div class="talent-info">
                                 <h3>{{ $talent->name }}</h3>
